@@ -1,0 +1,755 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn hàng của tôi – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .oh-page {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .oh-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.4rem
+        }
+
+            .oh-title i {
+                color: #6ab04c
+            }
+
+        .oh-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem
+        }
+
+        .oh-tab {
+            padding: .32rem .85rem;
+            border-radius: 20px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            color: #4a5568;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .oh-tab:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .oh-tab.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+        .oh-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: box-shadow .2s
+        }
+
+            .oh-card:hover {
+                box-shadow: 0 4px 20px rgba(0,0,0,.07)
+            }
+
+        .oh-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: .85rem 1.2rem;
+            background: #fafafa;
+            border-bottom: 1px solid #f0f0f0
+        }
+
+        .oh-id {
+            font-weight: 700;
+            font-size: .88rem;
+            color: #1a1a1a
+        }
+
+        .oh-date {
+            font-size: .76rem;
+            color: #8a9bb0;
+            margin-top: 2px
+        }
+
+        .oh-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: .25rem .75rem;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 700
+        }
+
+        .s-pending {
+            background: #fff8ec;
+            color: #d68910;
+            border: 1px solid #ffe0a0
+        }
+
+        .s-confirmed {
+            background: #e8f4fd;
+            color: #2980b9;
+            border: 1px solid #b8d9f5
+        }
+
+        .s-shipping {
+            background: #eaf4ff;
+            color: #1a6fb0;
+            border: 1px solid #a8d0f0
+        }
+
+        .s-completed {
+            background: #f0fff4;
+            color: #27ae60;
+            border: 1px solid #b7e4c7
+        }
+
+        .s-cancelled {
+            background: #fff0f0;
+            color: #e74c3c;
+            border: 1px solid #f5c6c6
+        }
+
+        .oh-body {
+            padding: .85rem 1.2rem
+        }
+
+        .oh-item {
+            display: flex;
+            gap: 10px;
+            padding: .55rem 0;
+            border-bottom: 1px solid #f5f5f5;
+            align-items: center
+        }
+
+            .oh-item:last-child {
+                border-bottom: none
+            }
+
+        .oh-item-img {
+            width: 44px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #f0f7eb;
+            flex-shrink: 0
+        }
+
+        .oh-item-ph {
+            width: 44px;
+            height: 60px;
+            border-radius: 5px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1.2rem;
+            flex-shrink: 0
+        }
+
+        .oh-item-name {
+            font-weight: 600;
+            font-size: .84rem;
+            color: #1a1a1a
+        }
+
+        .oh-item-meta {
+            font-size: .75rem;
+            color: #8a9bb0;
+            margin-top: 1px
+        }
+
+        .oh-item-price {
+            font-weight: 700;
+            color: #6ab04c;
+            font-size: .84rem;
+            margin-top: 2px
+        }
+
+        .oh-more-btn {
+            font-size: .78rem;
+            color: #6ab04c;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: .3rem 0;
+            font-family: inherit
+        }
+
+            .oh-more-btn:hover {
+                color: #4e8a35
+            }
+
+        .oh-extra {
+            display: none
+        }
+
+            .oh-extra.show {
+                display: block
+            }
+
+        .oh-ship {
+            font-size: .81rem;
+            color: #4a5568;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: .6rem .85rem;
+            margin-top: .65rem;
+            line-height: 1.8;
+            display: none
+        }
+
+            .oh-ship.show {
+                display: block
+            }
+
+            .oh-ship strong {
+                color: #1a1a1a
+            }
+
+        .oh-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: .7rem 1.2rem;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa
+        }
+
+        .oh-total {
+            font-size: .9rem;
+            color: #4a5568
+        }
+
+            .oh-total strong {
+                color: #6ab04c;
+                font-size: 1rem
+            }
+
+        .oh-btn {
+            border-radius: 8px;
+            padding: .35rem .85rem;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+        .oh-btn-outline {
+            background: none;
+            border: 1.5px solid #e8edf2;
+            color: #4a5568
+        }
+
+            .oh-btn-outline:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+        .oh-btn-danger {
+            background: none;
+            border: 1.5px solid #f5c6c6;
+            color: #e74c3c
+        }
+
+            .oh-btn-danger:hover {
+                background: #e74c3c;
+                color: #fff
+            }
+
+        .oh-pager {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 1.4rem
+        }
+
+        .oh-pg {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .oh-pg:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .oh-pg.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+            .oh-pg:disabled {
+                opacity: .35;
+                cursor: not-allowed
+            }
+
+        .oh-empty {
+            text-align: center;
+            padding: 3.5rem 1rem;
+            color: #8a9bb0
+        }
+
+            .oh-empty i {
+                font-size: 3.5rem;
+                display: block;
+                margin-bottom: 1rem;
+                color: #d0d9e2
+            }
+
+            .oh-empty p {
+                font-weight: 600;
+                font-size: 1rem;
+                color: #4a5568;
+                margin-bottom: .35rem
+            }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="oh-page">
+        <h2 class="oh-title"><i class="bi bi-bag-check"></i> Đơn hàng của tôi</h2>
+
+        <div class="oh-tabs">
+            <button class="oh-tab active" data-s="" onclick="filterTab(this,'')">Tất cả</button>
+            <button class="oh-tab" data-s="pending" onclick="filterTab(this,'pending')">Chờ xác nhận</button>
+            <button class="oh-tab" data-s="confirmed" onclick="filterTab(this,'confirmed')">Đã xác nhận</button>
+            <button class="oh-tab" data-s="shipping" onclick="filterTab(this,'shipping')">Đang giao</button>
+            <button class="oh-tab" data-s="completed" onclick="filterTab(this,'completed')">Hoàn thành</button>
+            <button class="oh-tab" data-s="cancelled" onclick="filterTab(this,'cancelled')">Đã huỷ</button>
+        </div>
+
+        <div id="ohList"></div>
+        <div class="oh-pager" id="ohPager"></div>
+    </div>
+
+    <!-- Modal xác nhận hủy đơn -->
+    <div class="modal fade" id="cancelModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+            <div class="modal-content" style="border-radius:16px;border:none">
+                <div class="modal-body" style="padding:2rem 1.5rem;text-align:center">
+                    <div style="width:64px;height:64px;border-radius:50%;background:#fff0f0;
+                        border:2.5px solid #f5c6c6;display:flex;align-items:center;
+                        justify-content:center;font-size:1.8rem;color:#e74c3c;
+                        margin:0 auto 1.1rem">
+                        <i class="bi bi-bag-x"></i>
+                    </div>
+                    <div style="font-family:'Playfair Display',serif;font-size:1.15rem;
+                        font-weight:700;color:#1a1a1a;margin-bottom:.45rem">
+                        Hủy đơn hàng?
+                    </div>
+                    <div style="font-size:.86rem;color:#8a9bb0;margin-bottom:1.4rem;line-height:1.6">
+                        Bạn chắc chắn muốn hủy <strong id="cancelOrderLabel" style="color:#1a1a1a"></strong>?<br>
+                        Hành động này không thể hoàn tác.
+                    </div>
+                    <div style="display:flex;gap:10px">
+                        <button data-bs-dismiss="modal"
+                                style="flex:1;border:1.5px solid #e8edf2;background:#fff;
+                               border-radius:10px;padding:.65rem;font-size:.88rem;
+                               font-weight:600;cursor:pointer;font-family:inherit;color:#4a5568;transition:all .15s"
+                                onmouseover="this.style.borderColor='#6ab04c';this.style.color='#6ab04c'"
+                                onmouseout="this.style.borderColor='#e8edf2';this.style.color='#4a5568'">
+                            Không, giữ lại
+                        </button>
+                        <button id="cancelConfirmBtn"
+                                style="flex:1;background:#e74c3c;color:#fff;border:none;
+                               border-radius:10px;padding:.65rem;font-size:.88rem;
+                               font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s"
+                                onmouseover="this.style.background='#c0392b'"
+                                onmouseout="this.style.background='#e74c3c'">
+                            <i class="bi bi-x-circle me-1"></i>Xác nhận hủy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+            const IMG_URL = "https://localhost:7108";
+
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+
+            function showToast(msg, type = "success") {
+                let wrap = document.getElementById("_ohToastWrap");
+                if (!wrap) {
+                    wrap = document.createElement("div");
+                    wrap.id = "_ohToastWrap";
+                    wrap.style.cssText = "position:fixed;top:80px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none";
+                    document.body.appendChild(wrap);
+                }
+                const colors = {
+                    success: { bg: "#f0fff4", border: "#b7e4c7", icon: "bi-check-circle-fill", iconColor: "#27ae60" },
+                    error: { bg: "#fff0f0", border: "#f5c6c6", icon: "bi-x-circle-fill", iconColor: "#e74c3c" },
+                    warn: { bg: "#fffbf0", border: "#ffe0a0", icon: "bi-exclamation-circle-fill", iconColor: "#f39c12" },
+                };
+                const c = colors[type] || colors.success;
+                const t = document.createElement("div");
+                t.style.cssText = `background:${c.bg};border:1.5px solid ${c.border};border-radius:10px;
+                padding:.65rem 1rem;font-size:.84rem;font-family:'DM Sans',sans-serif;
+                box-shadow:0 4px 16px rgba(0,0,0,.1);display:flex;align-items:flex-start;
+                gap:8px;min-width:260px;max-width:340px;pointer-events:all;animation:_ohSlide .2s ease`;
+                t.innerHTML = `
+                <i class="bi ${c.icon}" style="color:${c.iconColor};font-size:1rem;flex-shrink:0;margin-top:1px"></i>
+                <span style="flex:1;line-height:1.4">${msg}</span>
+                <i class="bi bi-x" style="cursor:pointer;color:#aaa;font-size:1rem;flex-shrink:0"
+                   onclick="this.closest('div').remove()"></i>`;
+                wrap.appendChild(t);
+                setTimeout(() => { t.style.opacity = "0"; t.style.transition = "opacity .3s"; setTimeout(() => t.remove(), 300); }, 4000);
+            }
+            if (!document.getElementById("_ohToastStyle")) {
+                const s = document.createElement("style");
+                s.id = "_ohToastStyle";
+                s.textContent = "@keyframes _ohSlide{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}";
+                document.head.appendChild(s);
+            }
+
+            const imgSrc = raw => {
+                if (!raw) return "";
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/, "");
+            };
+
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
+
+            let curStatus = "", curPage = 1;
+            const PAGE_SIZE = 6;
+
+            const STATUS = {
+                pending: { label: "Chờ xác nhận", cls: "s-pending", icon: "bi-hourglass-split" },
+                confirmed: { label: "Đã xác nhận", cls: "s-confirmed", icon: "bi-check2" },
+                shipping: { label: "Đang giao", cls: "s-shipping", icon: "bi-truck" },
+                completed: { label: "Hoàn thành", cls: "s-completed", icon: "bi-check-circle" },
+                cancelled: { label: "Đã huỷ", cls: "s-cancelled", icon: "bi-x-circle" },
+            };
+
+            function badge(raw) {
+                const s = (raw ?? "").toLowerCase();
+                const m = STATUS[s] || { label: raw || "—", cls: "s-pending", icon: "bi-question-circle" };
+                return `<span class="oh-badge ${m.cls}"><i class="bi ${m.icon}"></i>${m.label}</span>`;
+            }
+
+            /* ── load ── */
+            async function load(page = 1, status = "") {
+                curPage = page; curStatus = status;
+                const list = document.getElementById("ohList");
+                const pager = document.getElementById("ohPager");
+                list.innerHTML = `<div class="oh-empty"><div class="spinner-border text-success"></div></div>`;
+                pager.innerHTML = "";
+
+                const p = new URLSearchParams({ page, pageSize: PAGE_SIZE });
+                if (status) p.append("status", status);
+
+                try {
+                    const res = await fetch(`${API}/orders/my?${p}`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    const orders = data.data || [];
+                    const totalPages = data.totalPages ?? 1;
+
+                    if (!orders.length) {
+                        list.innerHTML = `
+                    <div class="oh-empty">
+                        <i class="bi bi-bag-x"></i>
+                        <p>Chưa có đơn hàng nào</p>
+                        <small>Hãy mua sắm và quay lại đây nhé!</small>
+                    </div>`;
+                        return;
+                    }
+
+                    // Load chi tiết từng đơn song song
+                    const details = await Promise.all(orders.map(o => fetchDetail(o.orderID)));
+
+                    // Với đơn completed: load review status cho từng sách
+                    // reviewMaps[i] = { bookId: canReview(bool) }
+                    const reviewMaps = await Promise.all(
+                        orders.map((o, i) =>
+                            o.status === "completed"
+                                ? fetchReviewMap(details[i])
+                                : Promise.resolve({})
+                        )
+                    );
+
+                    list.innerHTML = orders.map((o, i) => renderCard(o, details[i], reviewMaps[i])).join("");
+
+                    if (totalPages > 1) {
+                        let html = `<button class="oh-pg" ${page === 1 ? "disabled" : ""} onclick="load(${page - 1},'${status}')"><i class="bi bi-chevron-left"></i></button>`;
+                        for (let pg = 1; pg <= totalPages; pg++)
+                            html += `<button class="oh-pg ${pg === page ? "active" : ""}" onclick="load(${pg},'${status}')">${pg}</button>`;
+                        html += `<button class="oh-pg" ${page === totalPages ? "disabled" : ""} onclick="load(${page + 1},'${status}')"><i class="bi bi-chevron-right"></i></button>`;
+                        pager.innerHTML = html;
+                    }
+                } catch {
+                    list.innerHTML = `
+                <div class="oh-empty">
+                    <i class="bi bi-wifi-off"></i>
+                    <p>Không tải được đơn hàng</p><small>Vui lòng thử lại sau.</small>
+                </div>`;
+                }
+            }
+
+            async function fetchDetail(id) {
+                try {
+                    const res = await fetch(`${API}/orders/${id}`, { headers: authHeaders() });
+                    return res.ok ? await res.json() : null;
+                } catch { return null; }
+            }
+
+            // Lấy review status cho tất cả sách trong 1 đơn hoàn thành
+            // Trả về map: { bookId: true (chưa đánh giá) | false (đã đánh giá) }
+            async function fetchReviewMap(detail) {
+                if (!detail?.items?.length) return {};
+                const bookIds = [...new Set(detail.items.map(it => it.book?.bookID ?? it.book?.bookId ?? 0).filter(Boolean))];
+                const results = await Promise.all(
+                    bookIds.map(async bid => {
+                        try {
+                            const res = await fetch(`${API}/reviews/status/${bid}`, { headers: authHeaders() });
+                            const data = await res.json();
+                            // canReview=true → chưa đánh giá → hiện nút
+                            // canReview=false, reason=already_reviewed → đã đánh giá → ẩn nút
+                            return { bid, canReview: data.canReview === true };
+                        } catch {
+                            return { bid, canReview: true }; // lỗi → vẫn hiện nút
+                        }
+                    })
+                );
+                return Object.fromEntries(results.map(r => [r.bid, r.canReview]));
+            }
+
+            /* ── render 1 card ── */
+            function renderCard(o, detail, reviewMap = {}) {
+                const id = o.orderID;
+                const status = o.status ?? "";
+                const total = o.totalCost ?? 0;
+                const phone = o.phone ?? "";
+                const address = o.address ?? "";
+                const note = o.note ?? "";
+                const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString("vi-VN") : "";
+                const items = detail?.items ?? [];
+                const SHOW = 2;
+
+                const itemHtml = (list) => list.map(it => {
+                    const src = imgSrc(it.book?.image ?? "");
+                    const name = it.book?.title ?? "Sách";
+                    const bookId = it.book?.bookID ?? it.book?.bookId ?? 0;
+                    const qty = it.quantity ?? 1;
+                    const sub = it.subTotal ?? (it.unitPrice * qty);
+                    const canReview = reviewMap[bookId]; // true=chưa đánh giá, false=đã đánh giá, undefined=không áp dụng
+
+                    // Xác định nút hiển thị
+                    let reviewBtn = "";
+                    if (status === "completed" && bookId) {
+                        if (canReview === false) {
+                            // Đã đánh giá → hiện badge xanh
+                            reviewBtn = `
+                        <span style="display:inline-flex;align-items:center;gap:4px;
+                                     background:#f0fff4;color:#27ae60;border:1.5px solid #b7e4c7;
+                                     border-radius:8px;padding:.28rem .7rem;font-size:.75rem;
+                                     font-weight:700;white-space:nowrap;flex-shrink:0">
+                            <i class="bi bi-check-circle-fill"></i> Đã đánh giá
+                        </span>`;
+                        } else {
+                            // Chưa đánh giá (canReview=true hoặc undefined) → hiện nút vàng
+                            reviewBtn = `
+                        <a href="review.html?bookId=${bookId}&orderId=${id}"
+                           style="display:inline-flex;align-items:center;gap:4px;
+                                  background:#fff8ec;color:#d68910;border:1.5px solid #ffe0a0;
+                                  border-radius:8px;padding:.28rem .7rem;font-size:.75rem;
+                                  font-weight:700;text-decoration:none;white-space:nowrap;
+                                  flex-shrink:0;transition:all .15s"
+                           onmouseover="this.style.background='#f39c12';this.style.color='#fff';this.style.borderColor='#f39c12'"
+                           onmouseout="this.style.background='#fff8ec';this.style.color='#d68910';this.style.borderColor='#ffe0a0'">
+                            <i class="bi bi-star-fill"></i> Đánh giá
+                        </a>`;
+                        }
+                    }
+
+                    return `
+                <div class="oh-item">
+                    ${src ? `<img class="oh-item-img" src="${src}" alt="${name}"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`: ``}
+                    <div class="oh-item-ph" ${src ? 'style="display:none"' : ""}><i class="bi bi-book"></i></div>
+                    <div style="flex:1;min-width:0">
+                        <div class="oh-item-name">${name}</div>
+                        <div class="oh-item-meta">SL: ${qty}</div>
+                        <div class="oh-item-price">${fmt(sub)}</div>
+                    </div>
+                    ${reviewBtn}
+                </div>`;
+                }).join("");
+
+                const visibleItems = items.slice(0, SHOW);
+                const hiddenItems = items.slice(SHOW);
+                const hasMore = hiddenItems.length > 0;
+
+                return `
+            <div class="oh-card" id="card_${id}">
+                <div class="oh-head">
+                    <div>
+                        <div class="oh-id"><i class="bi bi-bag text-success me-1"></i>Đơn #${id}</div>
+                        ${dateStr ? `<div class="oh-date"><i class="bi bi-clock me-1"></i>${dateStr}</div>` : ""}
+                    </div>
+                    ${badge(status)}
+                </div>
+                <div class="oh-body">
+                    ${itemHtml(visibleItems)}
+                    ${hasMore ? `
+                    <div class="oh-extra" id="extra_${id}">${itemHtml(hiddenItems)}</div>
+                    <button class="oh-more-btn" id="morebtn_${id}" onclick="toggleExtra(${id})">
+                        <i class="bi bi-chevron-down me-1"></i>Xem thêm ${hiddenItems.length} sản phẩm
+                    </button>`: ""}
+                    ${(phone || address) ? `
+                    <div class="oh-ship" id="ship_${id}">
+                        ${phone ? `<div><strong>SĐT:</strong> ${phone}</div>` : ""}
+                        ${address ? `<div><strong>Địa chỉ:</strong> ${address}</div>` : ""}
+                        ${note ? `<div><strong>Ghi chú:</strong> ${note}</div>` : ""}
+                    </div>`: ""}
+                </div>
+                <div class="oh-foot">
+                    <div class="oh-total">Tổng: <strong>${fmt(total)}</strong></div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        ${(phone || address) ? `
+                        <button class="oh-btn oh-btn-outline" id="shipbtn_${id}" onclick="toggleShip(${id})">
+                            <i class="bi bi-geo-alt me-1"></i>Địa chỉ
+                        </button>`: ""}
+                        ${status === "pending" ? `
+                        <button class="oh-btn oh-btn-danger" onclick="cancelOrder(${id})">
+                            <i class="bi bi-x-circle me-1"></i>Hủy đơn
+                        </button>`: ""}
+                    </div>
+                </div>
+            </div>`;
+            }
+
+            window.toggleExtra = function (id) {
+                const el = document.getElementById(`extra_${id}`);
+                const btn = document.getElementById(`morebtn_${id}`);
+                if (!el) return;
+                const open = el.classList.toggle("show");
+                btn.innerHTML = open
+                    ? `<i class="bi bi-chevron-up me-1"></i>Thu gọn`
+                    : `<i class="bi bi-chevron-down me-1"></i>Xem thêm`;
+            };
+
+            window.toggleShip = function (id) {
+                const el = document.getElementById(`ship_${id}`);
+                const btn = document.getElementById(`shipbtn_${id}`);
+                if (!el) return;
+                const open = el.classList.toggle("show");
+                btn.innerHTML = open
+                    ? `<i class="bi bi-chevron-up me-1"></i>Ẩn địa chỉ`
+                    : `<i class="bi bi-geo-alt me-1"></i>Địa chỉ`;
+            };
+
+            let _cancelId = null;
+            window.cancelOrder = function (id) {
+                _cancelId = id;
+                document.getElementById("cancelOrderLabel").textContent = `đơn hàng #${id}`;
+                const btn = document.getElementById("cancelConfirmBtn");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Xác nhận hủy';
+                new bootstrap.Modal(document.getElementById("cancelModal")).show();
+            };
+
+            document.getElementById("cancelConfirmBtn").addEventListener("click", async function () {
+                if (!_cancelId) return;
+                const btn = this;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang hủy...';
+                try {
+                    const res = await fetch(`${API}/orders/${_cancelId}/cancel`, { method: "PUT", headers: authHeaders() });
+                    const data = await res.json();
+                    bootstrap.Modal.getInstance(document.getElementById("cancelModal"))?.hide();
+                    setTimeout(() => {
+                        if (res.ok) { showToast(data.message || "Đã hủy đơn hàng thành công.", "success"); load(curPage, curStatus); }
+                        else showToast(data.message || "Hủy đơn thất bại.", "error");
+                    }, 300);
+                } catch {
+                    bootstrap.Modal.getInstance(document.getElementById("cancelModal"))?.hide();
+                    setTimeout(() => showToast("Không kết nối được máy chủ.", "error"), 300);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Xác nhận hủy';
+                }
+            });
+
+            window.filterTab = function (btn, status) {
+                document.querySelectorAll(".oh-tab").forEach(t => t.classList.remove("active"));
+                btn.classList.add("active");
+                load(1, status);
+            };
+
+            const _initStatus = new URLSearchParams(window.location.search).get("status") || "";
+            if (_initStatus) {
+                const matchTab = document.querySelector(`.oh-tab[data-s="${_initStatus}"]`);
+                if (matchTab) {
+                    document.querySelectorAll(".oh-tab").forEach(t => t.classList.remove("active"));
+                    matchTab.classList.add("active");
+                }
+            }
+            load(1, _initStatus);
+        })();
+    </script>
+</body>
+</html>

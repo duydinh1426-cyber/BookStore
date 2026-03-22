@@ -1,0 +1,705 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0f7eb;
+        }
+
+        /* ── Left panel ── */
+        .rg-left {
+            flex: 1;
+            background: linear-gradient(145deg,#4e8a35 0%,#6ab04c 50%,#82c95f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .rg-left::before {
+                content: '';
+                position: absolute;
+                width: 340px;
+                height: 340px;
+                border-radius: 50%;
+                background: rgba(255,255,255,.07);
+                top: -100px;
+                left: -100px;
+            }
+
+            .rg-left::after {
+                content: '';
+                position: absolute;
+                width: 240px;
+                height: 240px;
+                border-radius: 50%;
+                background: rgba(255,255,255,.06);
+                bottom: -70px;
+                right: -70px;
+            }
+
+        .rg-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.25rem;
+            z-index: 1
+        }
+
+        .rg-logo-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 42px
+        }
+
+            .rg-logo-icon span {
+                display: block;
+                width: 10px;
+                border-radius: 3px 3px 0 0
+            }
+
+                .rg-logo-icon span:nth-child(1) {
+                    height: 32px;
+                    background: rgba(255,255,255,.7)
+                }
+
+                .rg-logo-icon span:nth-child(2) {
+                    height: 42px;
+                    background: #fff
+                }
+
+                .rg-logo-icon span:nth-child(3) {
+                    height: 28px;
+                    background: rgba(255,255,255,.6)
+                }
+
+                .rg-logo-icon span:nth-child(4) {
+                    height: 36px;
+                    background: rgba(255,255,255,.8)
+                }
+
+        .rg-logo-text {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1
+        }
+
+        .rg-logo-sub {
+            font-size: .65rem;
+            color: rgba(255,255,255,.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px
+        }
+
+        .rg-headline {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            line-height: 1.35;
+            margin-bottom: .9rem;
+            z-index: 1;
+        }
+
+        .rg-sub {
+            font-size: .9rem;
+            color: rgba(255,255,255,.82);
+            text-align: center;
+            line-height: 1.75;
+            max-width: 300px;
+            z-index: 1;
+        }
+
+        .rg-perks {
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+            margin-top: 1.8rem;
+            z-index: 1;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .rg-perk {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,.12);
+            border-radius: 10px;
+            padding: .6rem .9rem;
+        }
+
+            .rg-perk i {
+                font-size: 1.05rem;
+                color: #fff;
+                flex-shrink: 0
+            }
+
+            .rg-perk span {
+                font-size: .83rem;
+                color: rgba(255,255,255,.9);
+                font-weight: 500
+            }
+
+        /* ── Right panel ── */
+        .rg-right {
+            width: 520px;
+            flex-shrink: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2.5rem;
+            overflow-y: auto;
+        }
+
+        .rg-form-wrap {
+            width: 100%;
+            max-width: 400px
+        }
+
+        .rg-form-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: .3rem;
+        }
+
+        .rg-form-sub {
+            font-size: .85rem;
+            color: #8a9bb0;
+            margin-bottom: 1.6rem
+        }
+
+        /* form controls */
+        .rg-group {
+            margin-bottom: .95rem
+        }
+
+        .rg-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #4a5568;
+            display: block;
+            margin-bottom: 5px
+        }
+
+        .rg-input-wrap {
+            position: relative
+        }
+
+        .rg-input-icon {
+            position: absolute;
+            left: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0bec5;
+            font-size: .95rem;
+            pointer-events: none;
+        }
+
+        .rg-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 11px;
+            padding: .66rem .9rem .66rem 2.45rem;
+            font-family: inherit;
+            font-size: .9rem;
+            color: #1a1a1a;
+            outline: none;
+            transition: border-color .15s,box-shadow .15s;
+            background: #fff;
+        }
+
+            .rg-input:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.13)
+            }
+
+            .rg-input.error {
+                border-color: #e74c3c
+            }
+
+        .rg-err {
+            font-size: .76rem;
+            color: #e74c3c;
+            margin-top: 3px;
+            display: none
+        }
+
+            .rg-err.show {
+                display: block
+            }
+
+        /* password toggle */
+        .rg-pw-toggle {
+            position: absolute;
+            right: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #b0bec5;
+            cursor: pointer;
+            font-size: .95rem;
+            padding: 0;
+            transition: color .15s;
+        }
+
+            .rg-pw-toggle:hover {
+                color: #6ab04c
+            }
+
+        /* strength */
+        .rg-str-wrap {
+            margin-top: 5px
+        }
+
+        .rg-str-bar-bg {
+            height: 4px;
+            border-radius: 2px;
+            background: #e8edf2;
+            overflow: hidden
+        }
+
+        .rg-str-bar {
+            height: 100%;
+            border-radius: 2px;
+            width: 0;
+            transition: width .3s,background .3s
+        }
+
+        .rg-str-label {
+            font-size: .72rem;
+            margin-top: 3px;
+            color: #8a9bb0
+        }
+
+        /* section divider */
+        .rg-divider-label {
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: #8a9bb0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: .2rem 0 .9rem;
+        }
+
+            .rg-divider-label::before, .rg-divider-label::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: #e8edf2;
+            }
+
+        /* alert */
+        .rg-alert {
+            border-radius: 10px;
+            padding: .6rem .85rem;
+            font-size: .82rem;
+            display: none;
+            align-items: flex-start;
+            gap: 7px;
+            margin-bottom: .9rem;
+        }
+
+            .rg-alert.show {
+                display: flex
+            }
+
+            .rg-alert.error {
+                background: #fff0f0;
+                border: 1.5px solid #f5c6c6;
+                color: #c0392b
+            }
+
+            .rg-alert.success {
+                background: #f0fff4;
+                border: 1.5px solid #b7e4c7;
+                color: #1e7e34
+            }
+
+        /* submit */
+        .rg-btn {
+            width: 100%;
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 11px;
+            padding: .76rem;
+            font-size: .97rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background .2s,transform .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: .4rem;
+        }
+
+            .rg-btn:hover {
+                background: #4e8a35;
+                transform: translateY(-1px)
+            }
+
+            .rg-btn:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+                transform: none
+            }
+
+        .rg-login-link {
+            text-align: center;
+            margin-top: 1.1rem;
+            font-size: .86rem;
+            color: #8a9bb0;
+        }
+
+            .rg-login-link a {
+                color: #6ab04c;
+                font-weight: 700;
+                text-decoration: none
+            }
+
+                .rg-login-link a:hover {
+                    color: #4e8a35;
+                    text-decoration: underline
+                }
+
+        /* optional badge */
+        .rg-optional {
+            font-size: .72rem;
+            color: #aaa;
+            font-weight: 500;
+            background: #f5f5f5;
+            border-radius: 4px;
+            padding: .1rem .4rem;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        @media(max-width:900px) {
+            .rg-left {
+                display: none
+            }
+
+            .rg-right {
+                width: 100%;
+                padding: 2rem 1.25rem
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left panel -->
+    <div class="rg-left">
+        <div class="rg-brand">
+            <div class="rg-logo-icon">
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div>
+                <div class="rg-logo-text">Book Store</div>
+                <div class="rg-logo-sub">Mua sách · Tặng tri thức</div>
+            </div>
+        </div>
+
+        <div class="rg-headline">Tạo tài khoản<br>miễn phí</div>
+        <div class="rg-sub">Tham gia cộng đồng hàng nghìn độc giả yêu sách trên khắp Việt Nam.</div>
+
+        <div class="rg-perks">
+            <div class="rg-perk">
+                <i class="bi bi-gift"></i>
+                <span>Đăng ký miễn phí, không mất phí</span>
+            </div>
+            <div class="rg-perk">
+                <i class="bi bi-bag-heart"></i>
+                <span>Lưu giỏ hàng & danh sách yêu thích</span>
+            </div>
+            <div class="rg-perk">
+                <i class="bi bi-clock-history"></i>
+                <span>Theo dõi lịch sử đơn hàng dễ dàng</span>
+            </div>
+            <div class="rg-perk">
+                <i class="bi bi-star"></i>
+                <span>Đánh giá sách sau khi mua</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="rg-right">
+        <div class="rg-form-wrap">
+
+            <div class="rg-form-title">Tạo tài khoản</div>
+            <div class="rg-form-sub">Điền thông tin bên dưới để bắt đầu</div>
+
+            <!-- Alert -->
+            <div class="rg-alert" id="rgAlert">
+                <i class="bi bi-exclamation-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
+                <span id="rgAlertMsg"></span>
+            </div>
+
+            <!-- ── Thông tin đăng nhập ── -->
+            <div class="rg-divider-label">Thông tin đăng nhập</div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgUser">
+                    Tên đăng nhập <span style="color:#e74c3c">*</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-person rg-input-icon"></i>
+                    <input class="rg-input" id="rgUser" type="text"
+                           placeholder="Ít nhất 4 ký tự, không dấu"
+                           oninput="validateUsername()">
+                </div>
+                <div class="rg-err" id="rgUserErr">Tên đăng nhập ít nhất 4 ký tự, không chứa khoảng trắng</div>
+            </div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgEmail">
+                    Email <span style="color:#e74c3c">*</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-envelope rg-input-icon"></i>
+                    <input class="rg-input" id="rgEmail" type="email"
+                           placeholder="email@example.com">
+                </div>
+                <div class="rg-err" id="rgEmailErr">Email không hợp lệ</div>
+            </div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgPw">
+                    Mật khẩu <span style="color:#e74c3c">*</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-lock rg-input-icon"></i>
+                    <input class="rg-input" id="rgPw" type="password"
+                           placeholder="Ít nhất 6 ký tự"
+                           style="padding-right:2.8rem"
+                           oninput="checkStrength(this.value)">
+                    <button class="rg-pw-toggle" type="button" onclick="togglePw('rgPw',this)">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="rg-err" id="rgPwErr">Mật khẩu phải có ít nhất 6 ký tự</div>
+                <div class="rg-str-wrap">
+                    <div class="rg-str-bar-bg">
+                        <div class="rg-str-bar" id="rgStrBar"></div>
+                    </div>
+                    <div class="rg-str-label" id="rgStrLabel"></div>
+                </div>
+            </div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgConfPw">
+                    Xác nhận mật khẩu <span style="color:#e74c3c">*</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-lock-fill rg-input-icon"></i>
+                    <input class="rg-input" id="rgConfPw" type="password"
+                           placeholder="Nhập lại mật khẩu"
+                           style="padding-right:2.8rem"
+                           oninput="liveConfirm()">
+                    <button class="rg-pw-toggle" type="button" onclick="togglePw('rgConfPw',this)">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="rg-err" id="rgConfPwErr">Mật khẩu xác nhận không khớp</div>
+            </div>
+
+            <!-- ── Thông tin cá nhân ── -->
+            <div class="rg-divider-label">Thông tin cá nhân</div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgName">
+                    Họ và tên <span style="color:#e74c3c">*</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-person-badge rg-input-icon"></i>
+                    <input class="rg-input" id="rgName" type="text"
+                           placeholder="Nguyễn Văn A">
+                </div>
+                <div class="rg-err" id="rgNameErr">Vui lòng nhập họ tên (ít nhất 2 ký tự)</div>
+            </div>
+
+            <div class="rg-group">
+                <label class="rg-label" for="rgAddress">
+                    Địa chỉ <span class="rg-optional">Tùy chọn</span>
+                </label>
+                <div class="rg-input-wrap">
+                    <i class="bi bi-geo-alt rg-input-icon"></i>
+                    <input class="rg-input" id="rgAddress" type="text"
+                           placeholder="Số nhà, đường, phường, quận...">
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button class="rg-btn" id="rgBtn" onclick="register()">
+                <i class="bi bi-person-plus"></i> Tạo tài khoản
+            </button>
+
+            <div class="rg-login-link">
+                Đã có tài khoản?
+                <a href="login.html">Đăng nhập ngay</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+
+            /* ── Alert ── */
+            function showAlert(msg, type) {
+                const el = document.getElementById("rgAlert");
+                const txt = document.getElementById("rgAlertMsg");
+                txt.textContent = msg;
+                el.className = `rg-alert ${type} show`;
+                el.querySelector("i").className = type === "success"
+                    ? "bi bi-check-circle-fill"
+                    : "bi bi-exclamation-circle-fill";
+                el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+
+            /* ── Validate helper ── */
+            function chk(id, errId, cond) {
+                const el = document.getElementById(id);
+                const er = document.getElementById(errId);
+                const ok = cond(el.value.trim());
+                el.classList.toggle("error", !ok);
+                er.classList.toggle("show", !ok);
+                return ok;
+            }
+
+            /* ── Toggle password ── */
+            window.togglePw = function (id, btn) {
+                const inp = document.getElementById(id);
+                const ico = btn.querySelector("i");
+                inp.type = inp.type === "password" ? "text" : "password";
+                ico.className = inp.type === "password" ? "bi bi-eye" : "bi bi-eye-slash";
+            };
+
+            /* ── Username live validate ── */
+            window.validateUsername = function () {
+                const v = document.getElementById("rgUser").value;
+                const ok = v.length >= 4 && !/\s/.test(v);
+                document.getElementById("rgUser").classList.toggle("error", !ok && v.length > 0);
+                document.getElementById("rgUserErr").classList.toggle("show", !ok && v.length > 0);
+            };
+
+            /* ── Password strength ── */
+            window.checkStrength = function (v) {
+                const bar = document.getElementById("rgStrBar");
+                const lbl = document.getElementById("rgStrLabel");
+                if (!v) { bar.style.width = "0"; lbl.textContent = ""; return; }
+                let s = 0;
+                if (v.length >= 6) s++;
+                if (v.length >= 10) s++;
+                if (/[A-Z]/.test(v)) s++;
+                if (/[0-9]/.test(v)) s++;
+                if (/[^A-Za-z0-9]/.test(v)) s++;
+                const lvl = [
+                    { w: "20%", bg: "#e74c3c", t: "Rất yếu" },
+                    { w: "40%", bg: "#e67e22", t: "Yếu" },
+                    { w: "60%", bg: "#f39c12", t: "Trung bình" },
+                    { w: "80%", bg: "#2ecc71", t: "Mạnh" },
+                    { w: "100%", bg: "#27ae60", t: "Rất mạnh" },
+                ][Math.min(s, 4)];
+                bar.style.width = lvl.w; bar.style.background = lvl.bg;
+                lbl.textContent = lvl.t; lbl.style.color = lvl.bg;
+            };
+
+            /* ── Live confirm ── */
+            window.liveConfirm = function () {
+                const v = document.getElementById("rgConfPw").value;
+                const ref = document.getElementById("rgPw").value;
+                const ok = v === ref;
+                document.getElementById("rgConfPw").classList.toggle("error", !ok && v.length > 0);
+                document.getElementById("rgConfPwErr").classList.toggle("show", !ok && v.length > 0);
+            };
+
+            /* ── Submit ── */
+            window.register = async function () {
+                document.getElementById("rgAlert").classList.remove("show");
+
+                const okUser = chk("rgUser", "rgUserErr",
+                    v => v.length >= 4 && !/\s/.test(v));
+                const okEmail = chk("rgEmail", "rgEmailErr",
+                    v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+                const okPw = chk("rgPw", "rgPwErr", v => v.length >= 6);
+                const okConf = chk("rgConfPw", "rgConfPwErr",
+                    () => document.getElementById("rgConfPw").value ===
+                        document.getElementById("rgPw").value);
+                const okName = chk("rgName", "rgNameErr", v => v.length >= 2);
+
+                if (!okUser || !okEmail || !okPw || !okConf || !okName) return;
+
+                const btn = document.getElementById("rgBtn");
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang tạo tài khoản...';
+
+                const payload = {
+                    username: document.getElementById("rgUser").value.trim(),
+                    password: document.getElementById("rgPw").value,
+                    email: document.getElementById("rgEmail").value.trim(),
+                    name: document.getElementById("rgName").value.trim(),
+                    address: document.getElementById("rgAddress").value.trim() || null,
+                };
+
+                try {
+                    const res = await fetch(`${API}/auth/register`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json().catch(() => ({}));
+
+                    if (res.ok) {
+                        showAlert("Đăng ký thành công! Đang chuyển đến trang đăng nhập...", "success");
+                        setTimeout(() => window.location.href = "login.html", 1800);
+                    } else {
+                        showAlert(data.message || "Đăng ký thất bại, vui lòng thử lại.", "error");
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="bi bi-person-plus"></i> Tạo tài khoản';
+                    }
+                } catch {
+                    showAlert("Không thể kết nối đến máy chủ.", "error");
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-person-plus"></i> Tạo tài khoản';
+                }
+            };
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Store – Trang Chủ</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        #header-placeholder {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .home-section {
+            padding: 2rem 0 1.2rem;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .section-title .icon {
+                width: 30px;
+                height: 30px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: .9rem;
+                flex-shrink: 0;
+            }
+
+        .icon-fire {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .icon-star {
+            background: #fffde7;
+            color: #f9a825;
+        }
+
+        .icon-new {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .btn-see-all {
+            font-size: .8rem;
+            color: #6ab04c;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1.5px solid #6ab04c;
+            border-radius: 20px;
+            padding: .28rem .85rem;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+
+            .btn-see-all:hover {
+                background: #6ab04c;
+                color: #fff;
+            }
+
+        /* ── Book card ── */
+        .book-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: box-shadow .2s, transform .2s;
+            box-shadow: 0 1px 6px rgba(0,0,0,.07);
+            height: 380px;
+            max-height: 380px;
+        }
+
+            .book-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(106,176,76,.15);
+            }
+
+        .book-img-wrap {
+            height: 220px;
+            width: 100%;
+            overflow: hidden;
+            background: #f7f7f7;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .book-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            transition: transform .3s;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .book-card:hover .book-img {
+            transform: scale(1.04);
+        }
+
+        .book-img-ph {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+            gap: 6px;
+            background: #f0f0f0;
+        }
+
+            .book-img-ph i {
+                font-size: 2.2rem;
+            }
+
+            .book-img-ph span {
+                font-size: .7rem;
+                color: #ccc;
+            }
+
+        .book-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: rgba(0,0,0,.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+        }
+
+        .btn-ov {
+            background: rgba(255,255,255,.92);
+            border: none;
+            border-radius: 6px;
+            padding: .38rem .9rem;
+            font-weight: 600;
+            font-size: .76rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            z-index: 3;
+            background: #6ab04c;
+            color: #fff;
+            font-size: .58rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+            .book-badge.out {
+                background: #e74c3c;
+            }
+
+        .book-info {
+            padding: 10px;
+            height: 160px;
+            flex-shrink: 0;
+            flex-grow: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .book-cat {
+            font-size: .63rem;
+            color: #8a9bb0;
+            height: 16px;
+            line-height: 16px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0 0 4px 0;
+        }
+
+        .book-title {
+            font-weight: 700;
+            font-size: .86rem;
+            line-height: 22px;
+            height: 44px;
+            flex-shrink: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin: 0 0 4px 0;
+            color: #1a1a1a;
+        }
+
+        .book-author {
+            font-size: .73rem;
+            color: #8a9bb0;
+            height: 18px;
+            line-height: 18px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 18px;
+            flex-shrink: 0;
+            margin: 2px 0;
+        }
+
+            .book-rating i {
+                font-size: .65rem;
+            }
+
+            .book-rating span {
+                font-size: .68rem;
+                color: #aaa;
+            }
+
+        .book-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        .book-price {
+            font-size: .9rem;
+            font-weight: 700;
+            color: #6ab04c;
+        }
+
+        .btn-cart {
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .3rem .65rem;
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+            transition: background .15s;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+            .btn-cart:hover {
+                background: #4e8a35;
+            }
+
+            .btn-cart.oos {
+                background: #e0e0e0;
+                color: #aaa;
+                cursor: not-allowed;
+            }
+
+                .btn-cart.oos:hover {
+                    background: #e0e0e0;
+                }
+
+        /* ── Skeleton ── */
+        .skel {
+            background: linear-gradient(90deg,#efefef 25%,#e5e5e5 50%,#efefef 75%);
+            background-size: 200% 100%;
+            animation: sh 1.3s infinite;
+            border-radius: 5px;
+        }
+
+        @keyframes sh {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="container-fluid px-4" style="max-width:1400px;margin:0 auto">
+
+        <!-- ══ Top bán chạy ══ -->
+        <section class="home-section">
+            <div class="section-head">
+                <div class="section-title">
+                    <div class="icon icon-fire"><i class="bi bi-fire"></i></div>
+                    Sách Bán Chạy Nhất
+                </div>
+                <a class="btn-see-all" href="../html/books.html?sort=numberSold|desc">Xem tất cả</a>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3" id="topSellingList"></div>
+        </section>
+
+        <!-- ══ Top đánh giá cao ══ -->
+        <section class="home-section">
+            <div class="section-head">
+                <div class="section-title">
+                    <div class="icon icon-star"><i class="bi bi-star-fill"></i></div>
+                    Đánh Giá Cao Nhất
+                </div>
+                <a class="btn-see-all" href="../html/books.html?sort=avgRating|desc">Xem tất cả</a>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3" id="topRatedList"></div>
+        </section>
+
+        <!-- ══ Sách mới nhất ══ -->
+        <section class="home-section">
+            <div class="section-head">
+                <div class="section-title">
+                    <div class="icon icon-new"><i class="bi bi-stars"></i></div>
+                    Sách Mới Nhất
+                </div>
+                <a class="btn-see-all" href="../html/books.html">Xem tất cả</a>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3" id="topNewList"></div>
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/Header.js"></script>
+    <script src="../js/bookModal.js"></script>
+    <script src="../js/bookCard.js"></script>
+    <script>
+        const API = "https://localhost:7108/api";
+
+        function skelCards(n) {
+            return Array(n).fill(0).map(() =>
+                '<div class="col"><div class="book-card">' +
+                '<div style="height:220px" class="skel"></div>' +
+                '<div class="book-info">' +
+                '<div class="skel mb-1" style="height:9px;width:40%"></div>' +
+                '<div class="skel mb-1" style="height:13px"></div>' +
+                '<div class="skel mb-1" style="height:11px;width:65%"></div>' +
+                '<div class="skel mb-1" style="height:10px;width:50%"></div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto">' +
+                '<div class="skel" style="height:14px;width:55px"></div>' +
+                '<div class="skel" style="height:26px;width:58px;border-radius:6px"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div></div>'
+            ).join("");
+        }
+
+        async function loadSection(endpoint, containerId) {
+            const wrap = document.getElementById(containerId);
+            wrap.innerHTML = skelCards(6);
+            try {
+                const res = await fetch(API + "/books/" + endpoint + "?count=6");
+                if (!res.ok) throw new Error();
+                const books = await res.json();
+                if (!books || !books.length) { wrap.innerHTML = ""; return; }
+                wrap.innerHTML = books
+                    .map(function (b) {
+                        return '<div class="col">' + window._bookCard.render(b, { showRating: true }) + '</div>';
+                    })
+                    .join("");
+            } catch {
+                wrap.innerHTML = '<div class="col-12 text-center text-muted py-3" style="font-size:.84rem">Không tải được.</div>';
+            }
+        }
+
+        Promise.all([
+            loadSection("top-selling", "topSellingList"),
+            loadSection("top-rated", "topRatedList"),
+            loadSection("top-new", "topNewList"),
+        ]);
+    </script>
+</body>
+</html>

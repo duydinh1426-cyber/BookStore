@@ -1,0 +1,719 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang cá nhân – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .pf-page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .pf-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+            .pf-title i {
+                color: #6ab04c
+            }
+
+        /* ── Avatar card ── */
+        .pf-avatar-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .pf-avatar {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6ab04c,#4e8a35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            font-weight: 700;
+            flex-shrink: 0;
+            letter-spacing: -1px;
+            user-select: none;
+        }
+
+        .pf-avatar-name {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #1a1a1a
+        }
+
+        .pf-avatar-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 4px;
+            font-size: .78rem;
+            font-weight: 600;
+            background: #f0fff4;
+            color: #27ae60;
+            border: 1px solid #b7e4c7;
+            padding: .2rem .65rem;
+            border-radius: 20px;
+        }
+
+        .pf-avatar-since {
+            font-size: .78rem;
+            color: #8a9bb0;
+            margin-top: 3px
+        }
+
+        /* ── Card chung ── */
+        .pf-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .pf-card-title {
+            font-weight: 700;
+            font-size: .97rem;
+            color: #1a1a1a;
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .pf-card-title i {
+                color: #6ab04c;
+                font-size: 1.05rem
+            }
+
+        /* ── Form ── */
+        .pf-label {
+            font-size: .83rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .pf-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .62rem .9rem;
+            font-family: inherit;
+            font-size: .91rem;
+            outline: none;
+            transition: border-color .15s,box-shadow .15s;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+            .pf-input:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.12)
+            }
+
+            .pf-input:disabled {
+                background: #f8f9fa;
+                color: #8a9bb0;
+                cursor: not-allowed
+            }
+
+            .pf-input.error {
+                border-color: #e74c3c
+            }
+
+        .pf-err {
+            font-size: .78rem;
+            color: #e74c3c;
+            margin-top: 4px;
+            display: none
+        }
+
+            .pf-err.show {
+                display: block
+            }
+
+        /* ── Password toggle ── */
+        .pf-pw-wrap {
+            position: relative
+        }
+
+            .pf-pw-wrap .pf-input {
+                padding-right: 2.8rem
+            }
+
+        .pf-pw-eye {
+            position: absolute;
+            right: .75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8a9bb0;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            line-height: 1;
+            transition: color .15s;
+        }
+
+            .pf-pw-eye:hover {
+                color: #6ab04c
+            }
+
+        /* ── Buttons ── */
+        .pf-btn {
+            border-radius: 10px;
+            padding: .62rem 1.4rem;
+            font-size: .9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+        }
+
+        .pf-btn-primary {
+            background: #6ab04c;
+            color: #fff
+        }
+
+            .pf-btn-primary:hover {
+                background: #4e8a35
+            }
+
+            .pf-btn-primary:disabled {
+                background: #ccc;
+                cursor: not-allowed
+            }
+
+        .pf-btn-outline {
+            background: none;
+            border: 1.5px solid #e8edf2;
+            color: #4a5568
+        }
+
+            .pf-btn-outline:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+        /* ── Alert inline ── */
+        .pf-alert {
+            border-radius: 10px;
+            padding: .65rem .9rem;
+            font-size: .84rem;
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: .75rem;
+        }
+
+            .pf-alert.show {
+                display: flex
+            }
+
+            .pf-alert.success {
+                background: #f0fff4;
+                border: 1.5px solid #b7e4c7;
+                color: #1e7e34
+            }
+
+            .pf-alert.error {
+                background: #fff0f0;
+                border: 1.5px solid #f5c6c6;
+                color: #c0392b
+            }
+
+        /* ── Username readonly chip ── */
+        .pf-readonly-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f8f9fa;
+            border: 1.5px solid #e8edf2;
+            border-radius: 8px;
+            padding: .45rem .85rem;
+            font-size: .86rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+            .pf-readonly-chip i {
+                color: #8a9bb0
+            }
+
+        /* ── Divider ── */
+        .pf-divider {
+            border: none;
+            border-top: 1.5px solid #f0f0f0;
+            margin: 1.1rem 0;
+        }
+
+        /* ── Skeleton ── */
+        .pf-skeleton {
+            background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="pf-page">
+        <h2 class="pf-title"><i class="bi bi-person-circle"></i> Trang cá nhân</h2>
+
+        <!-- Loading skeleton -->
+        <div id="pfLoading">
+            <div class="pf-card">
+                <div class="pf-skeleton" style="height:76px;width:76px;border-radius:50%;margin-bottom:12px"></div>
+                <div class="pf-skeleton" style="height:20px;width:200px;margin-bottom:8px"></div>
+                <div class="pf-skeleton" style="height:14px;width:140px"></div>
+            </div>
+            <div class="pf-card">
+                <div class="pf-skeleton" style="height:16px;width:160px;margin-bottom:16px"></div>
+                <div class="pf-skeleton" style="height:44px;margin-bottom:12px"></div>
+                <div class="pf-skeleton" style="height:44px;margin-bottom:12px"></div>
+                <div class="pf-skeleton" style="height:44px"></div>
+            </div>
+        </div>
+
+        <!-- Content (hidden until loaded) -->
+        <div id="pfContent" style="display:none">
+
+            <!-- Avatar + tên -->
+            <div class="pf-avatar-card">
+                <div class="pf-avatar" id="pfAvatarCircle">?</div>
+                <div>
+                    <div class="pf-avatar-name" id="pfAvatarName">—</div>
+                    <div class="pf-avatar-role">
+                        <i class="bi bi-person-check-fill"></i>
+                        Khách hàng
+                    </div>
+                    <div class="pf-avatar-since" id="pfSince"></div>
+                </div>
+            </div>
+
+            <!-- Form chỉnh sửa thông tin -->
+            <div class="pf-card">
+                <div class="pf-card-title">
+                    <i class="bi bi-pencil-square"></i> Thông tin cá nhân
+                </div>
+
+                <!-- Username (readonly) -->
+                <div class="mb-3">
+                    <label class="pf-label">Tên đăng nhập</label>
+                    <div class="pf-readonly-chip">
+                        <i class="bi bi-shield-lock"></i>
+                        <span id="pfUsername">—</span>
+                    </div>
+                    <div style="font-size:.75rem;color:#8a9bb0;margin-top:4px">
+                        Tên đăng nhập không thể thay đổi
+                    </div>
+                </div>
+
+                <hr class="pf-divider">
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="pf-label" for="pfName">
+                            Họ và tên <span style="color:#e74c3c">*</span>
+                        </label>
+                        <input class="pf-input" id="pfName" type="text" placeholder="Nguyễn Văn A">
+                        <div class="pf-err" id="pfNameErr">Vui lòng nhập họ tên (ít nhất 2 ký tự)</div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <label class="pf-label" for="pfEmail">
+                            Email <span style="color:#e74c3c">*</span>
+                        </label>
+                        <input class="pf-input" id="pfEmail" type="email" placeholder="email@example.com">
+                        <div class="pf-err" id="pfEmailErr">Email không hợp lệ</div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <label class="pf-label" for="pfAddress">Địa chỉ</label>
+                        <input class="pf-input" id="pfAddress" type="text"
+                               placeholder="Số nhà, đường, phường, quận...">
+                    </div>
+                </div>
+
+                <div class="pf-alert" id="pfInfoAlert">
+                    <i class="bi bi-check-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
+                    <span id="pfInfoAlertMsg"></span>
+                </div>
+
+                <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
+                    <button class="pf-btn pf-btn-primary" id="pfSaveBtn" onclick="saveProfile()">
+                        <i class="bi bi-check-lg"></i> Lưu thay đổi
+                    </button>
+                    <button class="pf-btn pf-btn-outline" onclick="resetProfile()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Đặt lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- Đổi mật khẩu -->
+            <div class="pf-card">
+                <div class="pf-card-title">
+                    <i class="bi bi-lock-fill"></i> Đổi mật khẩu
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="pf-label" for="pfCurPw">
+                            Mật khẩu hiện tại <span style="color:#e74c3c">*</span>
+                        </label>
+                        <div class="pf-pw-wrap">
+                            <input class="pf-input" id="pfCurPw" type="password"
+                                   placeholder="Nhập mật khẩu hiện tại">
+                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfCurPw',this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="pf-err" id="pfCurPwErr">Vui lòng nhập mật khẩu hiện tại</div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <label class="pf-label" for="pfNewPw">
+                            Mật khẩu mới <span style="color:#e74c3c">*</span>
+                        </label>
+                        <div class="pf-pw-wrap">
+                            <input class="pf-input" id="pfNewPw" type="password"
+                                   placeholder="Ít nhất 6 ký tự">
+                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfNewPw',this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="pf-err" id="pfNewPwErr">Mật khẩu mới phải có ít nhất 6 ký tự</div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <label class="pf-label" for="pfConfirmPw">
+                            Xác nhận mật khẩu <span style="color:#e74c3c">*</span>
+                        </label>
+                        <div class="pf-pw-wrap">
+                            <input class="pf-input" id="pfConfirmPw" type="password"
+                                   placeholder="Nhập lại mật khẩu mới">
+                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfConfirmPw',this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="pf-err" id="pfConfirmPwErr">Mật khẩu xác nhận không khớp</div>
+                    </div>
+                </div>
+
+                <!-- Độ mạnh mật khẩu -->
+                <div style="margin-top:.75rem" id="pfStrengthWrap" style="display:none">
+                    <div style="font-size:.76rem;color:#8a9bb0;margin-bottom:4px">Độ mạnh:</div>
+                    <div style="height:5px;border-radius:3px;background:#e8edf2;overflow:hidden">
+                        <div id="pfStrengthBar"
+                             style="height:100%;border-radius:3px;transition:width .3s,background .3s;width:0"></div>
+                    </div>
+                    <div id="pfStrengthLabel" style="font-size:.74rem;margin-top:3px;color:#8a9bb0"></div>
+                </div>
+
+                <div class="pf-alert" id="pfPwAlert">
+                    <i class="bi bi-check-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
+                    <span id="pfPwAlertMsg"></span>
+                </div>
+
+                <div style="margin-top:1rem">
+                    <button class="pf-btn pf-btn-primary" id="pfPwBtn" onclick="changePassword()">
+                        <i class="bi bi-lock"></i> Đổi mật khẩu
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /pfContent -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+(function(){
+    const API = "https://localhost:7108/api";
+
+    const getToken = () => sessionStorage.getItem("token");
+    const isLoggedIn  = () => !!getToken();
+    const authHeaders = () => ({
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${getToken()}`
+    });
+
+    if(!isLoggedIn()){
+        window.location.href = "../html/login.html";
+        return;
+    }
+
+    // Lưu dữ liệu gốc để reset
+    let _original = {};
+
+    /* ══ Load thông tin ══ */
+    async function loadProfile(){
+        try{
+            const res  = await fetch(`${API}/auth/me`, {headers: authHeaders()});
+            if(!res.ok) throw new Error();
+            const d    = await res.json();
+
+            _original = { name: d.name||"", email: d.email||"", address: d.address||"" };
+
+            // Avatar: lấy 1-2 chữ cái đầu
+            const initials = (d.name||"?").split(" ").filter(Boolean)
+                .slice(0,2).map(w=>w[0].toUpperCase()).join("");
+            document.getElementById("pfAvatarCircle").textContent = initials;
+            document.getElementById("pfAvatarName").textContent   = d.name||"—";
+            document.getElementById("pfUsername").textContent      = d.username||"—";
+            if(d.createdAt){
+                document.getElementById("pfSince").textContent =
+                    "Thành viên từ " + new Date(d.createdAt).toLocaleDateString("vi-VN");
+            }
+
+            // Điền form
+            document.getElementById("pfName").value    = d.name    || "";
+            document.getElementById("pfEmail").value   = d.email   || "";
+            document.getElementById("pfAddress").value = d.address || "";
+
+            // Hiện nội dung
+            document.getElementById("pfLoading").style.display  = "none";
+            document.getElementById("pfContent").style.display  = "block";
+
+        }catch{
+            document.getElementById("pfLoading").innerHTML = `
+            <div class="pf-card" style="text-align:center;padding:2.5rem;color:#8a9bb0">
+                <i class="bi bi-wifi-off" style="font-size:2.5rem;display:block;margin-bottom:.75rem"></i>
+                Không tải được thông tin. Vui lòng thử lại.
+            </div>`;
+        }
+    }
+
+    /* ══ Alert helper ══ */
+    function showAlert(alertId, msgId, msg, type){
+        const el  = document.getElementById(alertId);
+        const txt = document.getElementById(msgId);
+        txt.textContent = msg;
+        el.className    = `pf-alert ${type} show`;
+        el.querySelector("i").className =
+            type === "success"
+                ? "bi bi-check-circle-fill"
+                : "bi bi-exclamation-circle-fill";
+        // Auto-hide success sau 4s
+        if(type === "success") setTimeout(()=>el.classList.remove("show"), 4000);
+    }
+
+    /* ══ Validate helper ══ */
+    function chk(id, errId, cond){
+        const el = document.getElementById(id);
+        const er = document.getElementById(errId);
+        const ok = cond(el.value.trim());
+        el.classList.toggle("error", !ok);
+        er.classList.toggle("show",  !ok);
+        return ok;
+    }
+
+    /* ══ Reset form về giá trị gốc ══ */
+    window.resetProfile = function(){
+        document.getElementById("pfName").value    = _original.name;
+        document.getElementById("pfEmail").value   = _original.email;
+        document.getElementById("pfAddress").value = _original.address;
+        ["pfName","pfEmail","pfAddress"].forEach(id=>{
+            document.getElementById(id).classList.remove("error");
+        });
+        ["pfNameErr","pfEmailErr"].forEach(id=>{
+            document.getElementById(id).classList.remove("show");
+        });
+        document.getElementById("pfInfoAlert").classList.remove("show");
+    };
+
+    /* ══ Lưu thông tin ══ */
+    window.saveProfile = async function(){
+        const okName  = chk("pfName",  "pfNameErr",  v => v.length >= 2);
+        const okEmail = chk("pfEmail", "pfEmailErr",
+            v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        if(!okName || !okEmail) return;
+
+        const btn = document.getElementById("pfSaveBtn");
+        btn.disabled  = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
+
+        const payload = {
+            name:    document.getElementById("pfName").value.trim(),
+            email:   document.getElementById("pfEmail").value.trim(),
+            address: document.getElementById("pfAddress").value.trim(),
+        };
+
+        try{
+            const res  = await fetch(`${API}/auth/me`, {
+                method:"PUT", headers:authHeaders(), body:JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if(!res.ok){
+                showAlert("pfInfoAlert","pfInfoAlertMsg", data.message||"Cập nhật thất bại.", "error");
+            } else {
+                // Cập nhật token mới nếu API trả về (name/email thay đổi)
+                if (data.token) sessionStorage.setItem("token", data.token);
+
+                // Cập nhật avatar và tên trên trang
+                const newName = data.name || payload.name;
+                const initials = newName.split(" ").filter(Boolean)
+                    .slice(0,2).map(w=>w[0].toUpperCase()).join("");
+                document.getElementById("pfAvatarCircle").textContent = initials;
+                document.getElementById("pfAvatarName").textContent   = newName;
+
+                _original = { name: newName, email: data.email||payload.email, address: data.address||payload.address };
+
+                showAlert("pfInfoAlert","pfInfoAlertMsg","Cập nhật thông tin thành công!", "success");
+            }
+        }catch{
+            showAlert("pfInfoAlert","pfInfoAlertMsg","Không kết nối được máy chủ.","error");
+        } finally {
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu thay đổi';
+        }
+    };
+
+    /* ══ Đổi mật khẩu ══ */
+    window.changePassword = async function(){
+        const okCur  = chk("pfCurPw",    "pfCurPwErr",    v => v.length > 0);
+        const okNew  = chk("pfNewPw",    "pfNewPwErr",    v => v.length >= 6);
+        const okConf = chk("pfConfirmPw","pfConfirmPwErr",
+            () => document.getElementById("pfConfirmPw").value ===
+                  document.getElementById("pfNewPw").value);
+        if(!okCur || !okNew || !okConf) return;
+
+        const btn = document.getElementById("pfPwBtn");
+        btn.disabled  = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang xử lý...';
+
+        const payload = {
+            currentPassword: document.getElementById("pfCurPw").value,
+            newPassword:     document.getElementById("pfNewPw").value,
+            confirmPassword: document.getElementById("pfConfirmPw").value,
+        };
+
+        try{
+            const res  = await fetch(`${API}/auth/me/change-password`, {
+                method:"PUT", headers:authHeaders(), body:JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if(!res.ok){
+                showAlert("pfPwAlert","pfPwAlertMsg", data.message||"Đổi mật khẩu thất bại.","error");
+            } else {
+                showAlert("pfPwAlert","pfPwAlertMsg","Đổi mật khẩu thành công!","success");
+                // Xóa các ô mật khẩu
+                ["pfCurPw","pfNewPw","pfConfirmPw"].forEach(id=>{
+                    document.getElementById(id).value = "";
+                    document.getElementById(id).classList.remove("error");
+                });
+                document.getElementById("pfStrengthBar").style.width  = "0";
+                document.getElementById("pfStrengthLabel").textContent = "";
+            }
+        }catch{
+            showAlert("pfPwAlert","pfPwAlertMsg","Không kết nối được máy chủ.","error");
+        } finally {
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="bi bi-lock"></i> Đổi mật khẩu';
+        }
+    };
+
+    /* ══ Toggle hiển thị mật khẩu ══ */
+    window.togglePw = function(inputId, btn){
+        const inp = document.getElementById(inputId);
+        const ico = btn.querySelector("i");
+        if(inp.type === "password"){
+            inp.type       = "text";
+            ico.className  = "bi bi-eye-slash";
+        } else {
+            inp.type       = "password";
+            ico.className  = "bi bi-eye";
+        }
+    };
+
+    /* ══ Độ mạnh mật khẩu ══ */
+    document.getElementById("pfNewPw").addEventListener("input", function(){
+        const v   = this.value;
+        const bar = document.getElementById("pfStrengthBar");
+        const lbl = document.getElementById("pfStrengthLabel");
+        if(!v){ bar.style.width="0"; lbl.textContent=""; return; }
+
+        let score = 0;
+        if(v.length >= 6)  score++;
+        if(v.length >= 10) score++;
+        if(/[A-Z]/.test(v)) score++;
+        if(/[0-9]/.test(v)) score++;
+        if(/[^A-Za-z0-9]/.test(v)) score++;
+
+        const levels = [
+            {w:"20%",  bg:"#e74c3c", t:"Rất yếu"},
+            {w:"40%",  bg:"#e67e22", t:"Yếu"},
+            {w:"60%",  bg:"#f39c12", t:"Trung bình"},
+            {w:"80%",  bg:"#2ecc71", t:"Mạnh"},
+            {w:"100%", bg:"#27ae60", t:"Rất mạnh"},
+        ];
+        const lv = levels[Math.min(score, 4)];
+        bar.style.width      = lv.w;
+        bar.style.background = lv.bg;
+        lbl.textContent      = lv.t;
+        lbl.style.color      = lv.bg;
+    });
+
+    /* ══ Live validate confirm password ══ */
+    document.getElementById("pfConfirmPw").addEventListener("input", function(){
+        const match = this.value === document.getElementById("pfNewPw").value;
+        this.classList.toggle("error", !match && this.value.length > 0);
+        document.getElementById("pfConfirmPwErr")
+            .classList.toggle("show", !match && this.value.length > 0);
+    });
+
+    loadProfile();
+})();
+    </script>
+</body>
+</html>

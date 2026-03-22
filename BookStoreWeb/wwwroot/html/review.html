@@ -1,0 +1,509 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viết đánh giá – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .rv-page {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        /* Breadcrumb */
+        .rv-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6ab04c;
+            font-weight: 600;
+            font-size: .88rem;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+
+            .rv-back:hover {
+                color: #4e8a35
+            }
+
+        /* Book preview card */
+        .rv-book-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .rv-book-img {
+            width: 64px;
+            height: 88px;
+            object-fit: cover;
+            border-radius: 7px;
+            background: #f0f7eb;
+            flex-shrink: 0;
+        }
+
+        .rv-book-img-ph {
+            width: 64px;
+            height: 88px;
+            border-radius: 7px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .rv-book-title {
+            font-weight: 700;
+            font-size: .95rem;
+            color: #1a1a1a;
+            line-height: 1.3
+        }
+
+        .rv-book-author {
+            font-size: .8rem;
+            color: #8a9bb0;
+            margin-top: 3px
+        }
+
+        /* Form card */
+        .rv-form-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.75rem;
+        }
+
+        .rv-section-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .rv-section-title i {
+                color: #6ab04c
+            }
+
+        /* Star picker */
+        .rv-star-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: .5rem
+        }
+
+        .rv-stars {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1.25rem
+        }
+
+            .rv-stars i {
+                font-size: 2.2rem;
+                color: #e0e0e0;
+                cursor: pointer;
+                transition: color .12s, transform .12s;
+            }
+
+                .rv-stars i:hover,
+                .rv-stars i.on {
+                    color: #f39c12
+                }
+
+                .rv-stars i:hover {
+                    transform: scale(1.15)
+                }
+
+        .rv-star-hint {
+            font-size: .78rem;
+            color: #8a9bb0;
+            margin-left: 4px;
+            display: inline-block;
+            margin-bottom: 1.1rem;
+        }
+
+        /* Textarea */
+        .rv-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #4a5568;
+            display: block;
+            margin-bottom: 5px
+        }
+
+        .rv-textarea {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 11px;
+            padding: .75rem .9rem;
+            font-family: inherit;
+            font-size: .9rem;
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+            .rv-textarea:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.1)
+            }
+
+        .rv-char-count {
+            font-size: .74rem;
+            color: #aaa;
+            text-align: right;
+            margin-top: 3px
+        }
+
+        /* Alert */
+        .rv-alert {
+            border-radius: 10px;
+            padding: .65rem .9rem;
+            font-size: .83rem;
+            display: none;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 1rem;
+        }
+
+            .rv-alert.show {
+                display: flex
+            }
+
+            .rv-alert.error {
+                background: #fff0f0;
+                border: 1.5px solid #f5c6c6;
+                color: #c0392b
+            }
+
+            .rv-alert.success {
+                background: #f0fff4;
+                border: 1.5px solid #b7e4c7;
+                color: #1e7e34
+            }
+
+        /* Submit */
+        .rv-submit {
+            width: 100%;
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 11px;
+            padding: .78rem;
+            font-size: .97rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s,transform .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 1.1rem;
+        }
+
+            .rv-submit:hover {
+                background: #4e8a35;
+                transform: translateY(-1px)
+            }
+
+            .rv-submit:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+                transform: none
+            }
+
+        /* Success screen */
+        .rv-success {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            display: none;
+        }
+
+            .rv-success.show {
+                display: block
+            }
+
+        .rv-success-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #f0fff4;
+            border: 2px solid #b7e4c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #27ae60;
+            margin: 0 auto 1rem;
+        }
+
+        /* Star names */
+        .star-names {
+            font-size: .8rem;
+            color: #f39c12;
+            font-weight: 600;
+            min-height: 1.2em;
+            margin-bottom: .9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="rv-page">
+        <a class="rv-back" id="backLink" href="order-history.html">
+            <i class="bi bi-arrow-left"></i> Quay lại đơn hàng
+        </a>
+
+        <!-- Book info -->
+        <div class="rv-book-card" id="bookCard">
+            <div style="text-align:center;padding:1rem;color:#8a9bb0;width:100%">
+                <div class="spinner-border spinner-border-sm text-success"></div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="rv-form-card" id="formCard">
+            <div class="rv-section-title">
+                <i class="bi bi-pencil-square"></i> Viết đánh giá của bạn
+            </div>
+
+            <div class="rv-alert" id="rvAlert">
+                <i class="bi bi-exclamation-circle-fill" style="flex-shrink:0"></i>
+                <span id="rvAlertMsg"></span>
+            </div>
+
+            <div class="rv-star-label">Chọn số sao <span style="color:#e74c3c">*</span></div>
+            <div class="rv-stars" id="starPicker">
+                <i class="bi bi-star-fill" data-v="1"></i>
+                <i class="bi bi-star-fill" data-v="2"></i>
+                <i class="bi bi-star-fill" data-v="3"></i>
+                <i class="bi bi-star-fill" data-v="4"></i>
+                <i class="bi bi-star-fill" data-v="5"></i>
+            </div>
+            <div class="star-names" id="starName"></div>
+
+            <label class="rv-label" for="rvComment">
+                Nhận xét <span style="color:#8a9bb0;font-weight:400">(không bắt buộc)</span>
+            </label>
+            <textarea class="rv-textarea" id="rvComment"
+                      placeholder="Chia sẻ cảm nhận của bạn về cuốn sách này..."
+                      oninput="updateCharCount()"></textarea>
+            <div class="rv-char-count" id="charCount">0 / 500</div>
+
+            <button class="rv-submit" id="rvSubmit" onclick="submitReview()">
+                <i class="bi bi-send"></i> Gửi đánh giá
+            </button>
+        </div>
+
+        <!-- Success -->
+        <div class="rv-success" id="successCard">
+            <div class="rv-success-icon"><i class="bi bi-check-lg"></i></div>
+            <h5 style="font-family:'Playfair Display',serif;font-weight:700;margin-bottom:.4rem">
+                Cảm ơn bạn đã đánh giá!
+            </h5>
+            <p style="font-size:.88rem;color:#8a9bb0;margin-bottom:1.5rem">
+                Đánh giá của bạn đã được ghi nhận.
+            </p>
+            <a href="order-history.html"
+               style="display:inline-flex;align-items:center;gap:6px;
+                  background:#6ab04c;color:#fff;border-radius:10px;
+                  padding:.6rem 1.4rem;font-weight:700;font-size:.9rem;
+                  text-decoration:none;transition:background .15s"
+               onmouseover="this.style.background='#4e8a35'"
+               onmouseout="this.style.background='#6ab04c'">
+                <i class="bi bi-bag-check"></i> Xem đơn hàng
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+(function(){
+    const API     = "https://localhost:7108/api";
+    const IMG_URL = "https://localhost:7108";
+
+    const getToken    = () => sessionStorage.getItem("token");
+    const isLoggedIn  = () => !!getToken();
+    const authHeaders = () => ({
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${getToken()}`
+    });
+    const imgSrc = raw => {
+        if(!raw) return "";
+        if(/^https?:\/\//i.test(raw)) return raw;
+        return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/,"");
+    };
+
+    if(!isLoggedIn()){ window.location.replace("login.html"); return; }
+
+    // Đọc ?bookId= từ URL
+    const params = new URLSearchParams(window.location.search);
+    const bookId = parseInt(params.get("bookId"));
+    const orderId = params.get("orderId");
+
+    if(!bookId){ window.location.replace("orders.html"); return; }
+
+    if(orderId){
+        document.getElementById("backLink").href = `orders.html`;
+    }
+
+    // Star names
+    const STAR_NAMES = ["","Rất tệ","Không tốt","Bình thường","Khá tốt","Tuyệt vời!"];
+    let pickedStar = 0;
+
+    // Star picker
+    const stars = document.querySelectorAll("#starPicker i");
+    stars.forEach(el => {
+        el.addEventListener("mouseenter", () => highlightStars(parseInt(el.dataset.v)));
+        el.addEventListener("mouseleave", () => highlightStars(pickedStar));
+        el.addEventListener("click", () => {
+            pickedStar = parseInt(el.dataset.v);
+            highlightStars(pickedStar);
+            document.getElementById("starName").textContent = STAR_NAMES[pickedStar];
+            document.getElementById("rvAlert").classList.remove("show");
+        });
+    });
+
+    function highlightStars(n){
+        stars.forEach((el,i) => el.classList.toggle("on", i < n));
+    }
+
+    window.updateCharCount = function(){
+        const v = document.getElementById("rvComment").value;
+        document.getElementById("charCount").textContent = `${v.length} / 500`;
+        if(v.length > 500)
+            document.getElementById("rvComment").value = v.slice(0,500);
+    };
+
+    // Kiểm tra trạng thái review (đã đánh giá chưa, có quyền chưa)
+    async function checkReviewStatus(){
+        try{
+            const res  = await fetch(`${API}/reviews/status/${bookId}`, {headers:authHeaders()});
+            const data = await res.json();
+
+            if(!data.canReview){
+                if(data.reason === "already_reviewed"){
+                    showAlert("Bạn đã đánh giá cuốn sách này rồi.", "error");
+                    document.getElementById("rvSubmit").disabled = true;
+                } else if(data.reason === "not_purchased"){
+                    showAlert("Bạn chưa mua cuốn sách này hoặc đơn hàng chưa hoàn thành.", "error");
+                    document.getElementById("rvSubmit").disabled = true;
+                }
+            }
+        }catch{}
+    }
+
+    // Load book info
+    async function loadBook(){
+        try{
+            const res  = await fetch(`${API}/books/${bookId}`);
+            const b    = await res.json();
+            const src  = imgSrc(b.image || b.Image || "");
+            document.getElementById("bookCard").innerHTML = `
+                ${src ? `<img class="rv-book-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
+                <div class="rv-book-img-ph" ${src?'style="display:none"':""}><i class="bi bi-book"></i></div>
+                <div>
+                    <div class="rv-book-title">${b.title||b.Title||""}</div>
+                    <div class="rv-book-author">${b.author||b.Author||""}</div>
+                    <div style="font-size:.78rem;color:#6ab04c;font-weight:700;margin-top:5px">
+                        ${(b.categoryName||b.CategoryName||"")}
+                    </div>
+                </div>`;
+        }catch{
+            document.getElementById("bookCard").innerHTML =
+                `<div style="color:#aaa;font-size:.85rem">Không tải được thông tin sách.</div>`;
+        }
+    }
+
+    function showAlert(msg, type){
+        const el  = document.getElementById("rvAlert");
+        const txt = document.getElementById("rvAlertMsg");
+        txt.textContent = msg;
+        el.className = `rv-alert ${type} show`;
+        el.querySelector("i").className = type === "success"
+            ? "bi bi-check-circle-fill"
+            : "bi bi-exclamation-circle-fill";
+    }
+
+    window.submitReview = async function(){
+        document.getElementById("rvAlert").classList.remove("show");
+
+        if(!pickedStar){
+            showAlert("Vui lòng chọn số sao trước khi gửi.", "error");
+            return;
+        }
+
+        const comment = document.getElementById("rvComment").value.trim();
+        const btn     = document.getElementById("rvSubmit");
+        btn.disabled  = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang gửi...';
+
+        try{
+            const res  = await fetch(`${API}/reviews`, {
+                method:"POST", headers:authHeaders(),
+                body:JSON.stringify({ bookId, rating:pickedStar, comment })
+            });
+            const data = await res.json();
+
+            if(!res.ok){
+                const msg = data.message || data.Message
+                    || Object.values(data.errors||{})[0]?.[0]
+                    || "Gửi đánh giá thất bại.";
+                showAlert(msg, "error");
+                btn.disabled  = false;
+                btn.innerHTML = '<i class="bi bi-send"></i> Gửi đánh giá';
+                return;
+            }
+
+            // Ẩn form, hiện success
+            document.getElementById("formCard").style.display  = "none";
+            document.getElementById("bookCard").style.display  = "none";
+            document.querySelector(".rv-back").style.display   = "none";
+            document.getElementById("successCard").classList.add("show");
+
+        }catch{
+            showAlert("Không kết nối được máy chủ.", "error");
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="bi bi-send"></i> Gửi đánh giá';
+        }
+    };
+
+    loadBook();
+    checkReviewStatus();
+})();
+    </script>
+</body>
+</html>

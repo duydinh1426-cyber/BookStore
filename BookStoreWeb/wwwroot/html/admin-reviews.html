@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đánh giá – Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .adm-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .adm-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.4rem
+        }
+
+            .adm-title i {
+                color: #6ab04c
+            }
+
+        /* ── Stat cards ── */
+        .stat-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 130px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1.5px solid #e8edf2;
+            padding: .9rem 1.1rem
+        }
+
+        .stat-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .stat-lbl {
+            font-size: .75rem;
+            color: #8a9bb0;
+            margin-top: 4px;
+            font-weight: 500
+        }
+
+        /* ── Star filter ── */
+        .star-filter {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 1.1rem
+        }
+
+        .star-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: .32rem .8rem;
+            border-radius: 20px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            color: #4a5568;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+        }
+
+            .star-btn:hover {
+                border-color: #f39c12;
+                color: #f39c12
+            }
+
+            .star-btn.active {
+                background: #f39c12;
+                border-color: #f39c12;
+                color: #fff
+            }
+
+            .star-btn.active-all {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+        /* ── Toolbar ── */
+        .adm-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem;
+            align-items: center
+        }
+
+        .adm-search {
+            flex: 1;
+            min-width: 200px;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .9rem;
+            font-family: inherit;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .15s
+        }
+
+            .adm-search:focus {
+                border-color: #6ab04c
+            }
+
+        /* ── Table ── */
+        .adm-wrap {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            overflow: hidden
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        thead tr {
+            background: #fafafa;
+            border-bottom: 1.5px solid #e8edf2
+        }
+
+        th {
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            font-weight: 700;
+            color: #8a9bb0;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            white-space: nowrap
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f2f2f2;
+            transition: background .12s
+        }
+
+            tbody tr:last-child {
+                border-bottom: none
+            }
+
+            tbody tr:hover {
+                background: #fafffe
+            }
+
+        td {
+            padding: .75rem 1rem;
+            font-size: .85rem;
+            color: #1a1a1a;
+            vertical-align: middle
+        }
+
+        /* star display */
+        .stars-display {
+            display: inline-flex;
+            gap: 2px;
+            align-items: center
+        }
+
+            .stars-display i {
+                font-size: .78rem
+            }
+
+        /* comment cell */
+        .rv-comment {
+            max-width: 260px;
+            font-size: .82rem;
+            color: #4a5568;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* delete btn */
+        .adm-btn-del {
+            border-radius: 7px;
+            padding: .28rem .72rem;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            background: #fff0f0;
+            color: #e74c3c;
+            border: 1.5px solid #f5c6c6;
+        }
+
+            .adm-btn-del:hover {
+                background: #e74c3c;
+                color: #fff
+            }
+
+        /* pager */
+        .adm-pager {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 1.2rem
+        }
+
+        .adm-pg {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .adm-pg:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .adm-pg.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+            .adm-pg:disabled {
+                opacity: .35;
+                cursor: not-allowed
+            }
+
+        /* Confirm modal */
+        .modal-content {
+            border-radius: 14px;
+            border: none
+        }
+
+        .modal-header {
+            border: none;
+            padding-bottom: 0
+        }
+
+        .adm-empty {
+            text-align: center;
+            padding: 2.5rem;
+            color: #8a9bb0
+        }
+
+        /* Detail modal review */
+        .rv-full-comment {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: .8rem 1rem;
+            font-size: .86rem;
+            color: #4a5568;
+            line-height: 1.7;
+            border-left: 3px solid #6ab04c;
+        }
+
+        .rv-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: .32rem 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: .86rem
+        }
+
+            .rv-detail-row:last-child {
+                border-bottom: none
+            }
+
+            .rv-detail-row span:first-child {
+                font-weight: 600;
+                color: #1a1a1a;
+                min-width: 120px
+            }
+
+        /* Rating bar */
+        .rating-bar-wrap {
+            margin-bottom: .35rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .78rem
+        }
+
+        .rating-bar-bg {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #f0f0f0;
+            overflow: hidden
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: #f39c12;
+            transition: width .4s
+        }
+
+        .rating-bar-count {
+            color: #8a9bb0;
+            min-width: 24px;
+            text-align: right
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="adm-page">
+        <h2 class="adm-title"><i class="bi bi-star-half"></i> Quản lý đánh giá</h2>
+
+        <!-- Stat cards -->
+        <div class="stat-row" id="statRow">
+            <div class="stat-card"><div class="stat-val" id="stTotal">—</div><div class="stat-lbl">Tổng đánh giá</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:#f39c12" id="stAvg">—</div><div class="stat-lbl">Điểm TB toàn hệ thống</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:#27ae60" id="st5">—</div><div class="stat-lbl">5 sao</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:#3498db" id="st4">—</div><div class="stat-lbl">4 sao</div></div>
+            <div class="stat-card"><div class="stat-val" style="color:#e74c3c" id="st1">—</div><div class="stat-lbl">1 sao</div></div>
+        </div>
+
+        <!-- Rating distribution -->
+        <div style="background:#fff;border-radius:12px;border:1.5px solid #e8edf2;padding:1rem 1.3rem;margin-bottom:1.3rem" id="ratingDist">
+            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#8a9bb0;margin-bottom:.75rem">
+                Phân bổ đánh giá
+            </div>
+            <div id="distBars"><div style="text-align:center;color:#aaa;font-size:.82rem">Đang tải...</div></div>
+        </div>
+
+        <!-- Filter + Search -->
+        <div class="star-filter" id="starFilter">
+            <button class="star-btn active-all" data-r="0" onclick="setRating(0,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> Tất cả
+            </button>
+            <button class="star-btn" data-r="5" onclick="setRating(5,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> 5 sao
+            </button>
+            <button class="star-btn" data-r="4" onclick="setRating(4,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> 4 sao
+            </button>
+            <button class="star-btn" data-r="3" onclick="setRating(3,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> 3 sao
+            </button>
+            <button class="star-btn" data-r="2" onclick="setRating(2,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> 2 sao
+            </button>
+            <button class="star-btn" data-r="1" onclick="setRating(1,this)">
+                <i class="bi bi-star-fill" style="color:#f39c12"></i> 1 sao
+            </button>
+        </div>
+
+        <div class="adm-bar">
+            <input class="adm-search" id="admSearch" type="text"
+                   placeholder="Tìm tên sách..."
+                   oninput="debounce()">
+            <div style="font-size:.82rem;color:#8a9bb0" id="admCount"></div>
+        </div>
+
+        <div class="adm-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sách</th>
+                        <th>Khách hàng</th>
+                        <th>Đánh giá</th>
+                        <th>Nhận xét</th>
+                        <th>Ngày đăng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="admTbody">
+                    <tr>
+                        <td colspan="6" class="adm-empty">
+                            <div class="spinner-border text-success spinner-border-sm"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="adm-pager" id="admPager"></div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+            <div class="modal-content shadow">
+                <div class="modal-body p-4 text-center">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#fff0f0;
+                            display:flex;align-items:center;justify-content:center;
+                            margin:0 auto .9rem;font-size:1.6rem;color:#e74c3c">
+                        <i class="bi bi-trash3-fill"></i>
+                    </div>
+                    <div style="font-weight:700;font-size:1.05rem;color:#1a1a1a;margin-bottom:.4rem">
+                        Xoá đánh giá?
+                    </div>
+                    <div style="font-size:.86rem;color:#8a9bb0;margin-bottom:1.4rem">
+                        Đánh giá này sẽ bị xoá vĩnh viễn.<br>
+                        <span id="deleteReviewInfo" style="color:#4a5568;font-style:italic"></span>
+                    </div>
+                    <div style="display:flex;gap:8px;justify-content:center">
+                        <button type="button" data-bs-dismiss="modal"
+                                style="border:1.5px solid #e8edf2;background:#fff;color:#4a5568;
+                                   border-radius:10px;padding:.55rem 1.3rem;font-weight:600;
+                                   font-size:.88rem;cursor:pointer;font-family:inherit"
+                                onmouseover="this.style.borderColor='#6ab04c';this.style.color='#6ab04c'"
+                                onmouseout="this.style.borderColor='#e8edf2';this.style.color='#4a5568'">
+                            Huỷ
+                        </button>
+                        <button id="deleteConfirmBtn"
+                                style="background:#e74c3c;color:#fff;border:none;
+                                   border-radius:10px;padding:.55rem 1.3rem;font-weight:700;
+                                   font-size:.88rem;cursor:pointer;font-family:inherit"
+                                onmouseover="this.style.background='#c0392b'"
+                                onmouseout="this.style.background='#e74c3c'">
+                            <i class="bi bi-trash3 me-1"></i>Xoá
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:480px">
+            <div class="modal-content shadow">
+                <div class="modal-header px-4 pt-4">
+                    <h5 class="modal-title fw-bold">Chi tiết đánh giá</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4" id="detailBody">
+                    <div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+(function(){
+    const API = "https://localhost:7108/api";
+
+    const getToken    = () => sessionStorage.getItem("token");
+    const isLoggedIn  = () => !!getToken();
+    const authHeaders = () => ({"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`});
+
+    if(!isLoggedIn()){ window.location.href="../html/login.html"; return; }
+
+    let curPage=1, curRating=0, debTimer=null;
+    const PAGE_SIZE=15;
+
+    // ── Stars HTML ──
+    function starsHtml(n, size=".82rem"){
+        return Array.from({length:5},(_,i)=>
+            `<i class="bi ${i<n?"bi-star-fill":"bi-star"}"
+                style="color:${i<n?"#f39c12":"#ddd"};font-size:${size}"></i>`
+        ).join("");
+    }
+
+    // ── Load stats + distribution ──
+    async function loadStats(){
+        try{
+            // Lấy tất cả reviews để tính thống kê
+            const res  = await fetch(`${API}/reviews/admin/all?pageSize=1`, {headers:authHeaders()});
+            const data = await res.json();
+            const total = data.total ?? 0;
+            document.getElementById("stTotal").textContent = total;
+
+            // Load từng sao để tính distribution
+            const starCounts = {};
+            let totalSum = 0;
+            await Promise.all([1,2,3,4,5].map(async s => {
+                const r = await fetch(`${API}/reviews/admin/all?pageSize=1&rating=${s}`, {headers:authHeaders()});
+                const d = await r.json();
+                starCounts[s] = d.total ?? 0;
+                totalSum += (d.total??0) * s;
+            }));
+
+            const avg = total > 0 ? (totalSum/total).toFixed(1) : "—";
+            document.getElementById("stAvg").textContent  = avg !== "—" ? `${avg} ★` : "—";
+            document.getElementById("st5").textContent    = starCounts[5]??0;
+            document.getElementById("st4").textContent    = starCounts[4]??0;
+            document.getElementById("st1").textContent    = starCounts[1]??0;
+
+            // Rating distribution bars
+            const distHtml = [5,4,3,2,1].map(s => {
+                const cnt = starCounts[s]??0;
+                const pct = total > 0 ? Math.round((cnt/total)*100) : 0;
+                return `
+                <div class="rating-bar-wrap">
+                    <span style="min-width:32px;color:#4a5568;font-weight:600">${s} <i class="bi bi-star-fill" style="color:#f39c12;font-size:.7rem"></i></span>
+                    <div class="rating-bar-bg">
+                        <div class="rating-bar-fill" style="width:${pct}%"></div>
+                    </div>
+                    <span class="rating-bar-count">${cnt}</span>
+                    <span style="color:#aaa;min-width:32px">${pct}%</span>
+                </div>`;
+            }).join("");
+            document.getElementById("distBars").innerHTML = distHtml;
+        }catch(e){ console.error(e); }
+    }
+
+    // ── Load reviews ──
+    window.load = async function(page=1){
+        curPage = page;
+        const tbody = document.getElementById("admTbody");
+        const pager = document.getElementById("admPager");
+        tbody.innerHTML = `<tr><td colspan="6" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+        pager.innerHTML = "";
+
+        const kw = document.getElementById("admSearch").value.trim();
+        const p  = new URLSearchParams({page, pageSize:PAGE_SIZE});
+        if(curRating) p.append("rating", curRating);
+        // Không có filter bookId trực tiếp — nếu muốn tìm theo tên sách thì filter phía client
+
+        try{
+            const res  = await fetch(`${API}/reviews/admin/all?${p}`, {headers:authHeaders()});
+            if(!res.ok) throw new Error();
+            const data = await res.json();
+            let reviews = data.data || [];
+
+            // Filter theo tên sách nếu có keyword
+            if(kw) reviews = reviews.filter(r =>
+                (r.book?.title||"").toLowerCase().includes(kw.toLowerCase())
+            );
+
+            const totalPages = data.totalPages ?? 1;
+            document.getElementById("admCount").textContent =
+                `${data.total ?? 0} đánh giá${curRating ? ` (${curRating} sao)` : ""}`;
+
+            if(!reviews.length){
+                tbody.innerHTML = `<tr><td colspan="6" class="adm-empty">Không tìm thấy đánh giá nào.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = reviews.map(r => `
+            <tr>
+                <td>
+                    <div style="font-weight:600;font-size:.84rem;max-width:160px;
+                                white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+                         title="${r.book?.title||""}">
+                        ${r.book?.title||"—"}
+                    </div>
+                    <div style="font-size:.73rem;color:#8a9bb0">ID: ${r.book?.bookID||""}</div>
+                </td>
+                <td style="font-weight:500;font-size:.84rem">${r.customer||"—"}</td>
+                <td>
+                    <div class="stars-display">${starsHtml(r.rating)}</div>
+                    <div style="font-size:.72rem;color:#f39c12;font-weight:700;margin-top:1px">${r.rating}/5</div>
+                </td>
+                <td>
+                    <div class="rv-comment" title="${r.comment||""}">
+                        ${r.comment
+                            ? `<i class="bi bi-chat-left-quote me-1" style="color:#8a9bb0"></i>${r.comment}`
+                            : `<span style="color:#ccc;font-style:italic">Không có nhận xét</span>`}
+                    </div>
+                </td>
+                <td style="font-size:.78rem;color:#8a9bb0;white-space:nowrap">
+                    ${r.createdAt ? new Date(r.createdAt).toLocaleDateString("vi-VN") : "—"}
+                </td>
+                <td>
+                    <div style="display:flex;gap:5px">
+                        <button class="adm-btn-del" style="background:#e8f4fd;color:#2980b9;border-color:#b8d9f5"
+                                onmouseover="this.style.background='#2980b9';this.style.color='#fff'"
+                                onmouseout="this.style.background='#e8f4fd';this.style.color='#2980b9';this.style.borderColor='#b8d9f5'"
+                                onclick="openDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="adm-btn-del" onclick="confirmDelete(${r.reviewID},'${(r.book?.title||"").replace(/'/g,"\\'")}','${r.customer||""}',${r.rating})">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`).join("");
+
+            if(totalPages>1){
+                let html = `<button class="adm-pg" ${page===1?"disabled":""} onclick="load(${page-1})"><i class="bi bi-chevron-left"></i></button>`;
+                for(let pg=1;pg<=totalPages;pg++)
+                    html += `<button class="adm-pg ${pg===page?"active":""}" onclick="load(${pg})">${pg}</button>`;
+                html += `<button class="adm-pg" ${page===totalPages?"disabled":""} onclick="load(${page+1})"><i class="bi bi-chevron-right"></i></button>`;
+                pager.innerHTML = html;
+            }
+        }catch(e){
+            tbody.innerHTML = `<tr><td colspan="6" class="adm-empty">Lỗi tải dữ liệu.</td></tr>`;
+        }
+    };
+
+    // ── Star filter ──
+    window.setRating = function(r, btn){
+        curRating = r;
+        document.querySelectorAll(".star-btn").forEach(b=>{
+            b.classList.remove("active","active-all");
+        });
+        btn.classList.add(r===0 ? "active-all" : "active");
+        load(1);
+    };
+
+    // ── Debounce search ──
+    window.debounce = function(){
+        clearTimeout(debTimer);
+        debTimer = setTimeout(()=>load(1), 350);
+    };
+
+    // ── Detail modal ──
+    window.openDetail = function(r){
+        if(typeof r === "string") r = JSON.parse(r.replace(/&quot;/g,'"'));
+        document.getElementById("detailBody").innerHTML = `
+        <div class="rv-detail-row"><span>Sách</span><span style="font-weight:500">${r.book?.title||"—"}</span></div>
+        <div class="rv-detail-row"><span>Khách hàng</span><span>${r.customer||"—"}</span></div>
+        <div class="rv-detail-row">
+            <span>Đánh giá</span>
+            <span>
+                <span style="font-weight:800;color:#f39c12;font-size:1rem">${r.rating}</span>
+                <span style="color:#aaa">/5</span>
+                <span style="margin-left:4px">${starsHtml(r.rating,".85rem")}</span>
+            </span>
+        </div>
+        <div class="rv-detail-row"><span>Ngày đăng</span><span>${r.createdAt?new Date(r.createdAt).toLocaleString("vi-VN"):"—"}</span></div>
+        ${r.comment ? `
+        <div style="margin-top:.75rem">
+            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#8a9bb0;margin-bottom:.5rem">Nhận xét</div>
+            <div class="rv-full-comment">${r.comment}</div>
+        </div>` : `
+        <div style="margin-top:.75rem;font-size:.83rem;color:#aaa;font-style:italic">Không có nhận xét.</div>`}
+        <div style="margin-top:1.1rem;text-align:right">
+            <button onclick="confirmDelete(${r.reviewID},'${(r.book?.title||"").replace(/'/g,"\\'")}','${r.customer||""}',${r.rating});bootstrap.Modal.getInstance(document.getElementById('detailModal'))?.hide()"
+                    style="background:#e74c3c;color:#fff;border:none;border-radius:9px;
+                           padding:.5rem 1.1rem;font-weight:700;font-size:.84rem;
+                           cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px">
+                <i class="bi bi-trash3"></i> Xoá đánh giá này
+            </button>
+        </div>`;
+        new bootstrap.Modal(document.getElementById("detailModal")).show();
+    };
+
+    // ── Confirm delete ──
+    let _deleteId = null;
+    window.confirmDelete = function(id, bookTitle, customer, rating){
+        _deleteId = id;
+        document.getElementById("deleteReviewInfo").textContent =
+            `"${bookTitle}" — ${customer} (${rating}★)`;
+        new bootstrap.Modal(document.getElementById("deleteModal")).show();
+    };
+
+    document.getElementById("deleteConfirmBtn").addEventListener("click", async function(){
+        if(!_deleteId) return;
+        const btn = this;
+        btn.disabled  = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang xoá...';
+        try{
+            const res  = await fetch(`${API}/reviews/${_deleteId}`, {method:"DELETE",headers:authHeaders()});
+            const data = await res.json();
+            bootstrap.Modal.getInstance(document.getElementById("deleteModal"))?.hide();
+            if(res.ok){
+                // Flash row rồi reload
+                load(curPage);
+                loadStats();
+            } else {
+                alert(data.message||"Xoá thất bại.");
+            }
+        }catch{
+            alert("Không kết nối được máy chủ.");
+        }finally{
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="bi bi-trash3 me-1"></i>Xoá';
+            _deleteId = null;
+        }
+    });
+
+    // ── Init ──
+    loadStats();
+    load(1);
+})();
+    </script>
+</body>
+</html>

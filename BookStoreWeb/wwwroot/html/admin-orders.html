@@ -1,0 +1,901 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng – Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .adm-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .adm-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem
+        }
+
+            .adm-title i {
+                color: #6ab04c
+            }
+
+        /* stats */
+        .adm-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem
+        }
+
+        .adm-stat {
+            flex: 1;
+            min-width: 140px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1.5px solid #e8edf2;
+            padding: .9rem 1.1rem
+        }
+
+        .adm-stat-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            line-height: 1
+        }
+
+        .adm-stat-lbl {
+            font-size: .75rem;
+            color: #8a9bb0;
+            margin-top: 4px;
+            font-weight: 500
+        }
+
+        .green {
+            color: #6ab04c
+        }
+
+        .orange {
+            color: #f39c12
+        }
+
+        .blue {
+            color: #3498db
+        }
+
+        .red {
+            color: #e74c3c
+        }
+
+        /* toolbar */
+        .adm-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem;
+            align-items: center
+        }
+
+        .adm-search {
+            flex: 1;
+            min-width: 220px;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .9rem;
+            font-family: inherit;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .15s
+        }
+
+            .adm-search:focus {
+                border-color: #6ab04c
+            }
+
+        .adm-sel {
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .8rem;
+            font-family: inherit;
+            font-size: .85rem;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+            color: #4a5568
+        }
+
+            .adm-sel:focus {
+                border-color: #6ab04c
+            }
+
+        /* table */
+        .adm-table-wrap {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            overflow: hidden
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        thead tr {
+            background: #fafafa;
+            border-bottom: 1.5px solid #e8edf2
+        }
+
+        th {
+            padding: .75rem 1rem;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #8a9bb0;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            white-space: nowrap
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f2f2f2;
+            transition: background .12s
+        }
+
+            tbody tr:last-child {
+                border-bottom: none
+            }
+
+            tbody tr:hover {
+                background: #fafffe
+            }
+
+        td {
+            padding: .75rem 1rem;
+            font-size: .86rem;
+            color: #1a1a1a;
+            vertical-align: middle
+        }
+
+        /* status badge */
+        .adm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: .22rem .65rem;
+            border-radius: 20px;
+            font-size: .74rem;
+            font-weight: 700
+        }
+
+        .s-pending {
+            background: #fff8ec;
+            color: #d68910;
+            border: 1px solid #ffe0a0
+        }
+
+        .s-confirmed {
+            background: #e8f4fd;
+            color: #2980b9;
+            border: 1px solid #b8d9f5
+        }
+
+        .s-shipping {
+            background: #eaf4ff;
+            color: #1a6fb0;
+            border: 1px solid #a8d0f0
+        }
+
+        .s-completed {
+            background: #f0fff4;
+            color: #27ae60;
+            border: 1px solid #b7e4c7
+        }
+
+        .s-cancelled {
+            background: #fff0f0;
+            color: #e74c3c;
+            border: 1px solid #f5c6c6
+        }
+
+        /* ── Action buttons (state machine) ── */
+        .action-wrap {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        /* Nút chuyển trạng thái */
+        .act-btn {
+            border-radius: 7px;
+            padding: .28rem .7rem;
+            font-size: .76rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            border: 1.5px solid transparent;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        /* confirmed */
+        .act-confirm {
+            background: #e8f4fd;
+            color: #2980b9;
+            border-color: #b8d9f5
+        }
+
+            .act-confirm:hover {
+                background: #2980b9;
+                color: #fff
+            }
+        /* shipping */
+        .act-ship {
+            background: #eaf4ff;
+            color: #1a6fb0;
+            border-color: #a8d0f0
+        }
+
+            .act-ship:hover {
+                background: #1a6fb0;
+                color: #fff
+            }
+        /* completed */
+        .act-complete {
+            background: #f0fff4;
+            color: #27ae60;
+            border-color: #b7e4c7
+        }
+
+            .act-complete:hover {
+                background: #27ae60;
+                color: #fff
+            }
+        /* cancelled */
+        .act-cancel {
+            background: #fff0f0;
+            color: #e74c3c;
+            border-color: #f5c6c6
+        }
+
+            .act-cancel:hover {
+                background: #e74c3c;
+                color: #fff
+            }
+        /* detail */
+        .act-detail {
+            background: #f5f5f5;
+            color: #4a5568;
+            border-color: #e8edf2
+        }
+
+            .act-detail:hover {
+                background: #6ab04c;
+                color: #fff;
+                border-color: #6ab04c
+            }
+        /* final state */
+        .act-final {
+            font-size: .74rem;
+            color: #aaa;
+            font-style: italic;
+            padding: .28rem 0
+        }
+
+        /* loading spinner on button */
+        .act-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
+        /* pager */
+        .adm-pager {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 1.2rem
+        }
+
+        .adm-pg {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .adm-pg:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .adm-pg.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+            .adm-pg:disabled {
+                opacity: .35;
+                cursor: not-allowed
+            }
+
+        /* detail modal */
+        .modal-content {
+            border-radius: 14px;
+            border: none
+        }
+
+        .modal-header {
+            border: none;
+            padding-bottom: 0
+        }
+
+        .od-item {
+            display: flex;
+            gap: 10px;
+            padding: .6rem 0;
+            border-bottom: 1px solid #f2f2f2;
+            align-items: center
+        }
+
+            .od-item:last-child {
+                border-bottom: none
+            }
+
+        .od-img {
+            width: 44px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #f0f7eb;
+            flex-shrink: 0
+        }
+
+        .od-ph {
+            width: 44px;
+            height: 60px;
+            border-radius: 5px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1.2rem;
+            flex-shrink: 0
+        }
+
+        .od-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .85rem;
+            padding: .3rem 0;
+            color: #4a5568
+        }
+
+            .od-row.total {
+                font-weight: 800;
+                font-size: .95rem;
+                color: #1a1a1a;
+                border-top: 1.5px solid #f0f0f0;
+                padding-top: .6rem
+            }
+
+                .od-row.total span:last-child {
+                    color: #6ab04c
+                }
+
+        /* modal action buttons */
+        .modal-act-wrap {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: .75rem;
+            padding-top: .75rem;
+            border-top: 1px solid #f0f0f0
+        }
+
+        .modal-act-btn {
+            border-radius: 9px;
+            padding: .45rem 1rem;
+            font-size: .84rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            border: 1.5px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .modal-act-btn:disabled {
+                opacity: .6;
+                cursor: not-allowed
+            }
+
+        .adm-empty {
+            text-align: center;
+            padding: 2.5rem;
+            color: #8a9bb0;
+            font-size: .9rem
+        }
+
+        @media(max-width:768px) {
+            th:nth-child(3), td:nth-child(3), th:nth-child(5), td:nth-child(5) {
+                display: none
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="adm-wrap">
+        <h2 class="adm-title"><i class="bi bi-bag-check"></i> Quản lý đơn hàng</h2>
+
+        <div class="adm-stats">
+            <div class="adm-stat"><div class="adm-stat-val" id="stTotal">—</div><div class="adm-stat-lbl">Tổng đơn</div></div>
+            <div class="adm-stat"><div class="adm-stat-val orange" id="stPending">—</div><div class="adm-stat-lbl">Chờ xác nhận</div></div>
+            <div class="adm-stat"><div class="adm-stat-val blue" id="stShipping">—</div><div class="adm-stat-lbl">Đang giao</div></div>
+            <div class="adm-stat"><div class="adm-stat-val green" id="stCompleted">—</div><div class="adm-stat-lbl">Hoàn thành</div></div>
+            <div class="adm-stat"><div class="adm-stat-val green" id="stRevenue">—</div><div class="adm-stat-lbl">Doanh thu</div></div>
+        </div>
+
+        <div class="adm-bar">
+            <input class="adm-search" id="admSearch" type="text"
+                   placeholder="Tìm tên KH, SĐT, email..."
+                   oninput="debounceSearch()">
+            <select class="adm-sel" id="admStatus" onchange="loadOrders(1)">
+                <option value="">Tất cả trạng thái</option>
+                <option value="pending">Chờ xác nhận</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="shipping">Đang giao</option>
+                <option value="completed">Hoàn thành</option>
+                <option value="cancelled">Đã huỷ</option>
+            </select>
+        </div>
+
+        <div class="adm-table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Khách hàng</th>
+                        <th>Địa chỉ</th>
+                        <th>Tổng tiền</th>
+                        <th>Ngày đặt</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="admTbody">
+                    <tr>
+                        <td colspan="7" class="adm-empty">
+                            <div class="spinner-border text-success spinner-border-sm"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="adm-pager" id="admPager"></div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="orderModalTitle">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4" id="orderModalBody">
+                    <div class="text-center py-4"><div class="spinner-border text-success"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+            const IMG_URL = "https://localhost:7108";
+
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+            const imgSrc = raw => {
+                if (!raw) return "";
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/, "");
+            };
+
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
+
+            let curPage = 1, searchTimer = null;
+            const PAGE_SIZE = 15;
+
+            /* ════════════════════════════════════════════
+               STATE MACHINE (mirror backend)
+               Dùng để render đúng nút ngay trên frontend
+               mà không cần đợi backend từ chối
+            ════════════════════════════════════════════ */
+            const TRANSITIONS = {
+                pending: ["confirmed", "cancelled"],
+                confirmed: ["shipping", "cancelled"],
+                shipping: ["completed", "cancelled"],
+                completed: [],
+                cancelled: [],
+            };
+
+            const STATUS_META = {
+                pending: { label: "Chờ xác nhận", cls: "s-pending", icon: "bi-hourglass-split" },
+                confirmed: { label: "Đã xác nhận", cls: "s-confirmed", icon: "bi-check2" },
+                shipping: { label: "Đang giao", cls: "s-shipping", icon: "bi-truck" },
+                completed: { label: "Hoàn thành", cls: "s-completed", icon: "bi-check-circle" },
+                cancelled: { label: "Đã huỷ", cls: "s-cancelled", icon: "bi-x-circle" },
+            };
+
+            const ACTION_BTN = {
+                confirmed: { cls: "act-confirm", icon: "bi-check2", label: "Xác nhận" },
+                shipping: { cls: "act-ship", icon: "bi-truck", label: "Bắt đầu giao" },
+                completed: { cls: "act-complete", icon: "bi-check-circle", label: "Hoàn thành" },
+                cancelled: { cls: "act-cancel", icon: "bi-x-circle", label: "Huỷ đơn" },
+            };
+
+            function badge(s) {
+                const m = STATUS_META[s] || { label: s, cls: "s-pending", icon: "bi-question-circle" };
+                return `<span class="adm-badge ${m.cls}"><i class="bi ${m.icon}"></i>${m.label}</span>`;
+            }
+
+            /* Render nút hành động cho 1 row trong bảng */
+            function renderActionBtns(orderId, status) {
+                const next = TRANSITIONS[status] ?? [];
+
+                if (next.length === 0) {
+                    return `<div class="action-wrap">
+                            <span class="act-final">—</span>
+                            <button class="act-btn act-detail" onclick="openDetail(${orderId})">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>`;
+                }
+
+                const btns = next.map(ns => {
+                    const m = ACTION_BTN[ns];
+                    if (!m) return "";
+                    return `<button class="act-btn ${m.cls}"
+                                id="actbtn_${orderId}_${ns}"
+                                onclick="doTransition(${orderId},'${ns}',this)">
+                            <i class="bi ${m.icon}"></i>${m.label}
+                        </button>`;
+                }).join("");
+
+                return `<div class="action-wrap" id="actions_${orderId}">
+                        ${btns}
+                        <button class="act-btn act-detail" onclick="openDetail(${orderId})">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>`;
+            }
+
+            /* ── Load stats ── */
+            async function loadStats() {
+                try {
+                    const res = await fetch(`${API}/orders/admin/stats`, { headers: authHeaders() });
+                    if (!res.ok) return;
+                    const d = await res.json();
+                    document.getElementById("stTotal").textContent = d.totalOrders ?? 0;
+                    document.getElementById("stRevenue").textContent = fmt(d.totalRevenue ?? 0);
+                    const byS = d.byStatus ?? [];
+                    const get = s => byS.find(x => x.status === s)?.count ?? 0;
+                    document.getElementById("stPending").textContent = get("pending");
+                    document.getElementById("stShipping").textContent = get("shipping");
+                    document.getElementById("stCompleted").textContent = get("completed");
+                } catch { }
+            }
+
+            /* ── Load orders ── */
+            window.loadOrders = async function (page = 1) {
+                curPage = page;
+                const tbody = document.getElementById("admTbody");
+                const pager = document.getElementById("admPager");
+                tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">
+                <div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+                pager.innerHTML = "";
+
+                const keyword = document.getElementById("admSearch").value.trim();
+                const status = document.getElementById("admStatus").value;
+                const p = new URLSearchParams({ page, pageSize: PAGE_SIZE });
+                if (keyword) p.append("keyword", keyword);
+                if (status) p.append("status", status);
+
+                try {
+                    const res = await fetch(`${API}/orders/admin/all?${p}`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    const orders = data.data || [];
+                    const totalPages = data.totalPages ?? 1;
+
+                    if (!orders.length) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">Không có đơn hàng nào.</td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = orders.map(o => `
+                <tr id="row_${o.orderID}">
+                    <td><span style="font-weight:700">#${o.orderID}</span></td>
+                    <td>
+                        <div style="font-weight:600;font-size:.86rem">${o.customerName ?? ""}</div>
+                        <div style="font-size:.75rem;color:#8a9bb0">${o.phone ?? ""}</div>
+                    </td>
+                    <td style="font-size:.82rem;color:#4a5568;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                        title="${o.address ?? ""}">${o.address ?? ""}</td>
+                    <td style="font-weight:700;color:#6ab04c">${fmt(o.totalCost ?? 0)}</td>
+                    <td style="font-size:.78rem;color:#8a9bb0">
+                        ${o.createdAt ? new Date(o.createdAt).toLocaleDateString("vi-VN") : ""}
+                    </td>
+                    <td id="badge_${o.orderID}">${badge(o.status)}</td>
+                    <td>${renderActionBtns(o.orderID, o.status)}</td>
+                </tr>`).join("");
+
+                    if (totalPages > 1) {
+                        let html = `<button class="adm-pg" ${page === 1 ? "disabled" : ""} onclick="loadOrders(${page - 1})"><i class="bi bi-chevron-left"></i></button>`;
+                        for (let pg = 1; pg <= totalPages; pg++)
+                            html += `<button class="adm-pg ${pg === page ? "active" : ""}" onclick="loadOrders(${pg})">${pg}</button>`;
+                        html += `<button class="adm-pg" ${page === totalPages ? "disabled" : ""} onclick="loadOrders(${page + 1})"><i class="bi bi-chevron-right"></i></button>`;
+                        pager.innerHTML = html;
+                    }
+                } catch {
+                    tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">Không tải được dữ liệu.</td></tr>`;
+                }
+            };
+
+            /* ── Chuyển trạng thái (từ nút trong bảng) ── */
+            window.doTransition = async function (orderId, newStatus, btn) {
+                // Xác nhận trước khi huỷ
+                if (newStatus === "cancelled") {
+                    if (!confirm(`Bạn chắc chắn muốn huỷ đơn hàng #${orderId}?`)) return;
+                }
+
+                // Disable tất cả nút trong row để tránh double-click
+                const wrap = document.getElementById(`actions_${orderId}`);
+                wrap?.querySelectorAll("button").forEach(b => b.disabled = true);
+                const origHTML = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+                try {
+                    const res = await fetch(`${API}/orders/admin/${orderId}/status`, {
+                        method: "PUT", headers: authHeaders(),
+                        body: JSON.stringify({ status: newStatus })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        alert(data.message || "Cập nhật thất bại.");
+                        // Restore buttons
+                        wrap?.querySelectorAll("button").forEach(b => b.disabled = false);
+                        btn.innerHTML = origHTML;
+                        return;
+                    }
+
+                    // Cập nhật badge trạng thái inline (không reload cả trang)
+                    const badgeEl = document.getElementById(`badge_${orderId}`);
+                    if (badgeEl) badgeEl.innerHTML = badge(data.newStatus);
+
+                    // Cập nhật lại nút hành động theo trạng thái mới
+                    if (wrap) wrap.outerHTML = renderActionBtns(orderId, data.newStatus);
+
+                    // Flash row xanh
+                    const row = document.getElementById(`row_${orderId}`);
+                    if (row) { row.style.background = "#f0fff4"; setTimeout(() => row.style.background = "", 1400); }
+
+                    // Refresh stats
+                    loadStats();
+
+                } catch {
+                    alert("Không kết nối được máy chủ.");
+                    wrap?.querySelectorAll("button").forEach(b => b.disabled = false);
+                    btn.innerHTML = origHTML;
+                }
+            };
+
+            /* ── Mở modal chi tiết ── */
+            window.openDetail = async function (id) {
+                const modal = new bootstrap.Modal(document.getElementById("orderModal"));
+                document.getElementById("orderModalTitle").textContent = `Chi tiết đơn #${id}`;
+                document.getElementById("orderModalBody").innerHTML =
+                    `<div class="text-center py-4"><div class="spinner-border text-success"></div></div>`;
+                modal.show();
+
+                try {
+                    const res = await fetch(`${API}/orders/${id}`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const o = await res.json();
+                    const items = o.items ?? [];
+
+                    const itemsHtml = items.map(it => {
+                        const src = imgSrc(it.book?.image ?? "");
+                        return `
+                    <div class="od-item">
+                        ${src ? `<img class="od-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ``}
+                        <div class="od-ph" ${src ? 'style="display:none"' : ""}><i class="bi bi-book"></i></div>
+                        <div style="flex:1;min-width:0">
+                            <div style="font-weight:600;font-size:.86rem">${it.book?.title ?? ""}</div>
+                            <div style="font-size:.76rem;color:#8a9bb0">${it.book?.author ?? ""}</div>
+                            <div style="font-size:.82rem;color:#4a5568;margin-top:2px">
+                                SL: ${it.quantity} × ${fmt(it.unitPrice)}
+                            </div>
+                        </div>
+                        <div style="font-weight:700;color:#6ab04c;font-size:.88rem;flex-shrink:0">
+                            ${fmt(it.subTotal)}
+                        </div>
+                    </div>`;
+                    }).join("");
+
+                    // Render nút hành động trong modal
+                    const nextStatuses = o.nextStatuses ?? (TRANSITIONS[o.status] ?? []);
+                    const isFinal = o.isFinal ?? (nextStatuses.length === 0);
+
+                    const modalActionBtns = isFinal
+                        ? `<p style="font-size:.82rem;color:#aaa;margin:0;font-style:italic">
+                           Đơn hàng đã ở trạng thái cuối, không thể thay đổi.
+                       </p>`
+                        : nextStatuses.map(ns => {
+                            const m = ACTION_BTN[ns];
+                            if (!m) return "";
+                            return `<button class="modal-act-btn ${m.cls}"
+                                        onclick="doTransitionModal(${o.orderID},'${ns}',this)">
+                                    <i class="bi ${m.icon}"></i>${m.label}
+                                </button>`;
+                        }).join("");
+
+                    document.getElementById("orderModalBody").innerHTML = `
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6">
+                        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#8a9bb0;margin-bottom:.6rem">
+                            Thông tin giao hàng
+                        </div>
+                        <div class="od-row"><span>Khách hàng</span><span style="font-weight:600">${o.customer?.name ?? ""}</span></div>
+                        <div class="od-row"><span>SĐT</span><span>${o.phone ?? ""}</span></div>
+                        <div class="od-row"><span>Địa chỉ</span><span style="text-align:right;max-width:60%">${o.address ?? ""}</span></div>
+                        ${o.note ? `<div class="od-row"><span>Ghi chú</span><span>${o.note}</span></div>` : ""}
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#8a9bb0;margin-bottom:.6rem">
+                            Trạng thái đơn
+                        </div>
+                        <div class="od-row"><span>Ngày đặt</span>
+                            <span>${o.createdAt ? new Date(o.createdAt).toLocaleString("vi-VN") : ""}</span></div>
+                        <div class="od-row"><span>Cập nhật</span>
+                            <span>${o.updatedAt ? new Date(o.updatedAt).toLocaleString("vi-VN") : ""}</span></div>
+                        <div class="od-row"><span>Trạng thái</span>
+                            <span id="modalBadge_${o.orderID}">${badge(o.status)}</span></div>
+                    </div>
+                </div>
+
+                <hr style="border-color:#f0f0f0;margin:1rem 0">
+
+                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#8a9bb0;margin-bottom:.6rem">
+                    Sản phẩm (${items.length})
+                </div>
+                ${itemsHtml}
+                <div style="margin-top:.8rem">
+                    <div class="od-row total"><span>Tổng cộng</span><span>${fmt(o.totalCost ?? 0)}</span></div>
+                </div>
+
+                <!-- Nút hành động trong modal -->
+                <div class="modal-act-wrap" id="modalActions_${o.orderID}">
+                    ${modalActionBtns}
+                </div>`;
+
+                } catch {
+                    document.getElementById("orderModalBody").innerHTML =
+                        `<p class="text-muted text-center py-3">Không tải được chi tiết đơn hàng.</p>`;
+                }
+            };
+
+            /* ── Transition từ modal ── */
+            window.doTransitionModal = async function (orderId, newStatus, btn) {
+                if (newStatus === "cancelled") {
+                    if (!confirm(`Bạn chắc chắn muốn huỷ đơn hàng #${orderId}?`)) return;
+                }
+
+                const wrap = document.getElementById(`modalActions_${orderId}`);
+                wrap?.querySelectorAll("button").forEach(b => b.disabled = true);
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+                try {
+                    const res = await fetch(`${API}/orders/admin/${orderId}/status`, {
+                        method: "PUT", headers: authHeaders(),
+                        body: JSON.stringify({ status: newStatus })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        alert(data.message || "Cập nhật thất bại.");
+                        wrap?.querySelectorAll("button").forEach(b => b.disabled = false);
+                        btn.innerHTML = orig;
+                        return;
+                    }
+
+                    // Cập nhật badge trong modal
+                    const mBadge = document.getElementById(`modalBadge_${orderId}`);
+                    if (mBadge) mBadge.innerHTML = badge(data.newStatus);
+
+                    // Cập nhật nút trong modal
+                    const next = data.nextStatuses ?? (TRANSITIONS[data.newStatus] ?? []);
+                    const isFin = data.isFinal ?? (next.length === 0);
+                    if (wrap) {
+                        wrap.innerHTML = isFin
+                            ? `<p style="font-size:.82rem;color:#aaa;margin:0;font-style:italic">Đơn hàng đã ở trạng thái cuối, không thể thay đổi.</p>`
+                            : next.map(ns => {
+                                const m = ACTION_BTN[ns]; if (!m) return "";
+                                return `<button class="modal-act-btn ${m.cls}"
+                                            onclick="doTransitionModal(${orderId},'${ns}',this)">
+                                        <i class="bi ${m.icon}"></i>${m.label}
+                                    </button>`;
+                            }).join("");
+                    }
+
+                    // Cập nhật badge + nút trong bảng phía sau (nếu row còn visible)
+                    const badgeEl = document.getElementById(`badge_${orderId}`);
+                    if (badgeEl) badgeEl.innerHTML = badge(data.newStatus);
+                    const actWrap = document.getElementById(`actions_${orderId}`);
+                    if (actWrap) actWrap.outerHTML = renderActionBtns(orderId, data.newStatus);
+
+                    loadStats();
+
+                } catch {
+                    alert("Không kết nối được máy chủ.");
+                    wrap?.querySelectorAll("button").forEach(b => b.disabled = false);
+                    btn.innerHTML = orig;
+                }
+            };
+
+            /* ── Debounce search ── */
+            window.debounceSearch = function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => loadOrders(1), 400);
+            };
+
+            loadStats();
+            loadOrders(1);
+        })();
+    </script>
+</body>
+</html>

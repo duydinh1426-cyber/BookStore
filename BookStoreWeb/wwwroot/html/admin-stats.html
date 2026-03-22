@@ -1,0 +1,528 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê – Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .adm-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .adm-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.4rem
+        }
+
+            .adm-title i {
+                color: #6ab04c
+            }
+
+        /* date filter */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 1.5rem
+        }
+
+        .filter-btn {
+            padding: .38rem .85rem;
+            border-radius: 20px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            color: #4a5568;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+        }
+
+            .filter-btn:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .filter-btn.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+        .date-input {
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .38rem .75rem;
+            font-family: inherit;
+            font-size: .82rem;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+            .date-input:focus {
+                border-color: #6ab04c
+            }
+
+        .apply-btn {
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .38rem .9rem;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+        }
+
+            .apply-btn:hover {
+                background: #4e8a35
+            }
+
+        /* stat cards */
+        .stat-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.25rem 1.4rem;
+            transition: box-shadow .2s;
+        }
+
+            .stat-card:hover {
+                box-shadow: 0 4px 20px rgba(0,0,0,.07)
+            }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-bottom: .75rem
+        }
+
+        .stat-val {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            line-height: 1
+        }
+
+        .stat-lbl {
+            font-size: .78rem;
+            color: #8a9bb0;
+            font-weight: 500;
+            margin-top: 5px
+        }
+
+        /* chart cards */
+        .chart-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-weight: 700;
+            font-size: .97rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+            .chart-title i {
+                color: #6ab04c
+            }
+
+        /* top books table */
+        .book-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: .65rem 0;
+            border-bottom: 1px solid #f5f5f5
+        }
+
+            .book-row:last-child {
+                border-bottom: none
+            }
+
+        .rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            font-weight: 800;
+            flex-shrink: 0
+        }
+
+        .r1 {
+            background: #f39c12;
+            color: #fff
+        }
+
+        .r2 {
+            background: #8a9bb0;
+            color: #fff
+        }
+
+        .r3 {
+            background: #cd7f32;
+            color: #fff
+        }
+
+        .rn {
+            background: #f0f7eb;
+            color: #6ab04c
+        }
+
+        .b-img {
+            width: 36px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #f0f7eb;
+            flex-shrink: 0
+        }
+
+        .b-ph {
+            width: 36px;
+            height: 50px;
+            border-radius: 4px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1rem;
+            flex-shrink: 0
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="adm-page">
+        <h2 class="adm-title"><i class="bi bi-bar-chart"></i> Thống kê</h2>
+
+        <!-- Date filter -->
+        <div class="filter-bar" id="filterBar">
+            <button class="filter-btn active" data-range="all" onclick="setRange('all',this)">Tất cả</button>
+            <button class="filter-btn" data-range="today" onclick="setRange('today',this)">Hôm nay</button>
+            <button class="filter-btn" data-range="week" onclick="setRange('week',this)">7 ngày</button>
+            <button class="filter-btn" data-range="month" onclick="setRange('month',this)">30 ngày</button>
+            <button class="filter-btn" data-range="year" onclick="setRange('year',this)">Năm nay</button>
+            <span style="font-size:.8rem;color:#8a9bb0">hoặc</span>
+            <input class="date-input" id="dtFrom" type="date">
+            <span style="font-size:.8rem;color:#8a9bb0">đến</span>
+            <input class="date-input" id="dtTo" type="date">
+            <button class="apply-btn" onclick="applyCustom()">Áp dụng</button>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f0fff4"><i class="bi bi-cash-stack" style="color:#27ae60"></i></div>
+                    <div class="stat-val" id="stRevenue" style="color:#6ab04c;font-size:1.25rem">—</div>
+                    <div class="stat-lbl">Doanh thu (đã hoàn thành)</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#eaf4ff"><i class="bi bi-bag-check" style="color:#2980b9"></i></div>
+                    <div class="stat-val" id="stTotal" style="color:#2980b9">—</div>
+                    <div class="stat-lbl">Tổng đơn hàng</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f0fff4"><i class="bi bi-check-circle" style="color:#6ab04c"></i></div>
+                    <div class="stat-val" id="stCompleted">—</div>
+                    <div class="stat-lbl">Đơn hoàn thành</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#fff0f0"><i class="bi bi-x-circle" style="color:#e74c3c"></i></div>
+                    <div class="stat-val" id="stCancelled" style="color:#e74c3c">—</div>
+                    <div class="stat-lbl">Đơn đã huỷ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Status donut chart -->
+            <div class="col-12 col-lg-5">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="bi bi-pie-chart-fill"></i> Phân bổ trạng thái đơn hàng</div>
+                    <div style="position:relative;height:260px;display:flex;align-items:center;justify-content:center">
+                        <canvas id="donutChart"></canvas>
+                        <div id="donutEmpty" style="display:none;color:#8a9bb0;font-size:.88rem">Chưa có dữ liệu</div>
+                    </div>
+                    <div id="donutLegend" style="display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-top:.75rem;justify-content:center"></div>
+                </div>
+
+                <!-- Revenue by status bar -->
+                <div class="chart-card">
+                    <div class="chart-title"><i class="bi bi-bar-chart-fill"></i> Doanh thu theo trạng thái</div>
+                    <div style="height:180px"><canvas id="barChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Top books + low stock -->
+            <div class="col-12 col-lg-7">
+                <div class="chart-card">
+                    <div class="chart-title"><i class="bi bi-trophy-fill"></i> Top 10 sách bán chạy</div>
+                    <div id="topBooks">
+                        <div style="text-align:center;padding:1.5rem;color:#8a9bb0">
+                            <div class="spinner-border spinner-border-sm text-success"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">
+                        <i class="bi bi-exclamation-triangle-fill" style="color:#f39c12"></i>
+                        Sách sắp hết hàng (tồn kho &lt; 10)
+                    </div>
+                    <div id="lowStock">
+                        <div style="text-align:center;padding:1.5rem;color:#8a9bb0">
+                            <div class="spinner-border spinner-border-sm text-success"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+            const IMG_URL = "https://localhost:7108";
+
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({ "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+            const imgSrc = raw => {
+                if (!raw) return "";
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/, "");
+            };
+
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
+
+            let donutInst = null, barInst = null;
+            let fromDate = null, toDate = null;
+
+            const STATUS_LABELS = {
+                pending: "Chờ xác nhận", confirmed: "Đã xác nhận",
+                shipping: "Đang giao", completed: "Hoàn thành", cancelled: "Đã huỷ"
+            };
+            const STATUS_COLORS = {
+                pending: "#f39c12", confirmed: "#3498db",
+                shipping: "#1a6fb0", completed: "#27ae60", cancelled: "#e74c3c"
+            };
+
+            /* ── Date range presets ── */
+            window.setRange = function (range, btn) {
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const now = new Date();
+                const pad = n => String(n).padStart(2, "0");
+                const toStr = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+                if (range === "all") { fromDate = null; toDate = null; }
+                if (range === "today") { fromDate = toStr(now); toDate = toStr(now); }
+                if (range === "week") { const d = new Date(now); d.setDate(d.getDate() - 6); fromDate = toStr(d); toDate = toStr(now); }
+                if (range === "month") { const d = new Date(now); d.setDate(d.getDate() - 29); fromDate = toStr(d); toDate = toStr(now); }
+                if (range === "year") { fromDate = `${now.getFullYear()}-01-01`; toDate = toStr(now); }
+
+                if (fromDate) document.getElementById("dtFrom").value = fromDate;
+                if (toDate) document.getElementById("dtTo").value = toDate;
+                if (!fromDate) { document.getElementById("dtFrom").value = ""; document.getElementById("dtTo").value = ""; }
+
+                loadStats();
+            };
+
+            window.applyCustom = function () {
+                fromDate = document.getElementById("dtFrom").value || null;
+                toDate = document.getElementById("dtTo").value || null;
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                loadStats();
+            };
+
+            /* ── Load stats ── */
+            async function loadStats() {
+                const p = new URLSearchParams();
+                if (fromDate) p.append("from", fromDate + "T00:00:00");
+                if (toDate) p.append("to", toDate + "T23:59:59");
+
+                try {
+                    const res = await fetch(`${API}/orders/admin/stats?${p}`, { headers: authHeaders() });
+                    const data = await res.json();
+
+                    const rev = data.totalRevenue ?? 0;
+                    const tot = data.totalOrders ?? 0;
+                    const byS = data.byStatus || [];
+                    const get = s => (byS.find(x => x.status === s)?.count ?? 0);
+                    const getR = s => (byS.find(x => x.status === s)?.revenue ?? 0);
+
+                    document.getElementById("stRevenue").textContent = fmt(rev);
+                    document.getElementById("stTotal").textContent = tot;
+                    document.getElementById("stCompleted").textContent = get("completed");
+                    document.getElementById("stCancelled").textContent = get("cancelled");
+
+                    // Donut chart
+                    const dLabels = byS.map(s => STATUS_LABELS[s.status] || s.status);
+                    const dData = byS.map(s => s.count);
+                    const dColors = byS.map(s => STATUS_COLORS[s.status] || "#8a9bb0");
+
+                    if (donutInst) donutInst.destroy();
+                    if (!dData.length) {
+                        document.getElementById("donutChart").style.display = "none";
+                        document.getElementById("donutEmpty").style.display = "block";
+                    } else {
+                        document.getElementById("donutChart").style.display = "";
+                        document.getElementById("donutEmpty").style.display = "none";
+                        donutInst = new Chart(document.getElementById("donutChart"), {
+                            type: "doughnut",
+                            data: { labels: dLabels, datasets: [{ data: dData, backgroundColor: dColors, borderWidth: 2, borderColor: "#fff" }] },
+                            options: { responsive: true, maintainAspectRatio: false, cutout: "65%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.label}: ${c.raw} đơn` } } } }
+                        });
+                        document.getElementById("donutLegend").innerHTML = byS.map(s => `
+                        <div style="display:flex;align-items:center;gap:5px;font-size:.76rem;font-weight:600">
+                            <span style="width:10px;height:10px;border-radius:50%;background:${STATUS_COLORS[s.status] || "#8a9bb0"};flex-shrink:0"></span>
+                            ${STATUS_LABELS[s.status] || s.status}: ${s.count}
+                        </div>`).join("");
+                    }
+
+                    // Bar chart - revenue
+                    if (barInst) barInst.destroy();
+                    barInst = new Chart(document.getElementById("barChart"), {
+                        type: "bar",
+                        data: {
+                            labels: byS.map(s => STATUS_LABELS[s.status] || s.status),
+                            datasets: [{
+                                label: "Doanh thu (VNĐ)",
+                                data: byS.map(s => getR(s.status)),
+                                backgroundColor: byS.map(s => (STATUS_COLORS[s.status] || "#8a9bb0") + "bb"),
+                                borderColor: byS.map(s => STATUS_COLORS[s.status] || "#8a9bb0"),
+                                borderWidth: 1.5, borderRadius: 6,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { ticks: { callback: v => v >= 1e6 ? Math.round(v / 1e6) + "M" : v >= 1e3 ? Math.round(v / 1e3) + "K" : v, font: { size: 11 } }, grid: { color: "#f0f0f0" } },
+                                x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+                            }
+                        }
+                    });
+                } catch (e) { console.error(e); }
+            }
+
+            /* ── Top books ── */
+            async function loadTopBooks() {
+                try {
+                    const res = await fetch(`${API}/books/top-selling?count=10`);
+                    const data = await res.json();
+                    if (!data.length) {
+                        document.getElementById("topBooks").innerHTML = `<p style="text-align:center;color:#8a9bb0;font-size:.85rem;padding:1rem">Chưa có dữ liệu.</p>`;
+                        return;
+                    }
+                    document.getElementById("topBooks").innerHTML = data.map((b, i) => {
+                        const src = imgSrc(b.image);
+                        const rc = i === 0 ? "r1" : i === 1 ? "r2" : i === 2 ? "r3" : "rn";
+                        return `
+                    <div class="book-row">
+                        <div class="rank ${rc}">${i + 1}</div>
+                        ${src ? `<img class="b-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ``}
+                        <div class="b-ph" ${src ? 'style="display:none"' : ""}><i class="bi bi-book"></i></div>
+                        <div style="flex:1;min-width:0">
+                            <div style="font-weight:600;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.title}</div>
+                            <div style="font-size:.75rem;color:#8a9bb0">${b.author}</div>
+                        </div>
+                        <div style="font-weight:700;color:#6ab04c;font-size:.84rem;white-space:nowrap">
+                            <i class="bi bi-bag-check me-1" style="font-size:.75rem"></i>${b.numberSold ?? 0} cuốn
+                        </div>
+                    </div>`;
+                    }).join("");
+                } catch (e) { console.error(e); }
+            }
+
+            /* ── Low stock ── */
+            async function loadLowStock() {
+                try {
+                    const res = await fetch(`${API}/books?pageSize=50&sortBy=numberstock&sortOrder=asc`);
+                    const data = await res.json();
+                    const low = (data.data || []).filter(b => (b.numberStock ?? 0) < 10);
+                    if (!low.length) {
+                        document.getElementById("lowStock").innerHTML = `
+                    <div style="text-align:center;padding:1rem;color:#27ae60;font-size:.85rem">
+                        <i class="bi bi-check-circle-fill me-1"></i>Tất cả sách đều đủ hàng!
+                    </div>`;
+                        return;
+                    }
+                    document.getElementById("lowStock").innerHTML = low.slice(0, 8).map(b => `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #f5f5f5">
+                    <div style="min-width:0;flex:1">
+                        <div style="font-weight:600;font-size:.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.title}</div>
+                        <div style="font-size:.74rem;color:#8a9bb0">${b.author}</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:12px">
+                        <span style="font-weight:700;color:${(b.numberStock ?? 0) === 0 ? "#e74c3c" : "#f39c12"};font-size:.85rem">
+                            ${b.numberStock ?? 0} còn
+                        </span>
+                        ${(b.numberStock ?? 0) === 0
+                            ? `<span style="font-size:.7rem;background:#fff0f0;color:#e74c3c;border:1px solid #f5c6c6;border-radius:4px;padding:0 5px;font-weight:700">HẾT</span>`
+                            : `<span style="font-size:.7rem;background:#fff8ec;color:#d68910;border:1px solid #ffe0a0;border-radius:4px;padding:0 5px;font-weight:700">ÍT</span>`}
+                    </div>
+                </div>`).join("");
+                } catch (e) { console.error(e); }
+            }
+
+            loadStats();
+            loadTopBooks();
+            loadLowStock();
+        })();
+    </script>
+</body>
+</html>

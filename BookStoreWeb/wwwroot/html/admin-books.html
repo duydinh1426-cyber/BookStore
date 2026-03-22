@@ -1,0 +1,672 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sách – Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .adm-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .adm-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.4rem
+        }
+
+            .adm-title i {
+                color: #6ab04c
+            }
+
+        /* toolbar */
+        .adm-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem;
+            align-items: center
+        }
+
+        .adm-search {
+            flex: 1;
+            min-width: 200px;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .9rem;
+            font-family: inherit;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+            .adm-search:focus {
+                border-color: #6ab04c
+            }
+
+        .adm-sel {
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .8rem;
+            font-family: inherit;
+            font-size: .85rem;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+        }
+
+            .adm-sel:focus {
+                border-color: #6ab04c
+            }
+
+        .adm-btn-add {
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .55rem 1.1rem;
+            font-size: .88rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+            .adm-btn-add:hover {
+                background: #4e8a35
+            }
+
+        /* table */
+        .adm-wrap {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            overflow: hidden
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        thead tr {
+            background: #fafafa;
+            border-bottom: 1.5px solid #e8edf2
+        }
+
+        th {
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            font-weight: 700;
+            color: #8a9bb0;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            white-space: nowrap
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f2f2f2;
+            transition: background .12s
+        }
+
+            tbody tr:last-child {
+                border-bottom: none
+            }
+
+            tbody tr:hover {
+                background: #fafffe
+            }
+
+        td {
+            padding: .7rem 1rem;
+            font-size: .85rem;
+            color: #1a1a1a;
+            vertical-align: middle
+        }
+
+        .td-img {
+            width: 42px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #f0f7eb;
+            flex-shrink: 0
+        }
+
+        .td-img-ph {
+            width: 42px;
+            height: 56px;
+            border-radius: 5px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1.1rem
+        }
+
+        .stock-low {
+            color: #e74c3c;
+            font-weight: 700
+        }
+
+        .stock-ok {
+            color: #27ae60;
+            font-weight: 600
+        }
+
+        .adm-btn {
+            border-radius: 7px;
+            padding: .28rem .72rem;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            border: 1.5px solid transparent
+        }
+
+        .adm-btn-edit {
+            background: #e8f4fd;
+            color: #2980b9;
+            border-color: #b8d9f5
+        }
+
+            .adm-btn-edit:hover {
+                background: #2980b9;
+                color: #fff
+            }
+
+        .adm-btn-del {
+            background: #fff0f0;
+            color: #e74c3c;
+            border-color: #f5c6c6
+        }
+
+            .adm-btn-del:hover {
+                background: #e74c3c;
+                color: #fff
+            }
+
+        /* pager */
+        .adm-pager {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 1.2rem
+        }
+
+        .adm-pg {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .adm-pg:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .adm-pg.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+            .adm-pg:disabled {
+                opacity: .35;
+                cursor: not-allowed
+            }
+
+        /* modal form */
+        .modal-content {
+            border-radius: 14px;
+            border: none
+        }
+
+        .modal-header {
+            border: none;
+            padding-bottom: 0
+        }
+
+        .fm-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #4a5568;
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .fm-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .6rem .85rem;
+            font-family: inherit;
+            font-size: .9rem;
+            outline: none;
+            transition: border-color .15s
+        }
+
+            .fm-input:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.1)
+            }
+
+            .fm-input.error {
+                border-color: #e74c3c
+            }
+
+        .fm-err {
+            font-size: .76rem;
+            color: #e74c3c;
+            margin-top: 3px;
+            display: none
+        }
+
+            .fm-err.show {
+                display: block
+            }
+
+        .fm-btn-save {
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .65rem 1.4rem;
+            font-size: .92rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+            .fm-btn-save:hover {
+                background: #4e8a35
+            }
+
+            .fm-btn-save:disabled {
+                background: #ccc;
+                cursor: not-allowed
+            }
+
+        .adm-empty {
+            text-align: center;
+            padding: 2.5rem;
+            color: #8a9bb0
+        }
+
+        @media(max-width:768px) {
+            th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) {
+                display: none
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="adm-page">
+        <h2 class="adm-title"><i class="bi bi-journals"></i> Quản lý sách</h2>
+
+        <div class="adm-bar">
+            <input class="adm-search" id="admSearch" type="text"
+                   placeholder="Tìm tên sách, tác giả..."
+                   oninput="debounce()">
+            <select class="adm-sel" id="admCat" onchange="load(1)">
+                <option value="">Tất cả thể loại</option>
+            </select>
+            <button class="adm-btn-add" onclick="openForm()">
+                <i class="bi bi-plus-lg"></i> Thêm sách
+            </button>
+        </div>
+
+        <div class="adm-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tên sách</th>
+                        <th>Tác giả</th>
+                        <th>Thể loại</th>
+                        <th>Giá</th>
+                        <th>Tồn kho</th>
+                        <th>Đã bán</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="admTbody">
+                    <tr>
+                        <td colspan="8" class="adm-empty">
+                            <div class="spinner-border text-success spinner-border-sm"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="adm-pager" id="admPager"></div>
+    </div>
+
+    <!-- Book Form Modal -->
+    <div class="modal fade" id="bookModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="bookModalTitle">Thêm sách mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="fm-label">Tên sách <span style="color:#e74c3c">*</span></label>
+                            <input class="fm-input" id="fmTitle" type="text" placeholder="Nhập tên sách">
+                            <div class="fm-err" id="fmTitleErr">Vui lòng nhập tên sách</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="fm-label">Tác giả <span style="color:#e74c3c">*</span></label>
+                            <input class="fm-input" id="fmAuthor" type="text" placeholder="Tên tác giả">
+                            <div class="fm-err" id="fmAuthorErr">Vui lòng nhập tác giả</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="fm-label">Thể loại</label>
+                            <select class="fm-input" id="fmCat">
+                                <option value="">-- Chọn thể loại --</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <label class="fm-label">Giá (VNĐ) <span style="color:#e74c3c">*</span></label>
+                            <input class="fm-input" id="fmPrice" type="number" min="0" placeholder="0">
+                            <div class="fm-err" id="fmPriceErr">Giá phải lớn hơn 0</div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <label class="fm-label">Tồn kho <span style="color:#e74c3c">*</span></label>
+                            <input class="fm-input" id="fmStock" type="number" min="0" placeholder="0">
+                            <div class="fm-err" id="fmStockErr">Tồn kho không được âm</div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <label class="fm-label">Năm xuất bản</label>
+                            <input class="fm-input" id="fmYear" type="number" min="1900" max="2100" placeholder="2024">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="fm-label">Số trang</label>
+                            <input class="fm-input" id="fmPages" type="number" min="1" placeholder="300">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label class="fm-label">URL ảnh bìa</label>
+                            <input class="fm-input" id="fmImage" type="text" placeholder="tenbìa.jpg hoặc https://...">
+                        </div>
+                        <div class="col-12">
+                            <label class="fm-label">Mô tả</label>
+                            <textarea class="fm-input" id="fmDesc" rows="3"
+                                      placeholder="Mô tả ngắn về cuốn sách..."
+                                      style="resize:vertical;min-height:80px"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="fmAlert" style="display:none;margin-top:.9rem;padding:.6rem .85rem;border-radius:8px;font-size:.83rem;background:#fff0f0;border:1.5px solid #f5c6c6;color:#c0392b">
+                        <i class="bi bi-exclamation-circle-fill me-1"></i>
+                        <span id="fmAlertMsg"></span>
+                    </div>
+
+                    <div style="margin-top:1.2rem;display:flex;gap:8px">
+                        <button class="fm-btn-save" id="fmSaveBtn" onclick="saveBook()">
+                            <i class="bi bi-check-lg"></i> Lưu sách
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm px-3"
+                                data-bs-dismiss="modal">
+                            Huỷ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+(function(){
+    const API     = "https://localhost:7108/api";
+    const IMG_URL = "https://localhost:7108";
+
+    const getToken = () => sessionStorage.getItem("token");
+    const isLoggedIn  = () => !!getToken();
+    const authHeaders = () => ({"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`});
+    const fmt = n => new Intl.NumberFormat("vi-VN",{style:"currency",currency:"VND"}).format(n);
+    const imgSrc = raw => {
+        if(!raw) return "";
+        if(/^https?:\/\//i.test(raw)) return raw;
+        return IMG_URL+"/images/"+raw.replace(/^\/?(images\/)?/,"");
+    };
+
+    if(!isLoggedIn()){ window.location.href="../html/login.html"; return; }
+
+    let curPage = 1, editId = null, debTimer = null;
+    const PAGE_SIZE = 12;
+
+    /* ── Load categories ── */
+    async function loadCats(){
+        try{
+            const res  = await fetch(`${API}/categories`);
+            const data = await res.json();
+            const cats = data.data || data || [];
+            const opts = cats.map(c=>`<option value="${c.categoryID||c.id}">${c.categoryName||c.name}</option>`).join("");
+            document.getElementById("admCat").innerHTML += opts;
+            document.getElementById("fmCat").innerHTML  += opts;
+        }catch{}
+    }
+
+    /* ── Load books ── */
+    window.load = async function(page=1){
+        curPage = page;
+        const tbody = document.getElementById("admTbody");
+        const pager = document.getElementById("admPager");
+        tbody.innerHTML = `<tr><td colspan="8" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+        pager.innerHTML = "";
+
+        const kw  = document.getElementById("admSearch").value.trim();
+        const cat = document.getElementById("admCat").value;
+        const p   = new URLSearchParams({page, pageSize:PAGE_SIZE, sortBy:"createdAt", sortOrder:"desc"});
+        if(kw)  p.append("keyword", kw);
+        if(cat) p.append("categoryId", cat);
+
+        try{
+            const res  = await fetch(`${API}/books?${p}`);
+            const data = await res.json();
+            const books = data.data || [];
+            const totalPages = data.totalPages ?? 1;
+
+            if(!books.length){
+                tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Không tìm thấy sách nào.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = books.map(b=>{
+                const src = imgSrc(b.image);
+                return `
+                <tr>
+                    <td>
+                        ${src ? `<img class="td-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
+                        <div class="td-img-ph" ${src?'style="display:none"':""}><i class="bi bi-book"></i></div>
+                    </td>
+                    <td>
+                        <div style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${b.title}">${b.title}</div>
+                    </td>
+                    <td style="color:#4a5568">${b.author}</td>
+                    <td style="font-size:.8rem;color:#8a9bb0">${b.categoryName??""}</td>
+                    <td style="font-weight:700;color:#6ab04c;white-space:nowrap">${fmt(b.price)}</td>
+                    <td class="${(b.numberStock??0)<10?"stock-low":"stock-ok"}">${b.numberStock??0}</td>
+                    <td style="color:#4a5568">${b.numberSold??0}</td>
+                    <td>
+                        <div style="display:flex;gap:5px">
+                            <button class="adm-btn adm-btn-edit" onclick="openForm(${b.bookId??b.bookID})">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="adm-btn adm-btn-del" onclick="deleteBook(${b.bookId??b.bookID},'${(b.title||"").replace(/'/g,"\\'")}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join("");
+
+            // Pager
+            if(totalPages>1){
+                let html = `<button class="adm-pg" ${page===1?"disabled":""} onclick="load(${page-1})"><i class="bi bi-chevron-left"></i></button>`;
+                for(let pg=1;pg<=totalPages;pg++)
+                    html += `<button class="adm-pg ${pg===page?"active":""}" onclick="load(${pg})">${pg}</button>`;
+                html += `<button class="adm-pg" ${page===totalPages?"disabled":""} onclick="load(${page+1})"><i class="bi bi-chevron-right"></i></button>`;
+                pager.innerHTML = html;
+            }
+        }catch(e){
+            tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Lỗi tải dữ liệu.</td></tr>`;
+        }
+    };
+
+    /* ── Open form ── */
+    window.openForm = async function(id=null){
+        editId = id;
+        document.getElementById("bookModalTitle").textContent = id ? "Chỉnh sửa sách" : "Thêm sách mới";
+        document.getElementById("fmAlert").style.display = "none";
+        ["fmTitle","fmAuthor","fmPrice","fmStock","fmYear","fmPages","fmImage","fmDesc"].forEach(i=>{
+            const el = document.getElementById(i);
+            el.value = ""; el.classList.remove("error");
+        });
+        document.getElementById("fmCat").value = "";
+        ["fmTitleErr","fmAuthorErr","fmPriceErr","fmStockErr"].forEach(i=>document.getElementById(i).classList.remove("show"));
+
+        if(id){
+            try{
+                const res = await fetch(`${API}/books/${id}`);
+                const b   = await res.json();
+                document.getElementById("fmTitle").value  = b.title  || "";
+                document.getElementById("fmAuthor").value = b.author || "";
+                document.getElementById("fmPrice").value  = b.price  || "";
+                document.getElementById("fmStock").value  = b.numberStock ?? 0;
+                document.getElementById("fmYear").value   = b.publisherYear || "";
+                document.getElementById("fmPages").value  = b.numberPage || "";
+                document.getElementById("fmImage").value  = b.image || "";
+                document.getElementById("fmDesc").value   = b.description || "";
+                // Tìm category theo tên
+                const catOpts = document.getElementById("fmCat").options;
+                for(let o of catOpts) if(o.text === b.categoryName) { document.getElementById("fmCat").value = o.value; break; }
+            }catch{}
+        }
+
+        new bootstrap.Modal(document.getElementById("bookModal")).show();
+    };
+
+    /* ── Save book ── */
+    window.saveBook = async function(){
+        document.getElementById("fmAlert").style.display = "none";
+
+        function chk(id,errId,cond){
+            const el=document.getElementById(id);
+            const er=document.getElementById(errId);
+            const ok=cond(el.value.trim());
+            el.classList.toggle("error",!ok);
+            er.classList.toggle("show",!ok);
+            return ok;
+        }
+        const okT = chk("fmTitle",  "fmTitleErr",  v=>v.length>0);
+        const okA = chk("fmAuthor", "fmAuthorErr", v=>v.length>0);
+        const okP = chk("fmPrice",  "fmPriceErr",  v=>parseFloat(v)>0);
+        const okS = chk("fmStock",  "fmStockErr",  v=>parseInt(v)>=0);
+        if(!okT||!okA||!okP||!okS) return;
+
+        const btn = document.getElementById("fmSaveBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
+
+        const payload = {
+            title:         document.getElementById("fmTitle").value.trim(),
+            author:        document.getElementById("fmAuthor").value.trim(),
+            price:         parseFloat(document.getElementById("fmPrice").value),
+            numberStock:   parseInt(document.getElementById("fmStock").value),
+            categoryId:    parseInt(document.getElementById("fmCat").value)||null,
+            description:   document.getElementById("fmDesc").value.trim()||null,
+            image:         document.getElementById("fmImage").value.trim()||null,
+            publisherYear: parseInt(document.getElementById("fmYear").value)||null,
+            numberPage:    parseInt(document.getElementById("fmPages").value)||null,
+        };
+
+        try{
+            const url    = editId ? `${API}/books/${editId}` : `${API}/books`;
+            const method = editId ? "PUT" : "POST";
+            const res    = await fetch(url,{method,headers:authHeaders(),body:JSON.stringify(payload)});
+            const data   = await res.json();
+
+            if(!res.ok){
+                document.getElementById("fmAlertMsg").textContent = data.message||"Lưu thất bại.";
+                document.getElementById("fmAlert").style.display  = "flex";
+            } else {
+                bootstrap.Modal.getInstance(document.getElementById("bookModal"))?.hide();
+                load(curPage);
+            }
+        }catch{
+            document.getElementById("fmAlertMsg").textContent = "Không kết nối được máy chủ.";
+            document.getElementById("fmAlert").style.display  = "flex";
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu sách';
+        }
+    };
+
+    /* ── Delete book ── */
+    window.deleteBook = async function(id, title){
+        if(!confirm(`Bạn chắc chắn muốn xóa sách "${title}"?`)) return;
+        try{
+            const res  = await fetch(`${API}/books/${id}`,{method:"DELETE",headers:authHeaders()});
+            const data = await res.json();
+            if(!res.ok){ alert(data.message||"Xóa thất bại."); return; }
+            load(curPage);
+        }catch{ alert("Không kết nối được máy chủ."); }
+    };
+
+    /* ── Debounce search ── */
+    window.debounce = function(){
+        clearTimeout(debTimer);
+        debTimer = setTimeout(()=>load(1), 400);
+    };
+
+    loadCats();
+    load(1);
+})();
+    </script>
+</body>
+</html>

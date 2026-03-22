@@ -1,0 +1,547 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0f7eb;
+        }
+
+        /* ── Split layout ── */
+        .lg-left {
+            flex: 1;
+            background: linear-gradient(145deg,#4e8a35 0%,#6ab04c 50%,#82c95f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+            /* Decorative circles */
+            .lg-left::before {
+                content: '';
+                position: absolute;
+                width: 320px;
+                height: 320px;
+                border-radius: 50%;
+                background: rgba(255,255,255,.07);
+                top: -80px;
+                left: -80px;
+            }
+
+            .lg-left::after {
+                content: '';
+                position: absolute;
+                width: 220px;
+                height: 220px;
+                border-radius: 50%;
+                background: rgba(255,255,255,.06);
+                bottom: -60px;
+                right: -60px;
+            }
+
+        .lg-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            z-index: 1;
+        }
+
+        .lg-logo-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 42px
+        }
+
+            .lg-logo-icon span {
+                display: block;
+                width: 10px;
+                border-radius: 3px 3px 0 0
+            }
+
+                .lg-logo-icon span:nth-child(1) {
+                    height: 32px;
+                    background: rgba(255,255,255,.7)
+                }
+
+                .lg-logo-icon span:nth-child(2) {
+                    height: 42px;
+                    background: #fff
+                }
+
+                .lg-logo-icon span:nth-child(3) {
+                    height: 28px;
+                    background: rgba(255,255,255,.6)
+                }
+
+                .lg-logo-icon span:nth-child(4) {
+                    height: 36px;
+                    background: rgba(255,255,255,.8)
+                }
+
+        .lg-logo-text {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #fff;
+            font-family: 'DM Sans',sans-serif;
+            line-height: 1;
+        }
+
+        .lg-logo-sub {
+            font-size: .65rem;
+            color: rgba(255,255,255,.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px
+        }
+
+        .lg-headline {
+            font-family: 'Playfair Display',serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            z-index: 1;
+        }
+
+        .lg-sub {
+            font-size: .92rem;
+            color: rgba(255,255,255,.82);
+            text-align: center;
+            line-height: 1.7;
+            max-width: 320px;
+            z-index: 1;
+        }
+
+        .lg-features {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            margin-top: 2rem;
+            z-index: 1;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .lg-feat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,.12);
+            border-radius: 10px;
+            padding: .65rem .9rem;
+        }
+
+            .lg-feat i {
+                font-size: 1.1rem;
+                color: #fff;
+                flex-shrink: 0
+            }
+
+            .lg-feat span {
+                font-size: .84rem;
+                color: rgba(255,255,255,.9);
+                font-weight: 500
+            }
+
+        /* ── Right panel ── */
+        .lg-right {
+            width: 480px;
+            flex-shrink: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2.5rem;
+        }
+
+        .lg-form-wrap {
+            width: 100%;
+            max-width: 360px
+        }
+
+        .lg-form-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: .35rem;
+        }
+
+        .lg-form-sub {
+            font-size: .86rem;
+            color: #8a9bb0;
+            margin-bottom: 1.75rem
+        }
+
+        /* form controls */
+        .lg-group {
+            margin-bottom: 1rem
+        }
+
+        .lg-label {
+            font-size: .82rem;
+            font-weight: 600;
+            color: #4a5568;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .lg-input-wrap {
+            position: relative
+        }
+
+        .lg-input-icon {
+            position: absolute;
+            left: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0bec5;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .lg-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 11px;
+            padding: .68rem .9rem .68rem 2.5rem;
+            font-family: inherit;
+            font-size: .92rem;
+            color: #1a1a1a;
+            outline: none;
+            transition: border-color .15s,box-shadow .15s;
+            background: #fff;
+        }
+
+            .lg-input:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.13);
+            }
+
+            .lg-input.error {
+                border-color: #e74c3c
+            }
+
+        .lg-pw-toggle {
+            position: absolute;
+            right: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #b0bec5;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            transition: color .15s;
+        }
+
+            .lg-pw-toggle:hover {
+                color: #6ab04c
+            }
+
+        /* error msg */
+        .lg-err-msg {
+            background: #fff0f0;
+            border: 1.5px solid #f5c6c6;
+            border-radius: 10px;
+            padding: .6rem .85rem;
+            font-size: .83rem;
+            color: #c0392b;
+            display: none;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 1rem;
+        }
+
+            .lg-err-msg.show {
+                display: flex
+            }
+
+        /* submit */
+        .lg-btn {
+            width: 100%;
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 11px;
+            padding: .78rem;
+            font-size: .97rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background .2s,transform .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+            .lg-btn:hover {
+                background: #4e8a35;
+                transform: translateY(-1px)
+            }
+
+            .lg-btn:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+                transform: none
+            }
+
+        /* links */
+        .lg-forgot {
+            text-align: right;
+            margin-top: .3rem;
+            margin-bottom: 1.1rem;
+        }
+
+            .lg-forgot a {
+                font-size: .82rem;
+                color: #6ab04c;
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+                .lg-forgot a:hover {
+                    color: #4e8a35;
+                    text-decoration: underline
+                }
+
+        .lg-register {
+            text-align: center;
+            margin-top: 1.3rem;
+            font-size: .86rem;
+            color: #8a9bb0;
+        }
+
+            .lg-register a {
+                color: #6ab04c;
+                font-weight: 700;
+                text-decoration: none;
+            }
+
+                .lg-register a:hover {
+                    color: #4e8a35;
+                    text-decoration: underline
+                }
+
+        .lg-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1.2rem 0;
+            color: #d0d9e2;
+            font-size: .78rem;
+        }
+
+            .lg-divider::before, .lg-divider::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: #e8edf2;
+            }
+
+        /* Responsive */
+        @media(max-width:860px) {
+            .lg-left {
+                display: none
+            }
+
+            .lg-right {
+                width: 100%;
+                padding: 2rem 1.25rem
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left decorative panel -->
+    <div class="lg-left">
+        <div class="lg-brand">
+            <div class="lg-logo-icon">
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div>
+                <div class="lg-logo-text">Book Store</div>
+                <div class="lg-logo-sub">Mua sách · Tặng tri thức</div>
+            </div>
+        </div>
+
+        <div class="lg-headline">Chào mừng<br>trở lại!</div>
+        <div class="lg-sub">Đăng nhập để tiếp tục hành trình khám phá tri thức cùng chúng tôi.</div>
+
+        <div class="lg-features">
+            <div class="lg-feat">
+                <i class="bi bi-journals"></i>
+                <span>Hàng nghìn đầu sách chất lượng</span>
+            </div>
+            <div class="lg-feat">
+                <i class="bi bi-truck"></i>
+                <span>Giao hàng nhanh toàn quốc</span>
+            </div>
+            <div class="lg-feat">
+                <i class="bi bi-heart"></i>
+                <span>Lưu sách yêu thích của bạn</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="lg-right">
+        <div class="lg-form-wrap">
+
+            <div class="lg-form-title">Đăng nhập</div>
+            <div class="lg-form-sub">Nhập thông tin tài khoản của bạn</div>
+
+            <!-- Error -->
+            <div class="lg-err-msg" id="lgErr">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span id="lgErrMsg">Sai tài khoản hoặc mật khẩu</span>
+            </div>
+
+            <!-- Username -->
+            <div class="lg-group">
+                <label class="lg-label" for="lgUser">Tên đăng nhập</label>
+                <div class="lg-input-wrap">
+                    <i class="bi bi-person lg-input-icon"></i>
+                    <input class="lg-input" id="lgUser" type="text"
+                           placeholder="Nhập tên đăng nhập"
+                           onkeydown="if(event.key==='Enter')document.getElementById('lgPass').focus()">
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="lg-group">
+                <label class="lg-label" for="lgPass">Mật khẩu</label>
+                <div class="lg-input-wrap">
+                    <i class="bi bi-lock lg-input-icon"></i>
+                    <input class="lg-input" id="lgPass" type="password"
+                           placeholder="Nhập mật khẩu"
+                           style="padding-right:2.8rem"
+                           onkeydown="if(event.key==='Enter')login()">
+                    <button class="lg-pw-toggle" type="button" onclick="togglePw()">
+                        <i class="bi bi-eye" id="lgEyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quên mật khẩu -->
+            <div class="lg-forgot">
+                <a href="forgot-password.html">Quên mật khẩu?</a>
+            </div>
+
+            <!-- Submit -->
+            <button class="lg-btn" id="lgBtn" onclick="login()">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Đăng nhập
+            </button>
+
+            <div class="lg-divider">hoặc</div>
+
+            <!-- Register -->
+            <div class="lg-register">
+                Chưa có tài khoản?
+                <a href="register.html">Đăng ký ngay</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+
+            function showErr(msg) {
+                document.getElementById("lgErrMsg").textContent = msg;
+                document.getElementById("lgErr").classList.add("show");
+            }
+            function hideErr() {
+                document.getElementById("lgErr").classList.remove("show");
+            }
+
+            window.togglePw = function () {
+                const inp = document.getElementById("lgPass");
+                const icon = document.getElementById("lgEyeIcon");
+                if (inp.type === "password") {
+                    inp.type = "text";
+                    icon.className = "bi bi-eye-slash";
+                } else {
+                    inp.type = "password";
+                    icon.className = "bi bi-eye";
+                }
+            };
+
+            window.login = async function () {
+                hideErr();
+                const username = document.getElementById("lgUser").value.trim();
+                const password = document.getElementById("lgPass").value;
+
+                if (!username) { showErr("Vui lòng nhập tên đăng nhập."); return; }
+                if (!password) { showErr("Vui lòng nhập mật khẩu."); return; }
+
+                const btn = document.getElementById("lgBtn");
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng nhập...';
+
+                try {
+                    const res = await fetch(`${API}/auth/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        sessionStorage.setItem("token", data.token);
+
+                        // Decode token để lấy role
+                        const base64 = data.token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+                        const payload = JSON.parse(decodeURIComponent(
+                            atob(base64).split("").map(c =>
+                                "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
+                            ).join("")
+                        ));
+                        const role = payload.role
+                            || payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+                        window.location.href = role === "Admin"
+                            ? "../html/admin.html"
+                            : "../html/index.html";
+                    } else {
+                        const data = await res.json().catch(() => ({}));
+                        showErr(data.message || "Sai tài khoản hoặc mật khẩu.");
+                    }
+                } catch {
+                    showErr("Không thể kết nối đến máy chủ.");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Đăng nhập';
+                }
+            };
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,866 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh Sách Sách – Book Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        #header-placeholder {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* ── Layout ── */
+        .app-body {
+            display: flex;
+            align-items: flex-start;
+            padding-left: 215px;
+        }
+
+        .main-panel {
+            flex: 1;
+            min-width: 0;
+            padding: .9rem 1rem .8rem;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 215px;
+            flex-shrink: 0;
+            background: #fff;
+            border-right: 1px solid #e8edf2;
+            position: fixed;
+            top: 132px;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 1rem .85rem;
+            z-index: 100;
+        }
+
+            .sidebar::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb {
+                background: #e0e0e0;
+                border-radius: 2px;
+            }
+
+        .f-section {
+            margin-bottom: .85rem;
+        }
+
+        .f-section-title {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+            color: #8a9bb0;
+            margin-bottom: .4rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .f-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 7px;
+            padding: .42rem .7rem;
+            font-size: .82rem;
+            font-family: 'DM Sans', sans-serif;
+            background: #fafbfc;
+            outline: none;
+            transition: border-color .15s;
+            color: #1a1a1a;
+        }
+
+            .f-input:focus {
+                border-color: #6ab04c;
+                background: #fff;
+            }
+
+        .search-wrap {
+            position: relative;
+        }
+
+            .search-wrap .bi-search {
+                position: absolute;
+                left: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aaa;
+                font-size: .78rem;
+                pointer-events: none;
+            }
+
+            .search-wrap .f-input {
+                padding-left: 1.85rem;
+            }
+
+        .price-row {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+            .price-row span {
+                color: #aaa;
+                font-size: .75rem;
+                flex-shrink: 0;
+            }
+
+        .r-opt {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: .28rem 0;
+            cursor: pointer;
+            font-size: .81rem;
+            color: #4a5568;
+        }
+
+            .r-opt:hover {
+                color: #6ab04c;
+            }
+
+            .r-opt input {
+                accent-color: #6ab04c;
+                cursor: pointer;
+                flex-shrink: 0;
+            }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #e8edf2;
+            margin: .6rem 0;
+        }
+
+        .btn-apply {
+            width: 100%;
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: .48rem;
+            font-weight: 600;
+            font-size: .82rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background .15s;
+            margin-top: .2rem;
+        }
+
+            .btn-apply:hover {
+                background: #4e8a35;
+            }
+
+        .btn-reset {
+            width: 100%;
+            background: none;
+            border: 1.5px solid #e8edf2;
+            border-radius: 7px;
+            padding: .42rem;
+            font-size: .8rem;
+            color: #8a9bb0;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            margin-top: .35rem;
+            transition: all .15s;
+        }
+
+            .btn-reset:hover {
+                border-color: #aaa;
+                color: #4a5568;
+            }
+
+        /* ── Top bar ── */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .75rem;
+        }
+
+        .results-count {
+            font-size: .82rem;
+            color: #8a9bb0;
+        }
+
+            .results-count strong {
+                color: #1a1a1a;
+            }
+
+        .view-toggle {
+            display: flex;
+            gap: 3px;
+        }
+
+        .view-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+            color: #aaa;
+            transition: all .15s;
+        }
+
+            .view-btn.active, .view-btn:hover {
+                border-color: #6ab04c;
+                color: #6ab04c;
+                background: #f0f7eb;
+            }
+
+        /* ── Book card (grid) ── */
+        .book-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: box-shadow .2s, transform .2s;
+            box-shadow: 0 1px 6px rgba(0,0,0,.07);
+            height: 380px;
+            max-height: 380px;
+        }
+
+            .book-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(106,176,76,.15);
+            }
+
+        .book-img-wrap {
+            height: 220px;
+            width: 100%;
+            overflow: hidden;
+            background: #f7f7f7;
+            position: relative;
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+
+        .book-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            transition: transform .3s;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .book-card:hover .book-img {
+            transform: scale(1.04);
+        }
+
+        .book-img-ph {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+            gap: 6px;
+            background: #f0f0f0;
+        }
+
+            .book-img-ph i {
+                font-size: 2.2rem;
+            }
+
+            .book-img-ph span {
+                font-size: .7rem;
+                color: #ccc;
+            }
+
+        .book-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: rgba(0,0,0,.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+        }
+
+        .btn-ov {
+            background: rgba(255,255,255,.92);
+            border: none;
+            border-radius: 6px;
+            padding: .38rem .9rem;
+            font-weight: 600;
+            font-size: .76rem;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            z-index: 3;
+            background: #6ab04c;
+            color: #fff;
+            font-size: .58rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+            .book-badge.out {
+                background: #e74c3c;
+            }
+
+        .book-info {
+            padding: 10px;
+            height: 160px;
+            flex-shrink: 0;
+            flex-grow: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .book-cat {
+            font-size: .63rem;
+            color: #8a9bb0;
+            height: 16px;
+            line-height: 16px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0 0 4px 0;
+        }
+
+        .book-title {
+            font-weight: 700;
+            font-size: .86rem;
+            line-height: 22px;
+            height: 44px;
+            flex-shrink: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin: 0 0 4px 0;
+            color: #1a1a1a;
+        }
+
+        .book-author {
+            font-size: .73rem;
+            color: #8a9bb0;
+            height: 18px;
+            line-height: 18px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 18px;
+            flex-shrink: 0;
+            margin: 2px 0;
+        }
+
+            .book-rating i {
+                font-size: .65rem;
+            }
+
+            .book-rating span {
+                font-size: .68rem;
+                color: #aaa;
+            }
+
+        .book-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        .book-price {
+            font-size: .9rem;
+            font-weight: 700;
+            color: #6ab04c;
+        }
+
+        .btn-cart {
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .3rem .65rem;
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+            transition: background .15s;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+            .btn-cart:hover {
+                background: #4e8a35;
+            }
+
+            .btn-cart.oos {
+                background: #e0e0e0;
+                color: #aaa;
+                cursor: not-allowed;
+            }
+
+                .btn-cart.oos:hover {
+                    background: #e0e0e0;
+                }
+
+        /* ── List view ── */
+        .list-item {
+            background: #fff;
+            border-radius: 9px;
+            box-shadow: 0 1px 5px rgba(0,0,0,.06);
+            display: flex;
+            gap: .75rem;
+            padding: .75rem;
+            cursor: pointer;
+            transition: box-shadow .15s, transform .15s;
+            margin-bottom: .5rem;
+        }
+
+            .list-item:hover {
+                box-shadow: 0 4px 16px rgba(106,176,76,.13);
+                transform: translateX(2px);
+            }
+
+        .list-img-wrap {
+            width: 60px;
+            height: 80px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        .list-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+
+        .list-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .list-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        /* ── Pagination ── */
+        .pager {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 1.2rem;
+            padding-bottom: 1rem;
+        }
+
+        .pg-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all .15s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+            .pg-btn:hover {
+                border-color: #6ab04c;
+                color: #6ab04c;
+            }
+
+            .pg-btn.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff;
+            }
+
+            .pg-btn:disabled {
+                opacity: .35;
+                cursor: not-allowed;
+            }
+
+        /* ── Skeleton ── */
+        .skel {
+            background: linear-gradient(90deg,#efefef 25%,#e5e5e5 50%,#efefef 75%);
+            background-size: 200% 100%;
+            animation: sh 1.3s infinite;
+            border-radius: 5px;
+        }
+
+        @keyframes sh {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+            .sidebar {
+                width: 180px;
+            }
+
+            .app-body {
+                padding-left: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .app-body {
+                flex-direction: column;
+                padding-left: 0;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e8edf2;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="app-body">
+
+        <!-- ══ SIDEBAR ══ -->
+        <aside class="sidebar">
+            <div class="f-section">
+                <div class="f-section-title">
+                    <i class="bi bi-search text-success"></i>Tìm kiếm & Sắp xếp
+                </div>
+                <div class="search-wrap mb-2">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="f-input" id="searchInput" placeholder="Tên sách, tác giả...">
+                </div>
+                <label class="r-opt"><input type="radio" name="sort" value="createdAt|desc" checked> Mới nhất</label>
+                <label class="r-opt"><input type="radio" name="sort" value="price|asc"> Giá tăng dần</label>
+                <label class="r-opt"><input type="radio" name="sort" value="price|desc"> Giá giảm dần</label>
+                <label class="r-opt"><input type="radio" name="sort" value="title|asc"> Tên A → Z</label>
+                <label class="r-opt"><input type="radio" name="sort" value="numberSold|desc"> Bán chạy nhất</label>
+                <label class="r-opt"><input type="radio" name="sort" value="avgRating|desc"> Đánh giá cao nhất</label>
+            </div>
+            <hr class="divider">
+            <div class="f-section">
+                <div class="f-section-title">
+                    <i class="bi bi-bookmark text-success"></i>Thể loại
+                </div>
+                <div id="catList">
+                    <label class="r-opt"><input type="radio" name="cat" value="" checked> Tất cả</label>
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="f-section">
+                <div class="f-section-title">
+                    <i class="bi bi-tag text-success"></i>Khoảng giá (₫)
+                </div>
+                <div class="price-row">
+                    <input type="number" class="f-input" id="minPrice" placeholder="Từ" min="0" step="10000">
+                    <span>—</span>
+                    <input type="number" class="f-input" id="maxPrice" placeholder="Đến" min="0" step="10000">
+                </div>
+            </div>
+            <button class="btn-apply" onclick="applyFilter()">
+                <i class="bi bi-funnel me-1"></i>Áp dụng
+            </button>
+            <button class="btn-reset" onclick="resetFilter()">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Đặt lại
+            </button>
+        </aside>
+
+        <!-- ══ MAIN ══ -->
+        <div class="main-panel">
+            <div class="top-bar">
+                <div class="results-count" id="resultsCount">Đang tải...</div>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridBtn" title="Lưới" onclick="setView('grid')">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                    </button>
+                    <button class="view-btn" id="listBtn" title="Danh sách" onclick="setView('list')">
+                        <i class="bi bi-list-ul"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="booksContainer"></div>
+            <div class="pager" id="pager"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/Header.js"></script>
+    <script src="../js/bookModal.js"></script>
+    <script src="../js/bookCard.js"></script>
+    <script>
+        const API = "https://localhost:7108/api";
+        const PAGE_SIZE = 8;
+
+        let S = {
+            page: 1, totalPages: 1,
+            keyword: "", categoryId: "",
+            minPrice: "", maxPrice: "",
+            sortBy: "createdAt", sortOrder: "desc",
+            view: "grid"
+        };
+
+        /* ── Đọc query string từ index.html (sort=...) ── */
+        (function applyQueryString() {
+            const p = new URLSearchParams(window.location.search);
+            const sv = p.get("sort");
+            if (sv) {
+                const [sb, so] = sv.split("|");
+                S.sortBy = sb || "createdAt";
+                S.sortOrder = so || "desc";
+                const radio = document.querySelector(`input[name="sort"][value="${sv}"]`);
+                if (radio) radio.checked = true;
+            }
+        })();
+
+        /* ── Categories ── */
+        async function loadCategories() {
+            try {
+                const res = await fetch(`${API}/categories`);
+                if (!res.ok) return;
+                const cats = await res.json();
+                const wrap = document.getElementById("catList");
+                cats.forEach(c => {
+                    const id = c.categoryId ?? c.categoryID;
+                    const lbl = document.createElement("label");
+                    lbl.className = "r-opt";
+                    lbl.innerHTML = `<input type="radio" name="cat" value="${id}"> ${c.categoryName}`;
+                    wrap.appendChild(lbl);
+                });
+            } catch { }
+        }
+
+        /* ── Filter ── */
+        function applyFilter() {
+            const sv = document.querySelector('input[name="sort"]:checked')?.value || "createdAt|desc";
+            const [sb, so] = sv.split("|");
+            S.keyword = document.getElementById("searchInput").value.trim();
+            S.minPrice = document.getElementById("minPrice").value;
+            S.maxPrice = document.getElementById("maxPrice").value;
+            S.categoryId = document.querySelector('input[name="cat"]:checked')?.value || "";
+            S.sortBy = sb; S.sortOrder = so; S.page = 1;
+            loadBooks();
+        }
+
+        function resetFilter() {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("minPrice").value = "";
+            document.getElementById("maxPrice").value = "";
+            const dc = document.querySelector('input[name="cat"][value=""]');
+            if (dc) dc.checked = true;
+            const ds = document.querySelector('input[name="sort"][value="createdAt|desc"]');
+            if (ds) ds.checked = true;
+            S = { ...S, page: 1, keyword: "", categoryId: "", minPrice: "", maxPrice: "", sortBy: "createdAt", sortOrder: "desc" };
+            loadBooks();
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter" && document.activeElement.id === "searchInput") applyFilter();
+        });
+
+        /* ── View ── */
+        function setView(v) {
+            S.view = v;
+            document.getElementById("gridBtn").classList.toggle("active", v === "grid");
+            document.getElementById("listBtn").classList.toggle("active", v === "list");
+            renderBooks(window._books || []);
+        }
+
+        /* ── Load books ── */
+        async function loadBooks() {
+            const el = document.getElementById("booksContainer");
+            el.innerHTML = S.view === "grid" ? skelGrid() : skelList();
+
+            const p = new URLSearchParams({
+                page: S.page, pageSize: PAGE_SIZE,
+                sortBy: S.sortBy, sortOrder: S.sortOrder,
+            });
+            if (S.keyword) p.append("keyword", S.keyword);
+            if (S.categoryId) p.append("categoryId", S.categoryId);
+            if (S.minPrice) p.append("minPrice", S.minPrice);
+            if (S.maxPrice) p.append("maxPrice", S.maxPrice);
+
+            try {
+                const res = await fetch(`${API}/books?${p}`);
+                if (!res.ok) throw new Error("API " + res.status);
+                const data = await res.json();
+
+                S.totalPages = data.totalPages;
+                window._books = data.data;
+
+                document.getElementById("resultsCount").innerHTML =
+                    `Hiển thị <strong>${data.data.length}</strong> / <strong>${data.total}</strong> cuốn sách`;
+
+                renderBooks(data.data);
+                renderPager(data.totalPages);
+            } catch (err) {
+                console.error(err);
+                el.innerHTML = `<div class="text-center text-muted py-5" style="grid-column:1/-1">
+                    <i class="bi bi-wifi-off fs-2 d-block mb-2"></i>Không tải được sách</div>`;
+            }
+        }
+
+        /* ── Render — dùng bookCard component ── */
+        function renderBooks(books) {
+            const el = document.getElementById("booksContainer");
+
+            if (!books.length) {
+                el.innerHTML = `<div class="text-center text-muted py-5">
+                    <i class="bi bi-search fs-2 d-block mb-2"></i>Không tìm thấy sách phù hợp</div>`;
+                return;
+            }
+
+            if (S.view === "grid") {
+                el.innerHTML = `
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                        ${books.map(b =>
+                    `<div class="col">${window._bookCard.render(b, { showRating: true })}</div>`
+                ).join("")}
+                    </div>`;
+            } else {
+                el.innerHTML = books.map(b => window._bookCard.renderList(b)).join("");
+            }
+        }
+
+        /* ── Pagination ── */
+        function renderPager(total) {
+            const wrap = document.getElementById("pager");
+            if (total <= 1) { wrap.innerHTML = ""; return; }
+
+            let html = `<button class="pg-btn" ${S.page === 1 ? "disabled" : ""} onclick="goPage(${S.page - 1})">
+                            <i class="bi bi-chevron-left"></i></button>`;
+            const range = [];
+            for (let i = 1; i <= total; i++)
+                if (i === 1 || i === total || (i >= S.page - 2 && i <= S.page + 2)) range.push(i);
+            let prev = 0;
+            range.forEach(p => {
+                if (p - prev > 1) html += `<button class="pg-btn" style="pointer-events:none">…</button>`;
+                html += `<button class="pg-btn ${p === S.page ? "active" : ""}" onclick="goPage(${p})">${p}</button>`;
+                prev = p;
+            });
+            html += `<button class="pg-btn" ${S.page === total ? "disabled" : ""} onclick="goPage(${S.page + 1})">
+                         <i class="bi bi-chevron-right"></i></button>`;
+            wrap.innerHTML = html;
+        }
+
+        function goPage(p) {
+            S.page = p; loadBooks();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        /* ── Skeletons ── */
+        function skelGrid() {
+            return `<div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                ${Array(8).fill(0).map(() => `
+                <div class="col"><div class="book-card">
+                    <div style="height:220px" class="skel"></div>
+                    <div class="book-info">
+                        <div class="skel mb-1" style="height:9px;width:40%"></div>
+                        <div class="skel mb-1" style="height:13px"></div>
+                        <div class="skel mb-1" style="height:11px;width:65%"></div>
+                        <div class="skel mb-1" style="height:10px;width:50%"></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto">
+                            <div class="skel" style="height:14px;width:55px"></div>
+                            <div class="skel" style="height:26px;width:58px;border-radius:6px"></div>
+                        </div>
+                    </div>
+                </div></div>`).join("")}
+            </div>`;
+        }
+
+        function skelList() {
+            return Array(6).fill(0).map(() => `
+                <div class="list-item">
+                    <div class="list-img-wrap skel"></div>
+                    <div class="list-info">
+                        <div class="skel mb-1" style="height:9px;width:35%"></div>
+                        <div class="skel mb-1" style="height:13px;width:100%"></div>
+                        <div class="skel"      style="height:10px;width:60%"></div>
+                    </div>
+                </div>`).join("");
+        }
+
+        /* ── Init ── */
+        loadCategories();
+        loadBooks();
+    </script>
+</body>
+</html>

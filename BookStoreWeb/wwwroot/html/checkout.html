@@ -1,0 +1,586 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán – Book Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .co-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .co-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+            .co-title i {
+                color: #6ab04c
+            }
+
+        .co-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid #e8edf2;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .co-card-title {
+            font-weight: 700;
+            font-size: .97rem;
+            color: #1a1a1a;
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .co-card-title i {
+                color: #6ab04c;
+                font-size: 1.05rem
+            }
+
+        /* form */
+        .co-label {
+            font-size: .83rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+            display: block
+        }
+
+        .co-input {
+            width: 100%;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .65rem .9rem;
+            font-family: inherit;
+            font-size: .92rem;
+            outline: none;
+            transition: border-color .15s,box-shadow .15s;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+            .co-input:focus {
+                border-color: #6ab04c;
+                box-shadow: 0 0 0 3px rgba(106,176,76,.12)
+            }
+
+            .co-input.error {
+                border-color: #e74c3c
+            }
+
+        .co-err {
+            font-size: .78rem;
+            color: #e74c3c;
+            margin-top: 4px;
+            display: none
+        }
+
+            .co-err.show {
+                display: block
+            }
+
+        /* COD badge */
+        .co-cod {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f0fff4;
+            border: 1.5px solid #b7e4c7;
+            border-radius: 12px;
+            padding: .9rem 1.1rem;
+        }
+
+            .co-cod i {
+                font-size: 1.6rem;
+                color: #6ab04c;
+                flex-shrink: 0
+            }
+
+        .co-cod-title {
+            font-weight: 700;
+            font-size: .92rem;
+            color: #1a1a1a
+        }
+
+        .co-cod-sub {
+            font-size: .78rem;
+            color: #27ae60;
+            margin-top: 2px
+        }
+
+        /* order items */
+        .co-item {
+            display: flex;
+            gap: 12px;
+            padding: .7rem 0;
+            border-bottom: 1px solid #f2f2f2;
+            align-items: center;
+        }
+
+            .co-item:last-child {
+                border-bottom: none
+            }
+
+        .co-item-img {
+            width: 50px;
+            height: 68px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #f0f7eb;
+            flex-shrink: 0;
+        }
+
+        .co-item-ph {
+            width: 50px;
+            height: 68px;
+            border-radius: 6px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6ab04c;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .co-item-name {
+            font-weight: 600;
+            font-size: .86rem;
+            color: #1a1a1a
+        }
+
+        .co-item-meta {
+            font-size: .76rem;
+            color: #8a9bb0;
+            margin-top: 1px
+        }
+
+        .co-item-price {
+            font-weight: 700;
+            color: #6ab04c;
+            font-size: .88rem;
+            margin-top: 3px
+        }
+
+        /* summary */
+        .co-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .9rem;
+            padding: .38rem 0;
+            color: #4a5568;
+        }
+
+            .co-row.total {
+                font-weight: 800;
+                font-size: 1.1rem;
+                color: #1a1a1a;
+                border-top: 2px solid #f0f0f0;
+                padding-top: .7rem;
+                margin-top: .3rem;
+            }
+
+                .co-row.total span:last-child {
+                    color: #6ab04c
+                }
+
+        /* submit */
+        .co-submit {
+            width: 100%;
+            background: #6ab04c;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: .88rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background .2s,transform .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+
+            .co-submit:hover {
+                background: #4e8a35;
+                transform: translateY(-1px)
+            }
+
+            .co-submit:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+                transform: none
+            }
+
+        .co-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6ab04c;
+            font-weight: 600;
+            font-size: .88rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+            margin-bottom: 1.25rem;
+        }
+
+            .co-back:hover {
+                color: #4e8a35
+            }
+
+        /* success */
+        #coSuccess {
+            display: none;
+            text-align: center;
+            padding: 3rem 1.5rem
+        }
+
+        .co-ok-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f0fff4;
+            border: 3px solid #6ab04c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            color: #6ab04c;
+            margin: 0 auto 1.2rem;
+            animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .co-ok-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: .4rem
+        }
+
+        .co-ok-sub {
+            font-size: .9rem;
+            color: #8a9bb0;
+            margin-bottom: 1.4rem
+        }
+
+        .co-ok-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: .7rem 1.4rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: .9rem;
+            margin: 4px;
+            transition: all .2s;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="co-page">
+        <button class="co-back" onclick="history.back()">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </button>
+
+        <!-- Main form -->
+        <div id="coMain">
+            <div style="text-align:center;padding:3rem">
+                <div class="spinner-border text-success"></div>
+            </div>
+        </div>
+
+        <!-- Success -->
+        <div id="coSuccess" class="co-card">
+            <div class="co-ok-icon"><i class="bi bi-check-lg"></i></div>
+            <div class="co-ok-title">Đặt hàng thành công!</div>
+            <div class="co-ok-sub">Đơn hàng sẽ được giao trong 2–5 ngày làm việc.<br>Thanh toán khi nhận hàng.</div>
+            <div>
+                <a class="co-ok-btn" href="../html/orders.html?status=pending"
+                   style="background:#6ab04c;color:#fff"
+                   onmouseover="this.style.background='#4e8a35'"
+                   onmouseout="this.style.background='#6ab04c'">
+                    <i class="bi bi-bag-check"></i> Xem đơn hàng
+                </a>
+                <a class="co-ok-btn" href="../html/index.html"
+                   style="border:1.5px solid #e8edf2;color:#4a5568"
+                   onmouseover="this.style.borderColor='#6ab04c';this.style.color='#6ab04c'"
+                   onmouseout="this.style.borderColor='#e8edf2';this.style.color='#4a5568'">
+                    <i class="bi bi-house"></i> Về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+        (function () {
+            const API = "https://localhost:7108/api";
+            const IMG_URL = "https://localhost:7108";
+
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+            const imgSrc = raw => {
+                if (!raw) return "";
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/, "");
+            };
+
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
+
+            let cartData = null;
+
+            /* ── load cart ── */
+            async function init() {
+                try {
+                    const res = await fetch(`${API}/cart`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    cartData = await res.json();
+                    cartData.items?.length ? renderForm() : renderEmpty();
+                } catch {
+                    document.getElementById("coMain").innerHTML = `
+                <div class="co-card" style="text-align:center;padding:2rem;color:#8a9bb0">
+                    <i class="bi bi-wifi-off" style="font-size:2.5rem;display:block;margin-bottom:.75rem"></i>
+                    Không tải được giỏ hàng. Vui lòng thử lại.
+                </div>`;
+                }
+            }
+
+            function renderEmpty() {
+                document.getElementById("coMain").innerHTML = `
+            <div class="co-card" style="text-align:center;padding:2.5rem;color:#8a9bb0">
+                <i class="bi bi-bag-x" style="font-size:3rem;display:block;margin-bottom:.75rem;color:#d0d9e2"></i>
+                <p style="font-weight:600;color:#1a1a1a;margin-bottom:.6rem">Giỏ hàng trống</p>
+                <a href="../html/books.html"
+                   style="display:inline-flex;align-items:center;gap:6px;background:#6ab04c;
+                          color:#fff;padding:.6rem 1.4rem;border-radius:10px;font-weight:700;text-decoration:none">
+                    <i class="bi bi-journals"></i> Khám phá sách
+                </a>
+            </div>`;
+            }
+
+            function renderForm() {
+                const items = cartData.items;
+                const total = cartData.totalPrice ?? 0;
+
+                const itemsHtml = items.map(it => {
+                    const src = imgSrc(it.image);
+                    return `
+                <div class="co-item">
+                    ${src ? `<img class="co-item-img" src="${src}" alt="${it.title}"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`: ``}
+                    <div class="co-item-ph" ${src ? 'style="display:none"' : ""}><i class="bi bi-book"></i></div>
+                    <div style="flex:1;min-width:0">
+                        <div class="co-item-name">${it.title}</div>
+                        <div class="co-item-meta">${it.author ?? ""} · SL: ${it.quantity}</div>
+                        <div class="co-item-price">${fmt(it.subTotal)}</div>
+                    </div>
+                </div>`;
+                }).join("");
+
+                document.getElementById("coMain").innerHTML = `
+            <h2 class="co-title"><i class="bi bi-bag-check"></i> Thanh toán</h2>
+            <div class="row g-4">
+
+                <!-- ── Cột trái ── -->
+                <div class="col-12 col-lg-6">
+
+                    <!-- Thông tin giao hàng -->
+                    <div class="co-card">
+                        <div class="co-card-title">
+                            <i class="bi bi-geo-alt-fill"></i> Thông tin giao hàng
+                        </div>
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <label class="co-label" for="coPhone">
+                                    Số điện thoại <span style="color:#e74c3c">*</span>
+                                </label>
+                                <input class="co-input" id="coPhone" type="tel"
+                                       placeholder="0912 345 678"
+                                       oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                <div class="co-err" id="coPhoneErr">Số điện thoại không hợp lệ (10 số)</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="co-label" for="coAddress">
+                                    Địa chỉ giao hàng <span style="color:#e74c3c">*</span>
+                                </label>
+                                <input class="co-input" id="coAddress" type="text"
+                                       placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/TP">
+                                <div class="co-err" id="coAddressErr">Vui lòng nhập địa chỉ giao hàng</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="co-label" for="coNote">Ghi chú (tùy chọn)</label>
+                                <textarea class="co-input" id="coNote" rows="2"
+                                          placeholder="Ghi chú thêm cho đơn hàng..."
+                                          style="resize:vertical;min-height:64px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COD -->
+                    <div class="co-card">
+                        <div class="co-card-title">
+                            <i class="bi bi-credit-card-2-front-fill"></i> Phương thức thanh toán
+                        </div>
+                        <div class="co-cod">
+                            <i class="bi bi-cash-stack"></i>
+                            <div>
+                                <div class="co-cod-title">Thanh toán khi nhận hàng (COD)</div>
+                                <div class="co-cod-sub">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    Bạn chỉ thanh toán khi nhận được hàng
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Cột phải: tóm tắt ── -->
+                <div class="col-12 col-lg-6">
+                    <div class="co-card" style="position:sticky;top:20px">
+                        <div class="co-card-title">
+                            <i class="bi bi-receipt"></i> Đơn hàng của bạn
+                            <span style="font-weight:400;color:#8a9bb0;font-size:.8rem;margin-left:auto">
+                                ${items.length} sản phẩm
+                            </span>
+                        </div>
+
+                        ${itemsHtml}
+
+                        <div style="margin-top:.9rem">
+                            <div class="co-row">
+                                <span>Tạm tính</span><span>${fmt(total)}</span>
+                            </div>
+                            <div class="co-row">
+                                <span>Phí vận chuyển</span>
+                                <span style="color:#6ab04c;font-weight:600">Miễn phí</span>
+                            </div>
+                            <div class="co-row total">
+                                <span>Tổng cộng</span><span>${fmt(total)}</span>
+                            </div>
+                        </div>
+
+                        <button class="co-submit" id="coBtn" onclick="submitOrder()">
+                            <i class="bi bi-bag-check-fill"></i> Đặt hàng ngay
+                        </button>
+                        <div style="text-align:center;font-size:.76rem;color:#8a9bb0;margin-top:.6rem">
+                            <i class="bi bi-shield-check text-success me-1"></i>
+                            Thanh toán an toàn khi nhận hàng
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            }
+
+            /* ── validate ── */
+            function validate() {
+                let ok = true;
+                function chk(id, errId, cond) {
+                    const el = document.getElementById(id);
+                    const er = document.getElementById(errId);
+                    if (!cond(el.value.trim())) {
+                        el.classList.add("error"); er.classList.add("show");
+                        if (ok) el.focus();
+                        ok = false;
+                    } else { el.classList.remove("error"); er.classList.remove("show"); }
+                }
+                chk("coPhone", "coPhoneErr", v => /^0\d{9}$/.test(v));
+                chk("coAddress", "coAddressErr", v => v.length >= 5);
+                return ok;
+            }
+
+            /* ── submit → POST /api/orders/checkout ── */
+            window.submitOrder = async function () {
+                if (!validate()) return;
+                const btn = document.getElementById("coBtn");
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xử lý...';
+
+                const payload = {
+                    phone: document.getElementById("coPhone").value.trim(),
+                    address: document.getElementById("coAddress").value.trim(),
+                    note: document.getElementById("coNote").value.trim(),
+                };
+
+                try {
+                    const res = await fetch(`${API}/orders/checkout`, {
+                        method: "POST", headers: authHeaders(),
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="bi bi-bag-check-fill"></i> Đặt hàng ngay';
+                        alert(data.message || "Đặt hàng thất bại, vui lòng thử lại.");
+                        return;
+                    }
+                    // Thành công
+                    document.getElementById("coMain").style.display = "none";
+                    document.getElementById("coSuccess").style.display = "block";
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    // Refresh badge giỏ hàng về 0
+                    window._headerCart?.refreshBadge?.();
+                } catch {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-bag-check-fill"></i> Đặt hàng ngay';
+                    alert("Không kết nối được máy chủ. Vui lòng thử lại.");
+                }
+            };
+
+            init();
+        })();
+    </script>
+</body>
+</html>

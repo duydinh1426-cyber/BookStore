@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Người dùng – Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DM Sans','Segoe UI',sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh
+        }
+
+        .adm-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem
+        }
+
+        .adm-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.4rem
+        }
+
+            .adm-title i {
+                color: #6ab04c
+            }
+
+        .adm-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem;
+            align-items: center
+        }
+
+        .adm-search {
+            flex: 1;
+            min-width: 200px;
+            border: 1.5px solid #e8edf2;
+            border-radius: 10px;
+            padding: .55rem .9rem;
+            font-family: inherit;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .15s
+        }
+
+            .adm-search:focus {
+                border-color: #6ab04c
+            }
+
+        .adm-wrap {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #e8edf2;
+            overflow: hidden
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        thead tr {
+            background: #fafafa;
+            border-bottom: 1.5px solid #e8edf2
+        }
+
+        th {
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            font-weight: 700;
+            color: #8a9bb0;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            white-space: nowrap
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f2f2f2;
+            transition: background .12s
+        }
+
+            tbody tr:last-child {
+                border-bottom: none
+            }
+
+            tbody tr:hover {
+                background: #fafffe
+            }
+
+        td {
+            padding: .75rem 1rem;
+            font-size: .85rem;
+            color: #1a1a1a;
+            vertical-align: middle
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#6ab04c,#4e8a35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .82rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: .22rem .65rem;
+            border-radius: 20px;
+            font-size: .73rem;
+            font-weight: 700;
+        }
+
+        .role-customer {
+            background: #f0fff4;
+            color: #27ae60;
+            border: 1px solid #b7e4c7
+        }
+
+        .role-admin {
+            background: #fff8ec;
+            color: #d68910;
+            border: 1px solid #ffe0a0
+        }
+
+        .adm-btn {
+            border-radius: 7px;
+            padding: .28rem .72rem;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            border: 1.5px solid transparent
+        }
+
+        .adm-btn-view {
+            background: #e8f4fd;
+            color: #2980b9;
+            border-color: #b8d9f5
+        }
+
+            .adm-btn-view:hover {
+                background: #2980b9;
+                color: #fff
+            }
+
+        /* pager */
+        .adm-pager {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 1.2rem
+        }
+
+        .adm-pg {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1.5px solid #e8edf2;
+            background: #fff;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            transition: all .15s
+        }
+
+            .adm-pg:hover {
+                border-color: #6ab04c;
+                color: #6ab04c
+            }
+
+            .adm-pg.active {
+                background: #6ab04c;
+                border-color: #6ab04c;
+                color: #fff
+            }
+
+            .adm-pg:disabled {
+                opacity: .35;
+                cursor: not-allowed
+            }
+
+        /* detail modal */
+        .modal-content {
+            border-radius: 14px;
+            border: none
+        }
+
+        .modal-header {
+            border: none;
+            padding-bottom: 0
+        }
+
+        .det-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .86rem;
+            padding: .38rem 0;
+            border-bottom: 1px solid #f5f5f5;
+            color: #4a5568
+        }
+
+            .det-row:last-child {
+                border-bottom: none
+            }
+
+            .det-row span:first-child {
+                font-weight: 600;
+                color: #1a1a1a;
+                min-width: 140px
+            }
+
+        .adm-empty {
+            text-align: center;
+            padding: 2.5rem;
+            color: #8a9bb0
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="adm-page">
+        <h2 class="adm-title"><i class="bi bi-people"></i> Quản lý người dùng</h2>
+
+        <div class="adm-bar">
+            <input class="adm-search" id="admSearch" type="text"
+                   placeholder="Tìm tên, email, số điện thoại..."
+                   oninput="debounce()">
+            <div style="font-size:.83rem;color:#8a9bb0" id="admCount"></div>
+        </div>
+
+        <div class="adm-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Người dùng</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Địa chỉ</th>
+                        <th>Vai trò</th>
+                        <th>Ngày tạo</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody id="admTbody">
+                    <tr>
+                        <td colspan="7" class="adm-empty">
+                            <div class="spinner-border text-success spinner-border-sm"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="adm-pager" id="admPager"></div>
+    </div>
+
+    <!-- User detail modal -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Chi tiết người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4" id="userModalBody">
+                    <div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script>
+(function(){
+    const API = "https://localhost:7108/api";
+
+    const getToken = () => sessionStorage.getItem("token");
+    const isLoggedIn  = () => !!getToken();
+    const authHeaders = () => ({"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`});
+    const fmt = n => new Intl.NumberFormat("vi-VN",{style:"currency",currency:"VND"}).format(n);
+
+    if(!isLoggedIn()){ window.location.href="../html/login.html"; return; }
+
+    let curPage=1, debTimer=null;
+    const PAGE_SIZE=15;
+
+    function initials(name){
+        return (name||"?").split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+    }
+
+    window.load = async function(page=1){
+        curPage=page;
+        const tbody = document.getElementById("admTbody");
+        const pager = document.getElementById("admPager");
+        tbody.innerHTML = `<tr><td colspan="7" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+        pager.innerHTML = "";
+
+        const kw = document.getElementById("admSearch").value.trim();
+        const p  = new URLSearchParams({page, pageSize:PAGE_SIZE});
+        if(kw) p.append("keyword", kw);
+
+        try{
+            const res  = await fetch(`${API}/users/admin/all?${p}`, {headers:authHeaders()});
+            if(!res.ok) throw new Error();
+            const data = await res.json();
+            const users = data.data || [];
+            const totalPages = data.totalPages ?? 1;
+
+            document.getElementById("admCount").textContent = `Tổng: ${data.total??0} người dùng`;
+
+            if(!users.length){
+                tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">Không tìm thấy người dùng nào.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = users.map(u=>`
+            <tr>
+                <td>
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <div class="user-avatar">${initials(u.name)}</div>
+                        <span style="font-weight:600">${u.name||"—"}</span>
+                    </div>
+                </td>
+                <td style="color:#4a5568;font-size:.83rem">${u.username||"—"}</td>
+                <td style="color:#4a5568;font-size:.83rem">${u.email||"—"}</td>
+                <td style="color:#8a9bb0;font-size:.8rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                    title="${u.address||""}">${u.address||"—"}</td>
+                <td>
+                    <span class="role-badge ${u.isAdmin?"role-admin":"role-customer"}">
+                        <i class="bi ${u.isAdmin?"bi-shield-fill":"bi-person-fill"}"></i>
+                        ${u.isAdmin?"Admin":"Khách hàng"}
+                    </span>
+                </td>
+                <td style="font-size:.78rem;color:#8a9bb0">
+                    ${u.createdAt?new Date(u.createdAt).toLocaleDateString("vi-VN"):"—"}
+                </td>
+                <td>
+                    <button class="adm-btn adm-btn-view" onclick="openDetail(${u.accountId??u.userId??u.id})">
+                        <i class="bi bi-eye me-1"></i>Chi tiết
+                    </button>
+                </td>
+            </tr>`).join("");
+
+            if(totalPages>1){
+                let html = `<button class="adm-pg" ${page===1?"disabled":""} onclick="load(${page-1})"><i class="bi bi-chevron-left"></i></button>`;
+                for(let pg=1;pg<=totalPages;pg++)
+                    html += `<button class="adm-pg ${pg===page?"active":""}" onclick="load(${pg})">${pg}</button>`;
+                html += `<button class="adm-pg" ${page===totalPages?"disabled":""} onclick="load(${page+1})"><i class="bi bi-chevron-right"></i></button>`;
+                pager.innerHTML = html;
+            }
+        }catch(e){
+            tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">
+                Không tải được dữ liệu.<br>
+                <small style="font-size:.78rem">Cần endpoint <code>GET /api/users/admin/all</code></small>
+            </td></tr>`;
+        }
+    };
+
+    window.openDetail = async function(id){
+        const modal = new bootstrap.Modal(document.getElementById("userModal"));
+        document.getElementById("userModalBody").innerHTML =
+            `<div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>`;
+        modal.show();
+
+        try{
+            const res  = await fetch(`${API}/users/admin/${id}`, {headers:authHeaders()});
+            if(!res.ok) throw new Error();
+            const u = await res.json();
+
+            document.getElementById("userModalBody").innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.2rem">
+                <div class="user-avatar" style="width:54px;height:54px;font-size:1.2rem">${initials(u.name)}</div>
+                <div>
+                    <div style="font-weight:700;font-size:1.05rem">${u.name||"—"}</div>
+                    <span class="role-badge ${u.isAdmin?"role-admin":"role-customer"}" style="margin-top:4px">
+                        <i class="bi ${u.isAdmin?"bi-shield-fill":"bi-person-fill"}"></i>
+                        ${u.isAdmin?"Admin":"Khách hàng"}
+                    </span>
+                </div>
+            </div>
+            <div class="det-row"><span>Username</span><span>${u.username||"—"}</span></div>
+            <div class="det-row"><span>Email</span><span>${u.email||"—"}</span></div>
+            <div class="det-row"><span>Địa chỉ</span><span style="text-align:right;max-width:200px">${u.address||"—"}</span></div>
+            <div class="det-row"><span>Số đơn hàng</span><span style="font-weight:700;color:#6ab04c">${u.totalOrders??0}</span></div>
+            <div class="det-row"><span>Tổng chi tiêu</span><span style="font-weight:700;color:#6ab04c">${fmt(u.totalSpent??0)}</span></div>
+            <div class="det-row"><span>Ngày tạo</span><span>${u.createdAt?new Date(u.createdAt).toLocaleString("vi-VN"):"—"}</span></div>`;
+        }catch{
+            document.getElementById("userModalBody").innerHTML =
+                `<p class="text-muted text-center py-3">Không tải được thông tin người dùng.</p>`;
+        }
+    };
+
+    window.debounce = function(){
+        clearTimeout(debTimer);
+        debTimer = setTimeout(()=>load(1), 400);
+    };
+
+    load(1);
+})();
+    </script>
+</body>
+</html>
