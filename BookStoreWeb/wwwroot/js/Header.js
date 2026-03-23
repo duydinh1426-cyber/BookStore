@@ -12,7 +12,6 @@
         Customer: [
             { label: "Trang chủ", href: "../html/index.html", icon: "bi-house-door" },
             { label: "Sách", href: "../html/books.html", icon: "bi-journals" },
-            { label: "Yêu thích", href: "favorites.html", icon: "bi-heart" },
             { label: "Đơn hàng", href: "orders.html", icon: "bi-bag" },
         ],
         Admin: [
@@ -95,7 +94,7 @@
     const CUSTOMER_PAGES = [
         "index.html", "books.html", "checkout.html",
         "order-history.html", "favorites.html",
-        "profile.html", "orders.html"
+        "orders.html"
     ];
 
     // Trang cần đăng nhập

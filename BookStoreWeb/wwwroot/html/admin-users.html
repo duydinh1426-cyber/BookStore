@@ -6,179 +6,237 @@
     <title>Người dùng – Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&subset=vietnamese&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap">
     <style>
         *, *::before, *::after {
             box-sizing: border-box
         }
 
+        :root {
+            --green: #6ab04c;
+            --green-dk: #4e8a35;
+            --green-lt: #f0fff4;
+            --blue: #2980b9;
+            --blue-lt: #e8f4fd;
+            --amber: #d68910;
+            --amber-lt: #fff8ec;
+            --red: #e74c3c;
+            --red-lt: #fff0f0;
+            --border: #e8edf2;
+            --bg: #f5f7fa;
+            --text: #1a1a1a;
+            --muted: #8a9bb0;
+            --card: #ffffff;
+        }
+
         body {
-            font-family: 'DM Sans','Segoe UI',sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh
+            font-family: 'DM Sans', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
         }
 
+        /* ── Page layout ── */
         .adm-page {
-            max-width: 1100px;
+            max-width: 1160px;
             margin: 0 auto;
-            padding: 2rem 1rem 4rem
+            padding: 2rem 1.25rem 4rem;
         }
 
+        /* ── Title ── */
         .adm-title {
-            font-family: 'Playfair Display',serif;
+            font-family: 'Playfair Display', serif;
             font-size: 1.75rem;
             font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 1.4rem
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: .55rem;
         }
 
             .adm-title i {
-                color: #6ab04c
+                color: var(--green);
             }
 
+        /* ── Toolbar ── */
         .adm-bar {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             margin-bottom: 1.1rem;
-            align-items: center
+            align-items: center;
         }
 
         .adm-search {
             flex: 1;
-            min-width: 200px;
-            border: 1.5px solid #e8edf2;
+            min-width: 220px;
+            border: 1.5px solid var(--border);
             border-radius: 10px;
-            padding: .55rem .9rem;
+            padding: .55rem 1rem .55rem 2.4rem;
             font-family: inherit;
             font-size: .88rem;
             outline: none;
-            transition: border-color .15s
+            transition: border-color .18s, box-shadow .18s;
+            background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 16 16'%3E%3Cpath fill='%238a9bb0' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415zm-5.242 1.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10'/%3E%3C/svg%3E") no-repeat .8rem center;
         }
 
             .adm-search:focus {
-                border-color: #6ab04c
+                border-color: var(--green);
+                box-shadow: 0 0 0 3px rgba(106,176,76,.1);
             }
 
+        .adm-count {
+            font-size: .83rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ── Card table ── */
         .adm-wrap {
-            background: #fff;
-            border-radius: 14px;
-            border: 1.5px solid #e8edf2;
-            overflow: hidden
+            background: var(--card);
+            border-radius: 16px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.04);
         }
 
         table {
             width: 100%;
-            border-collapse: collapse
+            border-collapse: collapse;
         }
 
         thead tr {
-            background: #fafafa;
-            border-bottom: 1.5px solid #e8edf2
+            background: #fafbfc;
+            border-bottom: 1.5px solid var(--border);
         }
 
         th {
-            padding: .7rem 1rem;
-            font-size: .76rem;
+            padding: .75rem 1rem;
+            font-size: .72rem;
             font-weight: 700;
-            color: #8a9bb0;
+            color: var(--muted);
             text-transform: uppercase;
-            letter-spacing: .5px;
-            white-space: nowrap
+            letter-spacing: .6px;
+            white-space: nowrap;
         }
 
         tbody tr {
-            border-bottom: 1px solid #f2f2f2;
-            transition: background .12s
+            border-bottom: 1px solid #f2f4f7;
+            transition: background .12s;
         }
 
             tbody tr:last-child {
-                border-bottom: none
+                border-bottom: none;
             }
 
             tbody tr:hover {
-                background: #fafffe
+                background: #f8fffe;
             }
 
         td {
-            padding: .75rem 1rem;
+            padding: .8rem 1rem;
             font-size: .85rem;
-            color: #1a1a1a;
-            vertical-align: middle
+            color: var(--text);
+            vertical-align: middle;
         }
 
+        /* ── Avatar ── */
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg,#6ab04c,#4e8a35);
+            background: linear-gradient(135deg, var(--green), var(--green-dk));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: .82rem;
+            font-size: .8rem;
             font-weight: 700;
             color: #fff;
             flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(106,176,76,.3);
         }
 
+        /* ── Role badge ── */
         .role-badge {
             display: inline-flex;
             align-items: center;
             gap: 4px;
             padding: .22rem .65rem;
             border-radius: 20px;
-            font-size: .73rem;
+            font-size: .72rem;
             font-weight: 700;
         }
 
         .role-customer {
-            background: #f0fff4;
+            background: var(--green-lt);
             color: #27ae60;
-            border: 1px solid #b7e4c7
+            border: 1px solid #b7e4c7;
         }
 
         .role-admin {
-            background: #fff8ec;
-            color: #d68910;
-            border: 1px solid #ffe0a0
+            background: var(--amber-lt);
+            color: var(--amber);
+            border: 1px solid #ffe0a0;
         }
 
+        /* ── Action buttons ── */
         .adm-btn {
             border-radius: 7px;
-            padding: .28rem .72rem;
-            font-size: .78rem;
+            padding: .28rem .7rem;
+            font-size: .76rem;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
             transition: all .15s;
-            border: 1.5px solid transparent
+            border: 1.5px solid transparent;
+            white-space: nowrap;
         }
 
         .adm-btn-view {
-            background: #e8f4fd;
-            color: #2980b9;
-            border-color: #b8d9f5
+            background: var(--blue-lt);
+            color: var(--blue);
+            border-color: #b8d9f5;
         }
 
             .adm-btn-view:hover {
-                background: #2980b9;
-                color: #fff
+                background: var(--blue);
+                color: #fff;
             }
 
-        /* pager */
+        .adm-btn-reset {
+            background: var(--amber-lt);
+            color: var(--amber);
+            border-color: #ffe0a0;
+        }
+
+            .adm-btn-reset:hover {
+                background: var(--amber);
+                color: #fff;
+            }
+
+        /* ── Empty / loading ── */
+        .adm-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        /* ── Pagination ── */
         .adm-pager {
             display: flex;
             justify-content: center;
             gap: 5px;
-            margin-top: 1.2rem
+            margin-top: 1.4rem;
+            flex-wrap: wrap;
         }
 
         .adm-pg {
             width: 34px;
             height: 34px;
             border-radius: 8px;
-            border: 1.5px solid #e8edf2;
-            background: #fff;
+            border: 1.5px solid var(--border);
+            background: var(--card);
             cursor: pointer;
             font-size: .82rem;
             font-weight: 600;
@@ -186,73 +244,251 @@
             align-items: center;
             justify-content: center;
             font-family: inherit;
-            transition: all .15s
+            transition: all .15s;
+            color: var(--text);
         }
 
             .adm-pg:hover {
-                border-color: #6ab04c;
-                color: #6ab04c
+                border-color: var(--green);
+                color: var(--green);
             }
 
             .adm-pg.active {
-                background: #6ab04c;
-                border-color: #6ab04c;
-                color: #fff
+                background: var(--green);
+                border-color: var(--green);
+                color: #fff;
             }
 
             .adm-pg:disabled {
                 opacity: .35;
-                cursor: not-allowed
+                cursor: not-allowed;
             }
 
-        /* detail modal */
+        /* ── Modal ── */
         .modal-content {
-            border-radius: 14px;
-            border: none
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 40px rgba(0,0,0,.12);
         }
 
         .modal-header {
             border: none;
-            padding-bottom: 0
+            padding-bottom: 0;
         }
 
         .det-row {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             font-size: .86rem;
-            padding: .38rem 0;
+            padding: .42rem 0;
             border-bottom: 1px solid #f5f5f5;
-            color: #4a5568
+            color: #4a5568;
+            gap: 1rem;
         }
 
             .det-row:last-child {
-                border-bottom: none
+                border-bottom: none;
             }
 
             .det-row span:first-child {
                 font-weight: 600;
-                color: #1a1a1a;
-                min-width: 140px
+                color: var(--text);
+                min-width: 140px;
+                flex-shrink: 0;
             }
 
-        .adm-empty {
-            text-align: center;
-            padding: 2.5rem;
-            color: #8a9bb0
+            .det-row span:last-child {
+                text-align: right;
+                color: #4a5568;
+            }
+
+        .det-stat {
+            display: flex;
+            gap: 12px;
+            margin: 1rem 0 .5rem;
         }
+
+        .det-stat-box {
+            flex: 1;
+            background: var(--bg);
+            border-radius: 10px;
+            padding: .75rem 1rem;
+            text-align: center;
+            border: 1.5px solid var(--border);
+        }
+
+            .det-stat-box .val {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--green);
+                display: block;
+            }
+
+            .det-stat-box .lbl {
+                font-size: .72rem;
+                color: var(--muted);
+                margin-top: 2px;
+            }
+
+        /* ── Toast ── */
+        .adm-toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: .75rem 1.2rem;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,.14);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .25s, transform .25s;
+            pointer-events: none;
+            max-width: 320px;
+        }
+
+            .adm-toast.show {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .adm-toast.success {
+                background: var(--green);
+                color: #fff;
+            }
+
+            .adm-toast.error {
+                background: var(--red);
+                color: #fff;
+            }
+
+            .adm-toast.info {
+                background: var(--blue);
+                color: #fff;
+            }
+
+        /* ── Confirm dialog ── */
+        .adm-confirm-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 9990;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
+            pointer-events: none;
+        }
+
+            .adm-confirm-backdrop.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+        .adm-confirm-box {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 8px 40px rgba(0,0,0,.18);
+            transform: scale(.95);
+            transition: transform .2s;
+            text-align: center;
+        }
+
+        .adm-confirm-backdrop.show .adm-confirm-box {
+            transform: scale(1);
+        }
+
+        .adm-confirm-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--amber-lt);
+            border: 2px solid #ffe0a0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.4rem;
+            color: var(--amber);
+        }
+
+        .adm-confirm-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: .4rem;
+            color: var(--text);
+        }
+
+        .adm-confirm-msg {
+            font-size: .84rem;
+            color: #666;
+            margin-bottom: 1.4rem;
+            line-height: 1.5;
+        }
+
+        .adm-confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .adm-confirm-ok {
+            padding: .5rem 1.4rem;
+            border-radius: 8px;
+            background: var(--amber);
+            color: #fff;
+            border: none;
+            font-family: inherit;
+            font-size: .86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+            .adm-confirm-ok:hover {
+                background: #b7770d;
+            }
+
+        .adm-confirm-cancel {
+            padding: .5rem 1.2rem;
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+            font-family: inherit;
+            font-size: .86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+            .adm-confirm-cancel:hover {
+                background: var(--border);
+            }
     </style>
 </head>
 <body>
     <div id="header-placeholder"></div>
 
     <div class="adm-page">
-        <h2 class="adm-title"><i class="bi bi-people"></i> Quản lý người dùng</h2>
+        <h2 class="adm-title"><i class="bi bi-people-fill"></i> Quản lý người dùng</h2>
 
         <div class="adm-bar">
             <input class="adm-search" id="admSearch" type="text"
-                   placeholder="Tìm tên, email, số điện thoại..."
+                   placeholder="Tìm tên, email, địa chỉ..."
                    oninput="debounce()">
-            <div style="font-size:.83rem;color:#8a9bb0" id="admCount"></div>
+            <div class="adm-count" id="admCount"></div>
         </div>
 
         <div class="adm-wrap">
@@ -265,7 +501,7 @@
                         <th>Địa chỉ</th>
                         <th>Vai trò</th>
                         <th>Ngày tạo</th>
-                        <th>Chi tiết</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody id="admTbody">
@@ -285,146 +521,256 @@
     <div class="modal fade" id="userModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content shadow">
-                <div class="modal-header">
+                <div class="modal-header px-4 pt-4">
                     <h5 class="modal-title fw-bold">Chi tiết người dùng</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body px-4 pb-4" id="userModalBody">
-                    <div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-success spinner-border-sm"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Custom confirm dialog -->
+    <div class="adm-confirm-backdrop" id="confirmBackdrop">
+        <div class="adm-confirm-box">
+            <div class="adm-confirm-icon"><i class="bi bi-key-fill"></i></div>
+            <div class="adm-confirm-title" id="confirmTitle">Xác nhận reset mật khẩu</div>
+            <div class="adm-confirm-msg" id="confirmMsg"></div>
+            <div class="adm-confirm-actions">
+                <button class="adm-confirm-cancel" onclick="closeConfirm()">Hủy</button>
+                <button class="adm-confirm-ok" id="confirmOkBtn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="adm-toast" id="admToast"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
     <script>
-(function(){
-    const API = "https://localhost:7108/api";
+        (function () {
+            const API = "https://localhost:7108/api";
 
-    const getToken = () => sessionStorage.getItem("token");
-    const isLoggedIn  = () => !!getToken();
-    const authHeaders = () => ({"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`});
-    const fmt = n => new Intl.NumberFormat("vi-VN",{style:"currency",currency:"VND"}).format(n);
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({ "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
 
-    if(!isLoggedIn()){ window.location.href="../html/login.html"; return; }
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
 
-    let curPage=1, debTimer=null;
-    const PAGE_SIZE=15;
+            let curPage = 1, debTimer = null;
+            const PAGE_SIZE = 15;
 
-    function initials(name){
-        return (name||"?").split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
-    }
-
-    window.load = async function(page=1){
-        curPage=page;
-        const tbody = document.getElementById("admTbody");
-        const pager = document.getElementById("admPager");
-        tbody.innerHTML = `<tr><td colspan="7" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
-        pager.innerHTML = "";
-
-        const kw = document.getElementById("admSearch").value.trim();
-        const p  = new URLSearchParams({page, pageSize:PAGE_SIZE});
-        if(kw) p.append("keyword", kw);
-
-        try{
-            const res  = await fetch(`${API}/users/admin/all?${p}`, {headers:authHeaders()});
-            if(!res.ok) throw new Error();
-            const data = await res.json();
-            const users = data.data || [];
-            const totalPages = data.totalPages ?? 1;
-
-            document.getElementById("admCount").textContent = `Tổng: ${data.total??0} người dùng`;
-
-            if(!users.length){
-                tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">Không tìm thấy người dùng nào.</td></tr>`;
-                return;
+            // ── Helpers ──────────────────────────────────────────────
+            function initials(name) {
+                return (name || "?").split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
             }
 
-            tbody.innerHTML = users.map(u=>`
-            <tr>
-                <td>
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <div class="user-avatar">${initials(u.name)}</div>
-                        <span style="font-weight:600">${u.name||"—"}</span>
+            let toastTimer;
+            function showToast(msg, type = "success") {
+                const el = document.getElementById("admToast");
+                const icon = type === "success" ? "bi-check-circle-fill"
+                    : type === "error" ? "bi-x-circle-fill"
+                        : "bi-info-circle-fill";
+                el.innerHTML = `<i class="bi ${icon}"></i>${msg}`;
+                el.className = `adm-toast ${type} show`;
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => { el.classList.remove("show"); }, 3200);
+            }
+
+            // ── Confirm dialog ────────────────────────────────────────
+            window.closeConfirm = function () {
+                document.getElementById("confirmBackdrop").classList.remove("show");
+            };
+
+            function showConfirm(title, msg, onOk) {
+                document.getElementById("confirmTitle").textContent = title;
+                document.getElementById("confirmMsg").textContent = msg;
+                const backdrop = document.getElementById("confirmBackdrop");
+                const okBtn = document.getElementById("confirmOkBtn");
+                const fresh = okBtn.cloneNode(true);
+                fresh.addEventListener("click", () => { closeConfirm(); onOk(); });
+                okBtn.parentNode.replaceChild(fresh, okBtn);
+                backdrop.classList.add("show");
+            }
+
+            // ── Load table ────────────────────────────────────────────
+            window.load = async function (page = 1) {
+                curPage = page;
+                const tbody = document.getElementById("admTbody");
+                const pager = document.getElementById("admPager");
+                tbody.innerHTML = `<tr><td colspan="7" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+                pager.innerHTML = "";
+
+                const kw = document.getElementById("admSearch").value.trim();
+                const p = new URLSearchParams({ page, pageSize: PAGE_SIZE });
+                if (kw) p.append("keyword", kw);
+
+                try {
+                    const res = await fetch(`${API}/users/admin/all?${p}`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    const users = data.data || [];
+                    const totalPages = data.totalPages ?? 1;
+
+                    document.getElementById("admCount").textContent = `Tổng: ${data.total ?? 0} người dùng`;
+
+                    if (!users.length) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">Không tìm thấy người dùng nào.</td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = users.map(u => {
+                        const id = u.accountId ?? u.userId ?? u.id;
+                        return `
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div class="user-avatar">${initials(u.name)}</div>
+                                <span style="font-weight:600">${u.name || "—"}</span>
+                            </div>
+                        </td>
+                        <td style="color:#4a5568;font-size:.83rem">${u.username || "—"}</td>
+                        <td style="color:#4a5568;font-size:.83rem">${u.email || "—"}</td>
+                        <td style="color:#8a9bb0;font-size:.8rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                            title="${u.address || ""}">${u.address || "—"}</td>
+                        <td>
+                            <span class="role-badge ${u.isAdmin ? "role-admin" : "role-customer"}">
+                                <i class="bi ${u.isAdmin ? "bi-shield-fill" : "bi-person-fill"}"></i>
+                                ${u.isAdmin ? "Admin" : "Khách hàng"}
+                            </span>
+                        </td>
+                        <td style="font-size:.78rem;color:#8a9bb0">
+                            ${u.createdAt ? new Date(u.createdAt).toLocaleDateString("vi-VN") : "—"}
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap">
+                                <button class="adm-btn adm-btn-view" onclick="openDetail(${id})">
+                                    <i class="bi bi-eye me-1"></i>Chi tiết
+                                </button>
+                                <button class="adm-btn adm-btn-reset" onclick="resetPassword(${id},'${(u.name || '').replace(/'/g, "\\'")}')">
+                                    <i class="bi bi-key me-1"></i>Reset MK
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                    }).join("");
+
+                    // Pagination
+                    if (totalPages > 1) {
+                        let html = `<button class="adm-pg" ${page === 1 ? "disabled" : ""} onclick="load(${page - 1})"><i class="bi bi-chevron-left"></i></button>`;
+                        const maxShow = 7;
+                        let start = Math.max(1, page - 3);
+                        let end = Math.min(totalPages, start + maxShow - 1);
+                        if (end - start < maxShow - 1) start = Math.max(1, end - maxShow + 1);
+
+                        if (start > 1) html += `<button class="adm-pg" onclick="load(1)">1</button>${start > 2 ? '<span style="align-self:center;color:var(--muted)">…</span>' : ""}`;
+                        for (let pg = start; pg <= end; pg++)
+                            html += `<button class="adm-pg ${pg === page ? "active" : ""}" onclick="load(${pg})">${pg}</button>`;
+                        if (end < totalPages) html += `${end < totalPages - 1 ? '<span style="align-self:center;color:var(--muted)">…</span>' : ""}<button class="adm-pg" onclick="load(${totalPages})">${totalPages}</button>`;
+                        html += `<button class="adm-pg" ${page === totalPages ? "disabled" : ""} onclick="load(${page + 1})"><i class="bi bi-chevron-right"></i></button>`;
+                        pager.innerHTML = html;
+                    }
+
+                } catch (e) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">
+                    Không tải được dữ liệu.<br>
+                    <small style="font-size:.76rem">Cần endpoint <code>GET /api/users/admin/all</code></small>
+                </td></tr>`;
+                }
+            };
+
+            // ── Detail modal ──────────────────────────────────────────
+            window.openDetail = async function (id) {
+                const modal = new bootstrap.Modal(document.getElementById("userModal"));
+                document.getElementById("userModalBody").innerHTML =
+                    `<div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>`;
+                modal.show();
+
+                try {
+                    const res = await fetch(`${API}/users/admin/${id}`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const u = await res.json();
+
+                    document.getElementById("userModalBody").innerHTML = `
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:1rem">
+                    <div class="user-avatar" style="width:54px;height:54px;font-size:1.15rem">${initials(u.name)}</div>
+                    <div>
+                        <div style="font-weight:700;font-size:1.05rem">${u.name || "—"}</div>
+                        <span class="role-badge ${u.isAdmin ? "role-admin" : "role-customer"}" style="margin-top:4px">
+                            <i class="bi ${u.isAdmin ? "bi-shield-fill" : "bi-person-fill"}"></i>
+                            ${u.isAdmin ? "Admin" : "Khách hàng"}
+                        </span>
                     </div>
-                </td>
-                <td style="color:#4a5568;font-size:.83rem">${u.username||"—"}</td>
-                <td style="color:#4a5568;font-size:.83rem">${u.email||"—"}</td>
-                <td style="color:#8a9bb0;font-size:.8rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                    title="${u.address||""}">${u.address||"—"}</td>
-                <td>
-                    <span class="role-badge ${u.isAdmin?"role-admin":"role-customer"}">
-                        <i class="bi ${u.isAdmin?"bi-shield-fill":"bi-person-fill"}"></i>
-                        ${u.isAdmin?"Admin":"Khách hàng"}
-                    </span>
-                </td>
-                <td style="font-size:.78rem;color:#8a9bb0">
-                    ${u.createdAt?new Date(u.createdAt).toLocaleDateString("vi-VN"):"—"}
-                </td>
-                <td>
-                    <button class="adm-btn adm-btn-view" onclick="openDetail(${u.accountId??u.userId??u.id})">
-                        <i class="bi bi-eye me-1"></i>Chi tiết
-                    </button>
-                </td>
-            </tr>`).join("");
-
-            if(totalPages>1){
-                let html = `<button class="adm-pg" ${page===1?"disabled":""} onclick="load(${page-1})"><i class="bi bi-chevron-left"></i></button>`;
-                for(let pg=1;pg<=totalPages;pg++)
-                    html += `<button class="adm-pg ${pg===page?"active":""}" onclick="load(${pg})">${pg}</button>`;
-                html += `<button class="adm-pg" ${page===totalPages?"disabled":""} onclick="load(${page+1})"><i class="bi bi-chevron-right"></i></button>`;
-                pager.innerHTML = html;
-            }
-        }catch(e){
-            tbody.innerHTML = `<tr><td colspan="7" class="adm-empty">
-                Không tải được dữ liệu.<br>
-                <small style="font-size:.78rem">Cần endpoint <code>GET /api/users/admin/all</code></small>
-            </td></tr>`;
-        }
-    };
-
-    window.openDetail = async function(id){
-        const modal = new bootstrap.Modal(document.getElementById("userModal"));
-        document.getElementById("userModalBody").innerHTML =
-            `<div class="text-center py-3"><div class="spinner-border text-success spinner-border-sm"></div></div>`;
-        modal.show();
-
-        try{
-            const res  = await fetch(`${API}/users/admin/${id}`, {headers:authHeaders()});
-            if(!res.ok) throw new Error();
-            const u = await res.json();
-
-            document.getElementById("userModalBody").innerHTML = `
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.2rem">
-                <div class="user-avatar" style="width:54px;height:54px;font-size:1.2rem">${initials(u.name)}</div>
-                <div>
-                    <div style="font-weight:700;font-size:1.05rem">${u.name||"—"}</div>
-                    <span class="role-badge ${u.isAdmin?"role-admin":"role-customer"}" style="margin-top:4px">
-                        <i class="bi ${u.isAdmin?"bi-shield-fill":"bi-person-fill"}"></i>
-                        ${u.isAdmin?"Admin":"Khách hàng"}
-                    </span>
                 </div>
-            </div>
-            <div class="det-row"><span>Username</span><span>${u.username||"—"}</span></div>
-            <div class="det-row"><span>Email</span><span>${u.email||"—"}</span></div>
-            <div class="det-row"><span>Địa chỉ</span><span style="text-align:right;max-width:200px">${u.address||"—"}</span></div>
-            <div class="det-row"><span>Số đơn hàng</span><span style="font-weight:700;color:#6ab04c">${u.totalOrders??0}</span></div>
-            <div class="det-row"><span>Tổng chi tiêu</span><span style="font-weight:700;color:#6ab04c">${fmt(u.totalSpent??0)}</span></div>
-            <div class="det-row"><span>Ngày tạo</span><span>${u.createdAt?new Date(u.createdAt).toLocaleString("vi-VN"):"—"}</span></div>`;
-        }catch{
-            document.getElementById("userModalBody").innerHTML =
-                `<p class="text-muted text-center py-3">Không tải được thông tin người dùng.</p>`;
-        }
-    };
 
-    window.debounce = function(){
-        clearTimeout(debTimer);
-        debTimer = setTimeout(()=>load(1), 400);
-    };
+                <div class="det-stat">
+                    <div class="det-stat-box">
+                        <span class="val">${u.totalOrders ?? 0}</span>
+                        <div class="lbl">Đơn hàng</div>
+                    </div>
+                    <div class="det-stat-box">
+                        <span class="val" style="font-size:.95rem">${fmt(u.totalSpent ?? 0)}</span>
+                        <div class="lbl">Tổng chi tiêu</div>
+                    </div>
+                </div>
 
-    load(1);
-})();
+                <div class="det-row"><span>Username</span><span>${u.username || "—"}</span></div>
+                <div class="det-row"><span>Email</span><span>${u.email || "—"}</span></div>
+                <div class="det-row"><span>Địa chỉ</span><span style="max-width:200px">${u.address || "—"}</span></div>
+                <div class="det-row"><span>Ngày tạo</span><span>${u.createdAt ? new Date(u.createdAt).toLocaleString("vi-VN") : "—"}</span></div>
+
+                <div style="margin-top:1.2rem;padding-top:1rem;border-top:1.5px solid #f0f0f0;display:flex;justify-content:flex-end">
+                    <button class="adm-btn adm-btn-reset"
+                            onclick="resetPassword(${u.accountId ?? u.userId},'${(u.name || '').replace(/'/g, "\\'")}')">
+                        <i class="bi bi-key me-1"></i>Reset mật khẩu
+                    </button>
+                </div>`;
+                } catch {
+                    document.getElementById("userModalBody").innerHTML =
+                        `<p class="text-muted text-center py-3">Không tải được thông tin người dùng.</p>`;
+                }
+            };
+
+            // ── Reset password ────────────────────────────────────────
+            window.resetPassword = async function (id, name) {
+                showConfirm(
+                    "Reset mật khẩu",
+                    `Đặt lại mật khẩu của "${name}" về mặc định 123456?\nNgười dùng nên đổi mật khẩu sau khi đăng nhập lại.`,
+                    async () => {
+                        try {
+                            const res = await fetch(`${API}/users/admin/${id}/reset-password`, {
+                                method: "POST",
+                                headers: authHeaders()
+                            });
+                            const data = await res.json();
+                            if (!res.ok) throw new Error(data.message || "Có lỗi xảy ra.");
+                            showToast(data.message || "Đã reset mật khẩu thành công.", "success");
+                        } catch (e) {
+                            showToast(e.message, "error");
+                        }
+                    }
+                );
+            };
+
+            // ── Debounce search ───────────────────────────────────────
+            window.debounce = function () {
+                clearTimeout(debTimer);
+                debTimer = setTimeout(() => load(1), 400);
+            };
+
+            // ── Close confirm on backdrop click ───────────────────────
+            document.getElementById("confirmBackdrop").addEventListener("click", function (e) {
+                if (e.target === this) closeConfirm();
+            });
+
+            load(1);
+        })();
     </script>
 </body>
 </html>

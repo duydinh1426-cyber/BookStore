@@ -159,6 +159,7 @@ namespace BookStoreAPI.Controllers
                 book.bookID, book.title, book.author, book.price,
                 book.image, book.description, book.publisherYear,
                 book.numberPage, book.numberStock, book.numberSold,
+                book.categoryID,
                 book.Category?.categoryName,
                 Math.Round((double)book.avgRating, 1), book.reviewCount));
         }

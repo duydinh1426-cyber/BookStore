@@ -12,9 +12,26 @@
             box-sizing: border-box
         }
 
+        :root {
+            --green: #6ab04c;
+            --green-dk: #4e8a35;
+            --green-lt: #f0fff4;
+            --blue: #2980b9;
+            --blue-lt: #e8f4fd;
+            --amber: #d68910;
+            --amber-lt: #fff8ec;
+            --red: #e74c3c;
+            --red-lt: #fff0f0;
+            --border: #e8edf2;
+            --bg: #f5f7fa;
+            --text: #1a1a1a;
+            --muted: #8a9bb0;
+            --card: #ffffff;
+        }
+
         body {
             font-family: 'DM Sans','Segoe UI',sans-serif;
-            background: #f5f7fa;
+            background: var(--bg);
             min-height: 100vh
         }
 
@@ -28,15 +45,14 @@
             font-family: 'Playfair Display',serif;
             font-size: 1.75rem;
             font-weight: 700;
-            color: #1a1a1a;
+            color: var(--text);
             margin-bottom: 1.4rem
         }
 
             .adm-title i {
-                color: #6ab04c
+                color: var(--green)
             }
 
-        /* toolbar */
         .adm-bar {
             display: flex;
             gap: 10px;
@@ -48,36 +64,36 @@
         .adm-search {
             flex: 1;
             min-width: 200px;
-            border: 1.5px solid #e8edf2;
+            border: 1.5px solid var(--border);
             border-radius: 10px;
             padding: .55rem .9rem;
             font-family: inherit;
             font-size: .88rem;
             outline: none;
-            transition: border-color .15s;
+            transition: border-color .15s
         }
 
             .adm-search:focus {
-                border-color: #6ab04c
+                border-color: var(--green)
             }
 
         .adm-sel {
-            border: 1.5px solid #e8edf2;
+            border: 1.5px solid var(--border);
             border-radius: 10px;
             padding: .55rem .8rem;
             font-family: inherit;
             font-size: .85rem;
             outline: none;
-            background: #fff;
-            cursor: pointer;
+            background: var(--card);
+            cursor: pointer
         }
 
             .adm-sel:focus {
-                border-color: #6ab04c
+                border-color: var(--green)
             }
 
         .adm-btn-add {
-            background: #6ab04c;
+            background: var(--green);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -90,19 +106,41 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            white-space: nowrap;
+            white-space: nowrap
         }
 
             .adm-btn-add:hover {
-                background: #4e8a35
+                background: var(--green-dk)
             }
 
-        /* table */
+        .adm-btn-cat {
+            background: var(--card);
+            color: #4a5568;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: .55rem 1rem;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all .15s
+        }
+
+            .adm-btn-cat:hover {
+                border-color: var(--green);
+                color: var(--green)
+            }
+
         .adm-wrap {
-            background: #fff;
-            border-radius: 14px;
-            border: 1.5px solid #e8edf2;
-            overflow: hidden
+            background: var(--card);
+            border-radius: 16px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.04)
         }
 
         table {
@@ -111,15 +149,15 @@
         }
 
         thead tr {
-            background: #fafafa;
-            border-bottom: 1.5px solid #e8edf2
+            background: #fafbfc;
+            border-bottom: 1.5px solid var(--border)
         }
 
         th {
             padding: .7rem 1rem;
             font-size: .76rem;
             font-weight: 700;
-            color: #8a9bb0;
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: .5px;
             white-space: nowrap
@@ -141,7 +179,7 @@
         td {
             padding: .7rem 1rem;
             font-size: .85rem;
-            color: #1a1a1a;
+            color: var(--text);
             vertical-align: middle
         }
 
@@ -162,12 +200,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6ab04c;
+            color: var(--green);
             font-size: 1.1rem
         }
 
         .stock-low {
-            color: #e74c3c;
+            color: var(--red);
             font-weight: 700
         }
 
@@ -188,28 +226,27 @@
         }
 
         .adm-btn-edit {
-            background: #e8f4fd;
-            color: #2980b9;
+            background: var(--blue-lt);
+            color: var(--blue);
             border-color: #b8d9f5
         }
 
             .adm-btn-edit:hover {
-                background: #2980b9;
+                background: var(--blue);
                 color: #fff
             }
 
         .adm-btn-del {
-            background: #fff0f0;
-            color: #e74c3c;
+            background: var(--red-lt);
+            color: var(--red);
             border-color: #f5c6c6
         }
 
             .adm-btn-del:hover {
-                background: #e74c3c;
+                background: var(--red);
                 color: #fff
             }
 
-        /* pager */
         .adm-pager {
             display: flex;
             justify-content: center;
@@ -221,8 +258,8 @@
             width: 34px;
             height: 34px;
             border-radius: 8px;
-            border: 1.5px solid #e8edf2;
-            background: #fff;
+            border: 1.5px solid var(--border);
+            background: var(--card);
             cursor: pointer;
             font-size: .82rem;
             font-weight: 600;
@@ -234,13 +271,13 @@
         }
 
             .adm-pg:hover {
-                border-color: #6ab04c;
-                color: #6ab04c
+                border-color: var(--green);
+                color: var(--green)
             }
 
             .adm-pg.active {
-                background: #6ab04c;
-                border-color: #6ab04c;
+                background: var(--green);
+                border-color: var(--green);
                 color: #fff
             }
 
@@ -249,7 +286,6 @@
                 cursor: not-allowed
             }
 
-        /* modal form */
         .modal-content {
             border-radius: 14px;
             border: none
@@ -270,7 +306,7 @@
 
         .fm-input {
             width: 100%;
-            border: 1.5px solid #e8edf2;
+            border: 1.5px solid var(--border);
             border-radius: 10px;
             padding: .6rem .85rem;
             font-family: inherit;
@@ -280,17 +316,17 @@
         }
 
             .fm-input:focus {
-                border-color: #6ab04c;
+                border-color: var(--green);
                 box-shadow: 0 0 0 3px rgba(106,176,76,.1)
             }
 
             .fm-input.error {
-                border-color: #e74c3c
+                border-color: var(--red)
             }
 
         .fm-err {
             font-size: .76rem;
-            color: #e74c3c;
+            color: var(--red);
             margin-top: 3px;
             display: none
         }
@@ -300,7 +336,7 @@
             }
 
         .fm-btn-save {
-            background: #6ab04c;
+            background: var(--green);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -316,7 +352,7 @@
         }
 
             .fm-btn-save:hover {
-                background: #4e8a35
+                background: var(--green-dk)
             }
 
             .fm-btn-save:disabled {
@@ -327,11 +363,309 @@
         .adm-empty {
             text-align: center;
             padding: 2.5rem;
-            color: #8a9bb0
+            color: var(--muted)
         }
 
+        .img-upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: border-color .15s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fafafa;
+            position: relative
+        }
+
+            .img-upload-zone:hover {
+                border-color: var(--green);
+                background: #f0fff4
+            }
+
+            .img-upload-zone input[type=file] {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+                width: 100%;
+                height: 100%
+            }
+
+        .img-preview {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 7px;
+            background: #f0f7eb;
+            flex-shrink: 0;
+            border: 1.5px solid var(--border)
+        }
+
+        .img-preview-ph {
+            width: 60px;
+            height: 80px;
+            border-radius: 7px;
+            background: #f0f7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b0bec5;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            border: 1.5px solid var(--border)
+        }
+
+        .img-upload-text {
+            font-size: .83rem;
+            color: var(--muted);
+            line-height: 1.5
+        }
+
+            .img-upload-text strong {
+                color: #4a5568;
+                display: block;
+                margin-bottom: 2px
+            }
+
+        .img-uploading {
+            font-size: .78rem;
+            color: var(--green);
+            font-weight: 600;
+            margin-top: 4px
+        }
+
+        /* ── Toast ── */
+        .adm-toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: .75rem 1.2rem;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,.14);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity .25s, transform .25s;
+            pointer-events: none;
+            max-width: 320px;
+        }
+
+            .adm-toast.show {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto
+            }
+
+            .adm-toast.success {
+                background: var(--green);
+                color: #fff
+            }
+
+            .adm-toast.error {
+                background: var(--red);
+                color: #fff
+            }
+
+            .adm-toast.info {
+                background: var(--blue);
+                color: #fff
+            }
+
+        /* ── Confirm dialog ── */
+        .adm-confirm-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 9990;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
+            pointer-events: none;
+        }
+
+            .adm-confirm-backdrop.show {
+                opacity: 1;
+                pointer-events: auto
+            }
+
+        .adm-confirm-box {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 8px 40px rgba(0,0,0,.18);
+            transform: scale(.95);
+            transition: transform .2s;
+            text-align: center;
+        }
+
+        .adm-confirm-backdrop.show .adm-confirm-box {
+            transform: scale(1)
+        }
+
+        .adm-confirm-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.4rem;
+        }
+
+            .adm-confirm-icon.red {
+                background: var(--red-lt);
+                border: 2px solid #f5c6c6;
+                color: var(--red)
+            }
+
+            .adm-confirm-icon.amber {
+                background: var(--amber-lt);
+                border: 2px solid #ffe0a0;
+                color: var(--amber)
+            }
+
+        .adm-confirm-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: .4rem;
+            color: var(--text)
+        }
+
+        .adm-confirm-msg {
+            font-size: .84rem;
+            color: #666;
+            margin-bottom: 1.4rem;
+            line-height: 1.6
+        }
+
+        .adm-confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center
+        }
+
+        .adm-confirm-ok {
+            padding: .5rem 1.4rem;
+            border-radius: 8px;
+            color: #fff;
+            border: none;
+            font-family: inherit;
+            font-size: .86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+            .adm-confirm-ok.red {
+                background: var(--red)
+            }
+
+                .adm-confirm-ok.red:hover {
+                    background: #c0392b
+                }
+
+            .adm-confirm-ok.amber {
+                background: var(--amber)
+            }
+
+                .adm-confirm-ok.amber:hover {
+                    background: #b7770d
+                }
+
+        .adm-confirm-cancel {
+            padding: .5rem 1.2rem;
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+            font-family: inherit;
+            font-size: .86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+            .adm-confirm-cancel:hover {
+                background: var(--border)
+            }
+
+        /* ── Category list in modal ── */
+        .cat-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: .5rem 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+            .cat-row:last-child {
+                border-bottom: none
+            }
+
+        .cat-input {
+            flex: 1;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: .38rem .7rem;
+            font-family: inherit;
+            font-size: .84rem;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+            .cat-input:focus {
+                border-color: var(--green)
+            }
+
+        .cat-btn {
+            border-radius: 7px;
+            padding: .3rem .65rem;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .15s;
+            border: 1.5px solid transparent;
+        }
+
+        .cat-btn-save {
+            background: var(--blue-lt);
+            color: var(--blue);
+            border-color: #b8d9f5
+        }
+
+            .cat-btn-save:hover {
+                background: var(--blue);
+                color: #fff
+            }
+
+        .cat-btn-del {
+            background: var(--red-lt);
+            color: var(--red);
+            border-color: #f5c6c6
+        }
+
+            .cat-btn-del:hover {
+                background: var(--red);
+                color: #fff
+            }
+
         @media(max-width:768px) {
-            th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) {
+            th:nth-child(4), td:nth-child(4),
+            th:nth-child(5), td:nth-child(5) {
                 display: none
             }
         }
@@ -345,13 +679,15 @@
 
         <div class="adm-bar">
             <input class="adm-search" id="admSearch" type="text"
-                   placeholder="Tìm tên sách, tác giả..."
-                   oninput="debounce()">
+                   placeholder="Tìm tên sách, tác giả..." oninput="debounce()">
             <select class="adm-sel" id="admCat" onchange="load(1)">
                 <option value="">Tất cả thể loại</option>
             </select>
             <button class="adm-btn-add" onclick="openForm()">
                 <i class="bi bi-plus-lg"></i> Thêm sách
+            </button>
+            <button class="adm-btn-cat" onclick="openCatModal()">
+                <i class="bi bi-bookmark-plus"></i> Thể loại
             </button>
         </div>
 
@@ -370,19 +706,14 @@
                     </tr>
                 </thead>
                 <tbody id="admTbody">
-                    <tr>
-                        <td colspan="8" class="adm-empty">
-                            <div class="spinner-border text-success spinner-border-sm"></div>
-                        </td>
-                    </tr>
+                    <tr><td colspan="8" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>
                 </tbody>
             </table>
         </div>
-
         <div class="adm-pager" id="admPager"></div>
     </div>
 
-    <!-- Book Form Modal -->
+    <!-- ── Book Form Modal ── -->
     <div class="modal fade" id="bookModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content shadow">
@@ -393,12 +724,28 @@
                 <div class="modal-body px-4 pb-4">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="fm-label">Tên sách <span style="color:#e74c3c">*</span></label>
+                            <label class="fm-label">Ảnh bìa</label>
+                            <div class="img-upload-zone" id="imgUploadZone">
+                                <input type="file" id="fmImageFile" accept="image/*" onchange="handleImageUpload(this)">
+                                <div class="img-preview-ph" id="imgPreviewPh"><i class="bi bi-image"></i></div>
+                                <img class="img-preview" id="imgPreview" style="display:none" alt="preview">
+                                <div class="img-upload-text">
+                                    <strong id="imgUploadTitle">Bấm để chọn ảnh</strong>
+                                    JPG, PNG, WEBP — tối đa 5MB
+                                    <div class="img-uploading" id="imgUploading" style="display:none">
+                                        <span class="spinner-border spinner-border-sm me-1"></span>Đang tải ảnh...
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="fmImageName">
+                        </div>
+                        <div class="col-12">
+                            <label class="fm-label">Tên sách <span style="color:var(--red)">*</span></label>
                             <input class="fm-input" id="fmTitle" type="text" placeholder="Nhập tên sách">
                             <div class="fm-err" id="fmTitleErr">Vui lòng nhập tên sách</div>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <label class="fm-label">Tác giả <span style="color:#e74c3c">*</span></label>
+                            <label class="fm-label">Tác giả <span style="color:var(--red)">*</span></label>
                             <input class="fm-input" id="fmAuthor" type="text" placeholder="Tên tác giả">
                             <div class="fm-err" id="fmAuthorErr">Vui lòng nhập tác giả</div>
                         </div>
@@ -409,12 +756,12 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-4">
-                            <label class="fm-label">Giá (VNĐ) <span style="color:#e74c3c">*</span></label>
+                            <label class="fm-label">Giá (VNĐ) <span style="color:var(--red)">*</span></label>
                             <input class="fm-input" id="fmPrice" type="number" min="0" placeholder="0">
                             <div class="fm-err" id="fmPriceErr">Giá phải lớn hơn 0</div>
                         </div>
                         <div class="col-12 col-sm-4">
-                            <label class="fm-label">Tồn kho <span style="color:#e74c3c">*</span></label>
+                            <label class="fm-label">Tồn kho <span style="color:var(--red)">*</span></label>
                             <input class="fm-input" id="fmStock" type="number" min="0" placeholder="0">
                             <div class="fm-err" id="fmStockErr">Tồn kho không được âm</div>
                         </div>
@@ -427,18 +774,18 @@
                             <input class="fm-input" id="fmPages" type="number" min="1" placeholder="300">
                         </div>
                         <div class="col-12 col-sm-6">
-                            <label class="fm-label">URL ảnh bìa</label>
-                            <input class="fm-input" id="fmImage" type="text" placeholder="tenbìa.jpg hoặc https://...">
+                            <label class="fm-label">Mô tả</label>
                         </div>
                         <div class="col-12">
-                            <label class="fm-label">Mô tả</label>
                             <textarea class="fm-input" id="fmDesc" rows="3"
                                       placeholder="Mô tả ngắn về cuốn sách..."
                                       style="resize:vertical;min-height:80px"></textarea>
                         </div>
                     </div>
 
-                    <div id="fmAlert" style="display:none;margin-top:.9rem;padding:.6rem .85rem;border-radius:8px;font-size:.83rem;background:#fff0f0;border:1.5px solid #f5c6c6;color:#c0392b">
+                    <div id="fmAlert" style="display:none;margin-top:.9rem;padding:.6rem .85rem;
+                         border-radius:8px;font-size:.83rem;background:var(--red-lt);
+                         border:1.5px solid #f5c6c6;color:#c0392b">
                         <i class="bi bi-exclamation-circle-fill me-1"></i>
                         <span id="fmAlertMsg"></span>
                     </div>
@@ -457,216 +804,541 @@
         </div>
     </div>
 
+    <!-- ── Confirm Delete Book Modal ── -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
+            <div class="modal-content shadow">
+                <div class="modal-body p-4 text-center">
+                    <div style="width:60px;height:60px;border-radius:50%;background:var(--red-lt);
+                            display:flex;align-items:center;justify-content:center;
+                            margin:0 auto .9rem;font-size:1.6rem;color:var(--red)">
+                        <i class="bi bi-trash3-fill"></i>
+                    </div>
+                    <div style="font-weight:700;font-size:1.05rem;margin-bottom:.4rem">Xoá sách này?</div>
+                    <div style="font-size:.86rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6">
+                        Bạn chắc chắn muốn xoá sách<br>
+                        <strong id="deleteBookName" style="color:var(--text)"></strong>?<br>
+                        <span style="font-size:.8rem">Hành động này không thể hoàn tác.</span>
+                    </div>
+                    <div style="display:flex;gap:8px;justify-content:center">
+                        <button type="button" data-bs-dismiss="modal"
+                                class="adm-confirm-cancel">
+                            Giữ lại
+                        </button>
+                        <button id="deleteConfirmBtn" class="adm-confirm-ok red">
+                            <i class="bi bi-trash3 me-1"></i>Xoá sách
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Category Manage Modal ── -->
+    <div class="modal fade" id="catModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:460px">
+            <div class="modal-content shadow">
+                <div class="modal-header px-4 pt-4">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-bookmark me-2" style="color:var(--green)"></i>Quản lý thể loại
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pb-4">
+                    <div style="display:flex;gap:8px;margin-bottom:1.1rem">
+                        <input id="catNewName" type="text" placeholder="Tên thể loại mới..."
+                               class="cat-input" style="border-radius:9px;padding:.55rem .85rem;font-size:.88rem"
+                               onkeydown="if(event.key==='Enter')addCat()">
+                        <button onclick="addCat()"
+                                style="background:var(--green);color:#fff;border:none;border-radius:9px;
+                                   padding:.55rem 1rem;font-weight:700;font-size:.86rem;
+                                   cursor:pointer;font-family:inherit;white-space:nowrap">
+                            <i class="bi bi-plus-lg me-1"></i>Thêm
+                        </button>
+                    </div>
+                    <div id="catList" style="max-height:320px;overflow-y:auto">
+                        <div style="text-align:center;padding:1.5rem;color:var(--muted)">
+                            <div class="spinner-border spinner-border-sm text-success"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Global Confirm Dialog ── -->
+    <div class="adm-confirm-backdrop" id="confirmBackdrop">
+        <div class="adm-confirm-box">
+            <div class="adm-confirm-icon red" id="confirmIcon"><i class="bi bi-trash3-fill" id="confirmIconI"></i></div>
+            <div class="adm-confirm-title" id="confirmTitle"></div>
+            <div class="adm-confirm-msg" id="confirmMsg"></div>
+            <div class="adm-confirm-actions">
+                <button class="adm-confirm-cancel" onclick="closeConfirm()">Hủy</button>
+                <button class="adm-confirm-ok red" id="confirmOkBtn">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Toast ── -->
+    <div class="adm-toast" id="admToast"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
     <script>
-(function(){
-    const API     = "https://localhost:7108/api";
-    const IMG_URL = "https://localhost:7108";
+        (function () {
+            const API = "https://localhost:7108/api";
+            const IMG_URL = "https://localhost:7108";
 
-    const getToken = () => sessionStorage.getItem("token");
-    const isLoggedIn  = () => !!getToken();
-    const authHeaders = () => ({"Content-Type":"application/json","Authorization":`Bearer ${getToken()}`});
-    const fmt = n => new Intl.NumberFormat("vi-VN",{style:"currency",currency:"VND"}).format(n);
-    const imgSrc = raw => {
-        if(!raw) return "";
-        if(/^https?:\/\//i.test(raw)) return raw;
-        return IMG_URL+"/images/"+raw.replace(/^\/?(images\/)?/,"");
-    };
+            const getToken = () => sessionStorage.getItem("token");
+            const isLoggedIn = () => !!getToken();
+            const authHeaders = () => ({ "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` });
+            const fmt = n => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(n);
+            const imgSrc = raw => {
+                if (!raw) return "";
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return IMG_URL + "/images/" + raw.replace(/^\/?(images\/)?/, "");
+            };
 
-    if(!isLoggedIn()){ window.location.href="../html/login.html"; return; }
+            if (!isLoggedIn()) { window.location.href = "../html/login.html"; return; }
 
-    let curPage = 1, editId = null, debTimer = null;
-    const PAGE_SIZE = 12;
+            let curPage = 1, editId = null, debTimer = null;
+            const PAGE_SIZE = 12;
+            let _catMap = {};
 
-    /* ── Load categories ── */
-    async function loadCats(){
-        try{
-            const res  = await fetch(`${API}/categories`);
-            const data = await res.json();
-            const cats = data.data || data || [];
-            const opts = cats.map(c=>`<option value="${c.categoryID||c.id}">${c.categoryName||c.name}</option>`).join("");
-            document.getElementById("admCat").innerHTML += opts;
-            document.getElementById("fmCat").innerHTML  += opts;
-        }catch{}
-    }
-
-    /* ── Load books ── */
-    window.load = async function(page=1){
-        curPage = page;
-        const tbody = document.getElementById("admTbody");
-        const pager = document.getElementById("admPager");
-        tbody.innerHTML = `<tr><td colspan="8" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
-        pager.innerHTML = "";
-
-        const kw  = document.getElementById("admSearch").value.trim();
-        const cat = document.getElementById("admCat").value;
-        const p   = new URLSearchParams({page, pageSize:PAGE_SIZE, sortBy:"createdAt", sortOrder:"desc"});
-        if(kw)  p.append("keyword", kw);
-        if(cat) p.append("categoryId", cat);
-
-        try{
-            const res  = await fetch(`${API}/books?${p}`);
-            const data = await res.json();
-            const books = data.data || [];
-            const totalPages = data.totalPages ?? 1;
-
-            if(!books.length){
-                tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Không tìm thấy sách nào.</td></tr>`;
-                return;
+            // ── Toast ─────────────────────────────────────────────────
+            let toastTimer;
+            function showToast(msg, type = "success") {
+                const el = document.getElementById("admToast");
+                const icon = type === "success" ? "bi-check-circle-fill"
+                    : type === "error" ? "bi-x-circle-fill"
+                        : "bi-info-circle-fill";
+                el.innerHTML = `<i class="bi ${icon}"></i>${msg}`;
+                el.className = `adm-toast ${type} show`;
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
             }
 
-            tbody.innerHTML = books.map(b=>{
-                const src = imgSrc(b.image);
-                return `
-                <tr>
-                    <td>
-                        ${src ? `<img class="td-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ""}
-                        <div class="td-img-ph" ${src?'style="display:none"':""}><i class="bi bi-book"></i></div>
-                    </td>
-                    <td>
-                        <div style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${b.title}">${b.title}</div>
-                    </td>
-                    <td style="color:#4a5568">${b.author}</td>
-                    <td style="font-size:.8rem;color:#8a9bb0">${b.categoryName??""}</td>
-                    <td style="font-weight:700;color:#6ab04c;white-space:nowrap">${fmt(b.price)}</td>
-                    <td class="${(b.numberStock??0)<10?"stock-low":"stock-ok"}">${b.numberStock??0}</td>
-                    <td style="color:#4a5568">${b.numberSold??0}</td>
-                    <td>
-                        <div style="display:flex;gap:5px">
-                            <button class="adm-btn adm-btn-edit" onclick="openForm(${b.bookId??b.bookID})">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="adm-btn adm-btn-del" onclick="deleteBook(${b.bookId??b.bookID},'${(b.title||"").replace(/'/g,"\\'")}')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>`;
-            }).join("");
+            // ── Confirm dialog ─────────────────────────────────────────
+            window.closeConfirm = function () {
+                document.getElementById("confirmBackdrop").classList.remove("show");
+            };
 
-            // Pager
-            if(totalPages>1){
-                let html = `<button class="adm-pg" ${page===1?"disabled":""} onclick="load(${page-1})"><i class="bi bi-chevron-left"></i></button>`;
-                for(let pg=1;pg<=totalPages;pg++)
-                    html += `<button class="adm-pg ${pg===page?"active":""}" onclick="load(${pg})">${pg}</button>`;
-                html += `<button class="adm-pg" ${page===totalPages?"disabled":""} onclick="load(${page+1})"><i class="bi bi-chevron-right"></i></button>`;
-                pager.innerHTML = html;
+            /**
+             * @param {object} opts
+             * opts.title, opts.msg, opts.icon ('trash3-fill'|'exclamation-triangle-fill'|…),
+             * opts.color ('red'|'amber'), opts.okLabel, opts.onOk
+             */
+            function showConfirm(opts) {
+                document.getElementById("confirmTitle").textContent = opts.title || "Xác nhận";
+                document.getElementById("confirmMsg").innerHTML = opts.msg || "";
+                document.getElementById("confirmIconI").className = `bi bi-${opts.icon || "exclamation-triangle-fill"}`;
+                const iconEl = document.getElementById("confirmIcon");
+                iconEl.className = `adm-confirm-icon ${opts.color || "red"}`;
+
+                const oldBtn = document.getElementById("confirmOkBtn");
+                const newBtn = oldBtn.cloneNode(true);
+                newBtn.textContent = opts.okLabel || "Xác nhận";
+                newBtn.className = `adm-confirm-ok ${opts.color || "red"}`;
+                newBtn.addEventListener("click", () => { closeConfirm(); opts.onOk(); });
+                oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+
+                document.getElementById("confirmBackdrop").classList.add("show");
             }
-        }catch(e){
-            tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Lỗi tải dữ liệu.</td></tr>`;
-        }
-    };
 
-    /* ── Open form ── */
-    window.openForm = async function(id=null){
-        editId = id;
-        document.getElementById("bookModalTitle").textContent = id ? "Chỉnh sửa sách" : "Thêm sách mới";
-        document.getElementById("fmAlert").style.display = "none";
-        ["fmTitle","fmAuthor","fmPrice","fmStock","fmYear","fmPages","fmImage","fmDesc"].forEach(i=>{
-            const el = document.getElementById(i);
-            el.value = ""; el.classList.remove("error");
-        });
-        document.getElementById("fmCat").value = "";
-        ["fmTitleErr","fmAuthorErr","fmPriceErr","fmStockErr"].forEach(i=>document.getElementById(i).classList.remove("show"));
+            document.getElementById("confirmBackdrop").addEventListener("click", function (e) {
+                if (e.target === this) closeConfirm();
+            });
 
-        if(id){
-            try{
-                const res = await fetch(`${API}/books/${id}`);
-                const b   = await res.json();
-                document.getElementById("fmTitle").value  = b.title  || "";
-                document.getElementById("fmAuthor").value = b.author || "";
-                document.getElementById("fmPrice").value  = b.price  || "";
-                document.getElementById("fmStock").value  = b.numberStock ?? 0;
-                document.getElementById("fmYear").value   = b.publisherYear || "";
-                document.getElementById("fmPages").value  = b.numberPage || "";
-                document.getElementById("fmImage").value  = b.image || "";
-                document.getElementById("fmDesc").value   = b.description || "";
-                // Tìm category theo tên
-                const catOpts = document.getElementById("fmCat").options;
-                for(let o of catOpts) if(o.text === b.categoryName) { document.getElementById("fmCat").value = o.value; break; }
-            }catch{}
-        }
-
-        new bootstrap.Modal(document.getElementById("bookModal")).show();
-    };
-
-    /* ── Save book ── */
-    window.saveBook = async function(){
-        document.getElementById("fmAlert").style.display = "none";
-
-        function chk(id,errId,cond){
-            const el=document.getElementById(id);
-            const er=document.getElementById(errId);
-            const ok=cond(el.value.trim());
-            el.classList.toggle("error",!ok);
-            er.classList.toggle("show",!ok);
-            return ok;
-        }
-        const okT = chk("fmTitle",  "fmTitleErr",  v=>v.length>0);
-        const okA = chk("fmAuthor", "fmAuthorErr", v=>v.length>0);
-        const okP = chk("fmPrice",  "fmPriceErr",  v=>parseFloat(v)>0);
-        const okS = chk("fmStock",  "fmStockErr",  v=>parseInt(v)>=0);
-        if(!okT||!okA||!okP||!okS) return;
-
-        const btn = document.getElementById("fmSaveBtn");
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
-
-        const payload = {
-            title:         document.getElementById("fmTitle").value.trim(),
-            author:        document.getElementById("fmAuthor").value.trim(),
-            price:         parseFloat(document.getElementById("fmPrice").value),
-            numberStock:   parseInt(document.getElementById("fmStock").value),
-            categoryId:    parseInt(document.getElementById("fmCat").value)||null,
-            description:   document.getElementById("fmDesc").value.trim()||null,
-            image:         document.getElementById("fmImage").value.trim()||null,
-            publisherYear: parseInt(document.getElementById("fmYear").value)||null,
-            numberPage:    parseInt(document.getElementById("fmPages").value)||null,
-        };
-
-        try{
-            const url    = editId ? `${API}/books/${editId}` : `${API}/books`;
-            const method = editId ? "PUT" : "POST";
-            const res    = await fetch(url,{method,headers:authHeaders(),body:JSON.stringify(payload)});
-            const data   = await res.json();
-
-            if(!res.ok){
-                document.getElementById("fmAlertMsg").textContent = data.message||"Lưu thất bại.";
-                document.getElementById("fmAlert").style.display  = "flex";
-            } else {
-                bootstrap.Modal.getInstance(document.getElementById("bookModal"))?.hide();
-                load(curPage);
+            // ── Load categories ────────────────────────────────────────
+            async function loadCats() {
+                try {
+                    const res = await fetch(`${API}/categories`);
+                    const data = await res.json();
+                    const cats = data.data || data || [];
+                    const opts = cats.map(c => {
+                        const id = c.categoryId || c.id;
+                        const name = c.categoryName || c.name;
+                        _catMap[name] = id;
+                        return `<option value="${id}">${name}</option>`;
+                    }).join("");
+                    document.getElementById("admCat").innerHTML += opts;
+                    document.getElementById("fmCat").innerHTML += opts;
+                } catch { }
             }
-        }catch{
-            document.getElementById("fmAlertMsg").textContent = "Không kết nối được máy chủ.";
-            document.getElementById("fmAlert").style.display  = "flex";
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu sách';
-        }
-    };
 
-    /* ── Delete book ── */
-    window.deleteBook = async function(id, title){
-        if(!confirm(`Bạn chắc chắn muốn xóa sách "${title}"?`)) return;
-        try{
-            const res  = await fetch(`${API}/books/${id}`,{method:"DELETE",headers:authHeaders()});
-            const data = await res.json();
-            if(!res.ok){ alert(data.message||"Xóa thất bại."); return; }
-            load(curPage);
-        }catch{ alert("Không kết nối được máy chủ."); }
-    };
+            // ── Load books ─────────────────────────────────────────────
+            window.load = async function (page = 1) {
+                curPage = page;
+                const tbody = document.getElementById("admTbody");
+                const pager = document.getElementById("admPager");
+                tbody.innerHTML = `<tr><td colspan="8" class="adm-empty"><div class="spinner-border text-success spinner-border-sm"></div></td></tr>`;
+                pager.innerHTML = "";
 
-    /* ── Debounce search ── */
-    window.debounce = function(){
-        clearTimeout(debTimer);
-        debTimer = setTimeout(()=>load(1), 400);
-    };
+                const kw = document.getElementById("admSearch").value.trim();
+                const cat = document.getElementById("admCat").value;
+                const p = new URLSearchParams({ page, pageSize: PAGE_SIZE, sortBy: "createdAt", sortOrder: "desc" });
+                if (kw) p.append("keyword", kw);
+                if (cat) p.append("categoryId", cat);
 
-    loadCats();
-    load(1);
-})();
+                try {
+                    const res = await fetch(`${API}/books?${p}`);
+                    const data = await res.json();
+                    const books = data.data || [];
+                    const totalPages = data.totalPages ?? 1;
+
+                    if (!books.length) {
+                        tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Không tìm thấy sách nào.</td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = books.map(b => {
+                        const src = imgSrc(b.image);
+                        return `
+                    <tr>
+                        <td>
+                            ${src ? `<img class="td-img" src="${src}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ``}
+                            <div class="td-img-ph" ${src ? 'style="display:none"' : ""}><i class="bi bi-book"></i></div>
+                        </td>
+                        <td><div style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${b.title}">${b.title}</div></td>
+                        <td style="color:#4a5568">${b.author}</td>
+                        <td style="font-size:.8rem;color:var(--muted)">${b.categoryName ?? ""}</td>
+                        <td style="font-weight:700;color:var(--green);white-space:nowrap">${fmt(b.price)}</td>
+                        <td class="${(b.numberStock ?? 0) < 10 ? "stock-low" : "stock-ok"}">${b.numberStock ?? 0}</td>
+                        <td style="color:#4a5568">${b.numberSold ?? 0}</td>
+                        <td>
+                            <div style="display:flex;gap:5px">
+                                <button class="adm-btn adm-btn-edit" onclick="openForm(${b.bookId ?? b.bookID})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="adm-btn adm-btn-del" onclick="confirmDeleteBook(${b.bookId ?? b.bookID},'${(b.title || "").replace(/'/g, "\\'")}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                    }).join("");
+
+                    if (totalPages > 1) {
+                        let html = `<button class="adm-pg" ${page === 1 ? "disabled" : ""} onclick="load(${page - 1})"><i class="bi bi-chevron-left"></i></button>`;
+                        for (let pg = 1; pg <= totalPages; pg++)
+                            html += `<button class="adm-pg ${pg === page ? "active" : ""}" onclick="load(${pg})">${pg}</button>`;
+                        html += `<button class="adm-pg" ${page === totalPages ? "disabled" : ""} onclick="load(${page + 1})"><i class="bi bi-chevron-right"></i></button>`;
+                        pager.innerHTML = html;
+                    }
+                } catch {
+                    tbody.innerHTML = `<tr><td colspan="8" class="adm-empty">Lỗi tải dữ liệu.</td></tr>`;
+                }
+            };
+
+            // ── Image upload ───────────────────────────────────────────
+            window.handleImageUpload = async function (input) {
+                const file = input.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById("imgPreviewPh").style.display = "none";
+                    const img = document.getElementById("imgPreview");
+                    img.src = e.target.result; img.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+
+                document.getElementById("imgUploading").style.display = "block";
+                document.getElementById("imgUploadTitle").textContent = "Đang tải lên...";
+                try {
+                    const fd = new FormData();
+                    fd.append("file", file);
+                    const res = await fetch(`${API}/upload/image`, { method: "POST", headers: { "Authorization": `Bearer ${getToken()}` }, body: fd });
+                    const data = await res.json();
+                    if (!res.ok) { showToast(data.message || "Upload ảnh thất bại.", "error"); resetImagePreview(); return; }
+                    document.getElementById("fmImageName").value = data.fileName;
+                    document.getElementById("imgUploadTitle").textContent = "✓ " + file.name;
+                } catch {
+                    showToast("Không kết nối được máy chủ khi upload ảnh.", "error");
+                    resetImagePreview();
+                } finally {
+                    document.getElementById("imgUploading").style.display = "none";
+                }
+            };
+
+            function resetImagePreview() {
+                document.getElementById("imgPreview").style.display = "none";
+                document.getElementById("imgPreviewPh").style.display = "flex";
+                document.getElementById("imgUploadTitle").textContent = "Bấm để chọn ảnh";
+                document.getElementById("fmImageName").value = "";
+                document.getElementById("fmImageFile").value = "";
+            }
+
+            // ── Open form ──────────────────────────────────────────────
+            window.openForm = async function (id = null) {
+                editId = id;
+                document.getElementById("bookModalTitle").textContent = id ? "Chỉnh sửa sách" : "Thêm sách mới";
+                document.getElementById("fmAlert").style.display = "none";
+                ["fmTitle", "fmAuthor", "fmPrice", "fmStock", "fmYear", "fmPages", "fmDesc"].forEach(i => {
+                    const el = document.getElementById(i); el.value = ""; el.classList.remove("error");
+                });
+                document.getElementById("fmCat").value = "";
+                ["fmTitleErr", "fmAuthorErr", "fmPriceErr", "fmStockErr"].forEach(i =>
+                    document.getElementById(i).classList.remove("show"));
+                resetImagePreview();
+
+                if (id) {
+                    try {
+                        const res = await fetch(`${API}/books/${id}`);
+                        const b = await res.json();
+                        document.getElementById("fmTitle").value = b.title || "";
+                        document.getElementById("fmAuthor").value = b.author || "";
+                        document.getElementById("fmPrice").value = b.price || "";
+                        document.getElementById("fmStock").value = b.numberStock ?? 0;
+                        document.getElementById("fmYear").value = b.publisherYear || "";
+                        document.getElementById("fmPages").value = b.numberPage || "";
+                        document.getElementById("fmDesc").value = b.description || "";
+                        if (b.image) {
+                            const src = imgSrc(b.image);
+                            document.getElementById("imgPreviewPh").style.display = "none";
+                            const img = document.getElementById("imgPreview");
+                            img.src = src; img.style.display = "block";
+                            document.getElementById("fmImageName").value = b.image;
+                            document.getElementById("imgUploadTitle").textContent = "Ảnh hiện tại — bấm để thay đổi";
+                        }
+                        const catSel = document.getElementById("fmCat");
+                        const catId = b.categoryId ?? b.categoryID ?? _catMap[b.categoryName] ?? "";
+                        catSel.value = catId || "";
+                        if (catSel.value === "" && b.categoryName)
+                            for (let o of catSel.options)
+                                if (o.text.trim() === b.categoryName.trim()) { catSel.value = o.value; break; }
+                    } catch { }
+                }
+                new bootstrap.Modal(document.getElementById("bookModal")).show();
+            };
+
+            // ── Save book ──────────────────────────────────────────────
+            window.saveBook = async function () {
+                document.getElementById("fmAlert").style.display = "none";
+                function chk(id, errId, cond) {
+                    const el = document.getElementById(id), er = document.getElementById(errId);
+                    const ok = cond(el.value.trim());
+                    el.classList.toggle("error", !ok); er.classList.toggle("show", !ok); return ok;
+                }
+                const ok = chk("fmTitle", "fmTitleErr", v => v.length > 0)
+                    & chk("fmAuthor", "fmAuthorErr", v => v.length > 0)
+                    & chk("fmPrice", "fmPriceErr", v => parseFloat(v) > 0)
+                    & chk("fmStock", "fmStockErr", v => parseInt(v) >= 0);
+                if (!ok) return;
+
+                const btn = document.getElementById("fmSaveBtn");
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
+
+                const payload = {
+                    title: document.getElementById("fmTitle").value.trim(),
+                    author: document.getElementById("fmAuthor").value.trim(),
+                    price: parseFloat(document.getElementById("fmPrice").value),
+                    numberStock: parseInt(document.getElementById("fmStock").value),
+                    categoryId: parseInt(document.getElementById("fmCat").value) || null,
+                    description: document.getElementById("fmDesc").value.trim() || null,
+                    image: document.getElementById("fmImageName").value.trim() || null,
+                    publisherYear: parseInt(document.getElementById("fmYear").value) || null,
+                    numberPage: parseInt(document.getElementById("fmPages").value) || null,
+                };
+                try {
+                    const url = editId ? `${API}/books/${editId}` : `${API}/books`;
+                    const method = editId ? "PUT" : "POST";
+                    const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(payload) });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        document.getElementById("fmAlertMsg").textContent = data.message || "Lưu thất bại.";
+                        document.getElementById("fmAlert").style.display = "flex";
+                    } else {
+                        bootstrap.Modal.getInstance(document.getElementById("bookModal"))?.hide();
+                        showToast(editId ? "Cập nhật sách thành công." : "Thêm sách thành công.", "success");
+                        load(curPage);
+                    }
+                } catch {
+                    document.getElementById("fmAlertMsg").textContent = "Không kết nối được máy chủ.";
+                    document.getElementById("fmAlert").style.display = "flex";
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu sách';
+                }
+            };
+
+            // ── Delete book ────────────────────────────────────────────
+            let _deleteId = null;
+            window.confirmDeleteBook = function (id, title) {
+                _deleteId = id;
+                document.getElementById("deleteBookName").textContent = `"${title}"`;
+                new bootstrap.Modal(document.getElementById("deleteModal")).show();
+            };
+
+            document.getElementById("deleteConfirmBtn").addEventListener("click", async function () {
+                if (!_deleteId) return;
+                const btn = this; btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang xoá...';
+                try {
+                    const res = await fetch(`${API}/books/${_deleteId}`, { method: "DELETE", headers: authHeaders() });
+                    const data = await res.json();
+                    bootstrap.Modal.getInstance(document.getElementById("deleteModal"))?.hide();
+                    if (!res.ok) { setTimeout(() => showToast(data.message || "Xoá thất bại.", "error"), 300); return; }
+                    setTimeout(() => showToast("Đã xoá sách thành công.", "success"), 300);
+                    load(curPage);
+                } catch {
+                    bootstrap.Modal.getInstance(document.getElementById("deleteModal"))?.hide();
+                    setTimeout(() => showToast("Không kết nối được máy chủ.", "error"), 300);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-trash3 me-1"></i>Xoá sách';
+                    _deleteId = null;
+                }
+            });
+
+            // ── Debounce ───────────────────────────────────────────────
+            window.debounce = function () {
+                clearTimeout(debTimer);
+                debTimer = setTimeout(() => load(1), 400);
+            };
+
+            // ══ QUẢN LÝ THỂ LOẠI ══════════════════════════════════════
+
+            async function renderCatList() {
+                const box = document.getElementById("catList");
+                box.innerHTML = `<div style="text-align:center;padding:1rem;color:var(--muted)"><div class="spinner-border spinner-border-sm text-success"></div></div>`;
+                try {
+                    const res = await fetch(`${API}/categories`);
+                    const data = await res.json();
+                    const cats = data.data || data || [];
+                    if (!cats.length) {
+                        box.innerHTML = `<p style="text-align:center;color:var(--muted);font-size:.85rem;padding:1rem">Chưa có thể loại nào.</p>`;
+                        return;
+                    }
+                    box.innerHTML = cats.map(c => {
+                        const id = c.categoryId || c.id;
+                        const name = c.categoryName || c.name;
+                        return `
+                    <div class="cat-row" id="catrow_${id}">
+                        <input id="catinput_${id}" class="cat-input" type="text" value="${name}"
+                               onkeydown="if(event.key==='Enter')saveCat(${id})">
+                        <button class="cat-btn cat-btn-save" onclick="saveCat(${id})" title="Lưu">
+                            <i class="bi bi-check-lg"></i>
+                        </button>
+                        <button class="cat-btn cat-btn-del" onclick="deleteCat(${id},'${name.replace(/'/g, "\\'")}')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </div>`;
+                    }).join("");
+                } catch {
+                    box.innerHTML = `<p style="color:var(--red);font-size:.83rem;padding:.5rem">Lỗi tải thể loại.</p>`;
+                }
+            }
+
+            window.openCatModal = function () {
+                document.getElementById("catNewName").value = "";
+                renderCatList();
+                new bootstrap.Modal(document.getElementById("catModal")).show();
+            };
+
+            window.addCat = async function () {
+                const name = document.getElementById("catNewName").value.trim();
+                if (!name) return;
+                try {
+                    const res = await fetch(`${API}/categories`, { method: "POST", headers: authHeaders(), body: JSON.stringify({ categoryName: name }) });
+                    const data = await res.json();
+                    if (!res.ok) { showToast(data.message || "Thêm thể loại thất bại.", "error"); return; }
+                    document.getElementById("catNewName").value = "";
+                    showToast(`Đã thêm thể loại "${name}".`, "success");
+                    await refreshCats();
+                    renderCatList();
+                } catch { showToast("Không kết nối được máy chủ.", "error"); }
+            };
+
+            window.saveCat = async function (id) {
+                const input = document.getElementById(`catinput_${id}`);
+                const name = input?.value.trim();
+                if (!name) return;
+                try {
+                    const res = await fetch(`${API}/categories/${id}`, { method: "PUT", headers: authHeaders(), body: JSON.stringify({ categoryName: name }) });
+                    const data = await res.json();
+                    if (!res.ok) { showToast(data.message || "Cập nhật thất bại.", "error"); return; }
+                    input.style.borderColor = "var(--green)";
+                    setTimeout(() => input.style.borderColor = "", 1500);
+                    showToast("Đã cập nhật thể loại.", "success");
+                    await refreshCats();
+                } catch { showToast("Không kết nối được máy chủ.", "error"); }
+            };
+
+            window.deleteCat = function (id, name) {
+                showConfirm({
+                    title: "Xoá thể loại",
+                    msg: `Bạn chắc chắn muốn xoá thể loại <strong>"${name}"</strong>?<br><small>Nếu còn sách thuộc thể loại này, bạn sẽ được hỏi thêm.</small>`,
+                    icon: "trash3-fill",
+                    color: "red",
+                    okLabel: "Xoá",
+                    onOk: () => _doDeleteCat(id, name)
+                });
+            };
+
+            async function _doDeleteCat(id, name) {
+                try {
+                    const res = await fetch(`${API}/categories/${id}`, { method: "DELETE", headers: authHeaders() });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        // Còn sách → hỏi force delete
+                        if (res.status === 409 && data.bookCount > 0) {
+                            showConfirm({
+                                title: "Thể loại đang có sách",
+                                msg: `Thể loại <strong>"${name}"</strong> còn <strong>${data.bookCount} cuốn sách</strong>.<br>Vẫn xoá và bỏ thể loại khỏi các sách đó?`,
+                                icon: "exclamation-triangle-fill",
+                                color: "amber",
+                                okLabel: "Vẫn xoá",
+                                onOk: () => _forceDeleteCat(id, name)
+                            });
+                        } else {
+                            showToast(data.message || "Xoá thể loại thất bại.", "error");
+                        }
+                        return;
+                    }
+
+                    showToast(`Đã xoá thể loại "${name}".`, "success");
+                    await refreshCats();
+                    renderCatList();
+                } catch { showToast("Không kết nối được máy chủ.", "error"); }
+            }
+
+            async function _forceDeleteCat(id, name) {
+                try {
+                    const res = await fetch(`${API}/categories/${id}?force=true`, { method: "DELETE", headers: authHeaders() });
+                    const data = await res.json();
+                    if (!res.ok) { showToast(data.message || "Xoá thất bại.", "error"); return; }
+                    showToast(`Đã xoá thể loại "${name}".`, "success");
+                    await refreshCats();
+                    renderCatList();
+                } catch { showToast("Không kết nối được máy chủ.", "error"); }
+            }
+
+            async function refreshCats() {
+                try {
+                    const res = await fetch(`${API}/categories`);
+                    const data = await res.json();
+                    const cats = data.data || data || [];
+                    _catMap = {};
+                    const opts = cats.map(c => {
+                        const id = c.categoryId || c.id;
+                        const name = c.categoryName || c.name;
+                        _catMap[name] = id;
+                        return `<option value="${id}">${name}</option>`;
+                    }).join("");
+                    const cA = document.getElementById("admCat").value;
+                    const cF = document.getElementById("fmCat").value;
+                    document.getElementById("admCat").innerHTML = `<option value="">Tất cả thể loại</option>` + opts;
+                    document.getElementById("fmCat").innerHTML = `<option value="">-- Chọn thể loại --</option>` + opts;
+                    document.getElementById("admCat").value = cA;
+                    document.getElementById("fmCat").value = cF;
+                } catch { }
+            }
+
+            loadCats();
+            load(1);
+        })();
     </script>
 </body>
 </html>

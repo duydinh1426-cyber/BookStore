@@ -22,6 +22,7 @@
         int? NumberPage,
         int NumberStock,
         int NumberSold,
+        int? CategoryId,        
         string? CategoryName,
         double AvgRating,
         int ReviewCount
