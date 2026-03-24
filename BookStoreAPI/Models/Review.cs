@@ -3,22 +3,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookStoreAPI.Models
 {
+    [Table("Reviews")]
     public class Review
     {
         [Key]
         public int reviewID { get; set; }
 
-        public int bookID { get; set; }   // FK → Books
-        public int userID { get; set; }   // FK → Customers
+        [Required]
+        public int bookID { get; set; }
 
+        [Required]
+        public int userID { get; set; }
+
+        [Required]
         [Range(1, 5)]
         public int rating { get; set; }
 
-        [MaxLength(1000)]
+        [StringLength(255)]
         public string? comment { get; set; }
 
+        [Required]
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
-        public DateTime updatedAt { get; set; } = DateTime.UtcNow;
+
+        [Required]
+        public DateTime? updatedAt { get; set; }
 
         // Navigation
         public Book Book { get; set; } = null!;
