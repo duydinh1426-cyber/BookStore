@@ -8,8 +8,14 @@ namespace BookStoreAPI.Models
     {
         [Key]
         public int userID { get; set; }
-        public int accountID { get; set; }   // FK → Accounts
-        public string name { get; set; } = "";
+
+        [Required]
+        public int accountID { get; set; }
+
+        [StringLength(100)]
+        public string name { get; set; } = null!;
+
+        [StringLength(255)]
         public string? address { get; set; }
 
         // Navigation

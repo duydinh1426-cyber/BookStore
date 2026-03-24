@@ -1,16 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookStoreAPI.Models
 {
+    [Table("OrderItems")]
     public class OrderItem
     {
         [Key]
         public int orderItemID { get; set; }
-        public int orderID { get; set; }   // FK → Orders
-        public int bookID { get; set; }   // FK → Books
+
+        [Required]
+        public int orderID { get; set; } 
+
+        [Required]
+        public int bookID { get; set; }
+
+        [Required]
         public int quantity { get; set; }
-        public decimal unitPrice { get; set; }   // ⭐ thêm: snapshot giá lúc đặt
+
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal unitPrice { get; set; } = 0;
+
+        [Required]
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
+
+        [Required]
         public DateTime updatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation
