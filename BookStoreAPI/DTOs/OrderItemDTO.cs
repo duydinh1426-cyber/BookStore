@@ -12,7 +12,6 @@ namespace BookStoreAPI.DTOs
         decimal SubTotal
     );
 
-    // ── Order response ────────────────────────────
     public record OrderItemSummaryDto(
         int OrderId,
         decimal TotalCost,

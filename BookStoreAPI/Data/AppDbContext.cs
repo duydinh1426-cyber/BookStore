@@ -84,14 +84,14 @@ namespace BookStoreAPI.Data
             // CartItem - Customer (N-1, CASCADE)
             mb.Entity<CartItem>()
               .HasOne(c => c.Customer)
-              .WithMany()
+              .WithMany(cu => cu.CartItems)
               .HasForeignKey(c => c.userID)
               .OnDelete(DeleteBehavior.Cascade);
 
             // CartItem - Book (N-1, CASCADE)
             mb.Entity<CartItem>()
               .HasOne(c => c.Book)
-              .WithMany()
+              .WithMany(b => b.CartItems)
               .HasForeignKey(c => c.bookID)
               .OnDelete(DeleteBehavior.Cascade);
 
