@@ -12,7 +12,7 @@ namespace BookStoreAPI.Controllers
 
         public UploadController(IWebHostEnvironment env) => _env = env;
 
-        // POST /api/upload/image
+        // POST - /api/upload/image
         [HttpPost("image")]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {

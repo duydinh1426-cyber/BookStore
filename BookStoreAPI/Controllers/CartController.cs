@@ -1,4 +1,12 @@
-﻿using BookStoreAPI.Data;
+﻿/*
+ * GET - /api/cart : lấy toàn bộ giỏ hàng của user hiện tại
+ * POST - /api/cart : thêm sách vào giỏ hàng
+ * PUT - /api/cart/{bookId} : cập nhật số lượng sách trong giỏ hàng
+ * DELETE - /api/cart/{bookId} : xóa 1 sách khỏi giỏ hàng
+ * DELETE - /api/cart : xóa toàn bộ giỏ hàng
+ */
+
+using BookStoreAPI.Data;
 using BookStoreAPI.DTOs;
 using BookStoreAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,23 +28,10 @@ namespace BookStoreAPI.Controllers
             _context = context;
         }
 
-        // Helper — lấy userID từ JWT token
-        private int GetUserId() =>
-    int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        // Helper lấy userID từ JWT token
+        private int GetUserId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        /*
-         * ════════════════════════════════════════════════════════════════
-         * GET /api/cart
-         * ════════════════════════════════════════════════════════════════
-         * Xem toàn bộ giỏ hàng của user hiện tại.
-         * Trả về danh sách sách + số lượng + tổng tiền.
-         *
-         * RESPONSE: CartResponseDto
-         *   { items: [...], totalPrice, totalItems }
-         *
-         * QUYỀN: Đã đăng nhập
-         * ════════════════════════════════════════════════════════════════
-         */
+        // GET - /api/cart : lấy toàn bộ giỏ hàng của user hiện tại
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
@@ -66,27 +61,7 @@ namespace BookStoreAPI.Controllers
             return Ok(response);
         }
 
-        /*
-         * ════════════════════════════════════════════════════════════════
-         * POST /api/cart
-         * ════════════════════════════════════════════════════════════════
-         * Thêm sách vào giỏ hàng.
-         * Nếu sách đã có trong giỏ → cộng thêm số lượng.
-         * Nếu chưa có → thêm mới.
-         *
-         * BODY (AddCartDto):
-         *   bookId   : ID sách muốn thêm
-         *   quantity : số lượng muốn thêm
-         *
-         * LỖI CÓ THỂ GẶP:
-         *   404 : sách không tồn tại
-         *   400 : sách hết hàng
-         *   400 : số lượng vượt quá tồn kho
-         *
-         * RESPONSE: { message }
-         * QUYỀN: Đã đăng nhập
-         * ════════════════════════════════════════════════════════════════
-         */
+        // POST - /api/cart : thêm sách vào giỏ hàng
         [HttpPost]
         public async Task<IActionResult> AddToCart([FromBody] AddCartDto dto)
         {
@@ -111,7 +86,7 @@ namespace BookStoreAPI.Controllers
 
             if (cartItem == null)
             {
-                // Chưa có trong giỏ → thêm mới
+                // Chưa có trong giỏ -> thêm mới
                 _context.CartItems.Add(new CartItem
                 {
                     userID = userId,
@@ -123,7 +98,7 @@ namespace BookStoreAPI.Controllers
             }
             else
             {
-                // Đã có → cộng thêm số lượng
+                // Đã có -> cộng thêm số lượng
                 cartItem.quantity += dto.Quantity;
                 cartItem.updatedAt = DateTime.UtcNow;
             }
@@ -132,24 +107,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Đã thêm vào giỏ hàng." });
         }
 
-        /*
-         * ════════════════════════════════════════════════════════════════
-         * PUT /api/cart/{bookId}
-         * ════════════════════════════════════════════════════════════════
-         * Cập nhật số lượng sách trong giỏ hàng.
-         * Nếu quantity = 0 → tự động xóa khỏi giỏ.
-         *
-         * BODY (UpdateCartDto):
-         *   quantity : số lượng mới (0 = xóa khỏi giỏ)
-         *
-         * LỖI CÓ THỂ GẶP:
-         *   404 : sách không có trong giỏ
-         *   400 : số lượng vượt quá tồn kho
-         *
-         * RESPONSE: { message }
-         * QUYỀN: Đã đăng nhập
-         * ════════════════════════════════════════════════════════════════
-         */
+        // PUT - /api/cart/{bookId} : cập nhật số lượng sách trong giỏ hàng
         [HttpPut("{bookId:int}")]
         public async Task<IActionResult> UpdateCart(int bookId, [FromBody] UpdateCartDto dto)
         {
@@ -162,7 +120,7 @@ namespace BookStoreAPI.Controllers
             if (cartItem == null)
                 return NotFound(new { message = "Sách không có trong giỏ hàng." });
 
-            // quantity = 0 → xóa khỏi giỏ
+            // quantity = 0 -> xóa khỏi giỏ
             if (dto.Quantity <= 0)
             {
                 _context.CartItems.Remove(cartItem);
@@ -181,19 +139,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Đã cập nhật giỏ hàng." });
         }
 
-        /*
-         * ════════════════════════════════════════════════════════════════
-         * DELETE /api/cart/{bookId}
-         * ════════════════════════════════════════════════════════════════
-         * Xóa 1 sách khỏi giỏ hàng.
-         *
-         * LỖI CÓ THỂ GẶP:
-         *   404 : sách không có trong giỏ
-         *
-         * RESPONSE: { message }
-         * QUYỀN: Đã đăng nhập
-         * ════════════════════════════════════════════════════════════════
-         */
+        // DELETE - /api/cart/{bookId} : xóa 1 sách khỏi giỏ hàng
         [HttpDelete("{bookId:int}")]
         public async Task<IActionResult> RemoveFromCart(int bookId)
         {
@@ -211,17 +157,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Đã xóa sách khỏi giỏ hàng." });
         }
 
-        /*
-         * ════════════════════════════════════════════════════════════════
-         * DELETE /api/cart
-         * ════════════════════════════════════════════════════════════════
-         * Xóa toàn bộ giỏ hàng của user hiện tại.
-         * Thường được gọi sau khi thanh toán thành công.
-         *
-         * RESPONSE: { message }
-         * QUYỀN: Đã đăng nhập
-         * ════════════════════════════════════════════════════════════════
-         */
+        // DELETE - /api/cart : xóa toàn bộ giỏ hàng
         [HttpDelete]
         public async Task<IActionResult> ClearCart()
         {

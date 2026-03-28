@@ -1,4 +1,15 @@
-﻿using BookStoreAPI.Data;
+﻿/*
+ * GET - /api/books
+ * GET - /api/books/top-new
+ * GET - /api/books/top-selling
+ * GET - /api/books/top-rated
+ * GET - /api/books/{id}
+ * POST /api/books [Admin]
+ * PUT - /api/books/{id}  [Admin]
+ * DELETE - /api/books/{id}  [Admin]
+ */
+
+using BookStoreAPI.Data;
 using BookStoreAPI.Models;
 using BookStoreAPI.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +29,7 @@ namespace BookStoreAPI.Controllers
             _context = context;
         }
 
-        // ────────────────────────────────────────────────────────────
-        // GET /api/books
-        // ────────────────────────────────────────────────────────────
+        // GET - /api/books
         [HttpGet]
         public async Task<IActionResult> GetBooks(
             int page = 1,
@@ -89,9 +98,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { total, page, pageSize, totalPages, data = books });
         }
 
-        // ────────────────────────────────────────────────────────────
-        // GET /api/books/top-new
-        // ────────────────────────────────────────────────────────────
+        // GET - /api/books/top-new
         [HttpGet("top-new")]
         public async Task<IActionResult> GetTopNew([FromQuery] int count = 6)
         {
@@ -106,9 +113,7 @@ namespace BookStoreAPI.Controllers
             return Ok(books);
         }
 
-        // ────────────────────────────────────────────────────────────
-        // GET /api/books/top-selling
-        // ────────────────────────────────────────────────────────────
+        // GET - /api/books/top-selling
         [HttpGet("top-selling")]
         public async Task<IActionResult> GetTopSelling([FromQuery] int count = 6)
         {
@@ -123,9 +128,7 @@ namespace BookStoreAPI.Controllers
             return Ok(books);
         }
 
-        // ────────────────────────────────────────────────────────────
-        // GET /api/books/top-rated
-        // ────────────────────────────────────────────────────────────
+        // GET - /api/books/top-rated
         [HttpGet("top-rated")]
         public async Task<IActionResult> GetTopRated([FromQuery] int count = 6)
         {
@@ -142,9 +145,7 @@ namespace BookStoreAPI.Controllers
             return Ok(books);
         }
 
-        // ────────────────────────────────────────────────────────────
-        // GET /api/books/{id}
-        // ────────────────────────────────────────────────────────────
+        // GET - /api/books/{id}
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetBookById(int id)
         {
@@ -164,9 +165,7 @@ namespace BookStoreAPI.Controllers
                 Math.Round((double)book.avgRating, 1), book.reviewCount));
         }
 
-        // ────────────────────────────────────────────────────────────
-        // POST /api/books  [Admin]
-        // ────────────────────────────────────────────────────────────
+        // POST /api/books [Admin]
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody] BookUpsertDto dto)
@@ -211,9 +210,7 @@ namespace BookStoreAPI.Controllers
                 new { message = "Thêm sách thành công.", bookId = book.bookID });
         }
 
-        // ────────────────────────────────────────────────────────────
-        // PUT /api/books/{id}  [Admin]
-        // ────────────────────────────────────────────────────────────
+        // PUT - /api/books/{id}  [Admin]
         [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] BookUpsertDto dto)
@@ -251,9 +248,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Cập nhật sách thành công." });
         }
 
-        // ────────────────────────────────────────────────────────────
-        // DELETE /api/books/{id}  [Admin]
-        // ────────────────────────────────────────────────────────────
+        // DELETE - /api/books/{id}  [Admin]
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteBook(int id)

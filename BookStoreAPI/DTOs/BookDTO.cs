@@ -28,7 +28,6 @@
         int ReviewCount
     );
 
-    /// <summary>Dùng cho cả POST (thêm mới) và PUT (cập nhật)</summary>
     public record BookUpsertDto(
         string Title,
         string? Author,

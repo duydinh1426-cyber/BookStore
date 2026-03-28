@@ -15,7 +15,6 @@ namespace BookStoreAPI
 
             builder.Services.AddControllers();
 
-            // ✅ Đọc key từ appsettings.json, không hardcode
             var key = builder.Configuration["Jwt:SecretKey"]!;
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -37,6 +36,10 @@ namespace BookStoreAPI
                     builder.Configuration.GetConnectionString("DefaultConnection"))
                 .LogTo(Console.WriteLine, LogLevel.Information)
            .EnableSensitiveDataLogging());
+
+            builder.Services.AddMemoryCache();     
+            builder.Services.AddScoped<EmailService>(); 
+            builder.Services.AddScoped<OtpService>(); 
 
             builder.Services.AddScoped<JwtService>();
 

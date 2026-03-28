@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*
+ * GET - /api/reviews/book/{bookId} : Lấy tất cả đánh giá của 1 cuốn sách (public)
+ * GET /api/reviews/status/{bookId} [Customer] : Kiểm tra trạng thái review của user với sách
+ * POST - /api/reviews [Customer] : Tạo đánh giá mới (Điều kiện: đã mua sách và chưa đánh giá cuốn này)
+ * DELETE - /api/reviews/{id} [Admin] : Xóa đánh giá
+ * GET - /api/reviews/admin/all [Admin] : Lấy tất cả đánh giá, có filter theo rating và bookId
+ */
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,22 +24,19 @@ namespace BookStoreAPI.Controllers
 
         public ReviewController(AppDbContext db) => _db = db;
 
-        // ── Helper lấy userId từ JWT ──
+        // Helper lấy userId từ JWT
         private int GetUserId() =>
             int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
                    ?? User.FindFirstValue("sub")
                    ?? "0");
 
-        // ──────────────────────────────────────────
-        // GET /api/reviews/book/{bookId}
-        // Lấy tất cả đánh giá của 1 cuốn sách (public)
-        // ──────────────────────────────────────────
+        // GET - /api/reviews/book/{bookId} : Lấy tất cả đánh giá của 1 cuốn sách (public)
         [HttpGet("book/{bookId:int}")]
         public async Task<IActionResult> GetByBook(
             int bookId,
-            [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] int? rating = null)
+            int page = 1,
+            int pageSize = 10,
+            int? rating = null)
         {
             var bookExists = await _db.Books.AnyAsync(b => b.bookID == bookId);
             if (!bookExists) return NotFound(new { message = "Không tìm thấy sách" });
@@ -79,70 +84,7 @@ namespace BookStoreAPI.Controllers
             });
         }
 
-        // ──────────────────────────────────────────
-        // GET /api/reviews/my
-        // ──────────────────────────────────────────
-        [HttpGet("my")]
-        [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> GetMine(
-            [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            var userId = GetUserId();
-
-            var query = _db.Reviews
-                .Include(r => r.Book)
-                .Where(r => r.userID == userId);
-
-            var total = await query.CountAsync();
-
-            var reviews = await query
-                .OrderByDescending(r => r.createdAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(r => new
-                {
-                    r.reviewID,
-                    r.rating,
-                    r.comment,
-                    r.createdAt,
-                    book = new { r.Book.bookID, r.Book.title, r.Book.image }
-                })
-                .ToListAsync();
-
-            return Ok(new
-            {
-                total,
-                page,
-                pageSize,
-                totalPages = (int)Math.Ceiling(total / (double)pageSize),
-                data = reviews
-            });
-        }
-
-        // ──────────────────────────────────────────
-        // GET /api/reviews/{id}
-        // ──────────────────────────────────────────
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var r = await _db.Reviews
-                .Include(r => r.Customer)
-                .FirstOrDefaultAsync(r => r.reviewID == id);
-
-            if (r is null) return NotFound(new { message = "Không tìm thấy đánh giá" });
-
-            return Ok(new ReviewResponseDto(
-                r.reviewID,
-                r.Customer.name,
-                r.rating,
-                r.comment,
-                r.createdAt));
-        }
-
-        // ──────────────────────────────────────────
-        // GET /api/reviews/status/{bookId}   [Customer]
-        // Kiểm tra trạng thái review của user với sách
-        // ──────────────────────────────────────────
+        // GET /api/reviews/status/{bookId} [Customer] : Kiểm tra trạng thái review của user với sách
         [HttpGet("status/{bookId:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> GetReviewStatus(int bookId)
@@ -174,11 +116,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { canReview = true });
         }
 
-        // ──────────────────────────────────────────
-        // POST /api/reviews              [Customer]
-        // Tạo đánh giá mới
-        // Điều kiện: đã mua sách (completed), chưa đánh giá cuốn này
-        // ──────────────────────────────────────────
+        // POST - /api/reviews [Customer] : Tạo đánh giá mới (Điều kiện: đã mua sách và chưa đánh giá cuốn này)
         [HttpPost]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromBody] CreateReviewDto dto)
@@ -227,11 +165,7 @@ namespace BookStoreAPI.Controllers
                 new { message = "Đánh giá đã được ghi nhận.", reviewId = review.reviewID });
         }
 
-        // ──────────────────────────────────────────
-        // PUT /api/reviews/{id}          [Customer]  ← bị tắt theo yêu cầu
-        // DELETE /api/reviews/{id}       [Customer | Admin] ← bị tắt theo yêu cầu
-        // (Giữ lại cho Admin nếu cần xóa từ trang quản trị)
-        // ──────────────────────────────────────────
+        // DELETE - /api/reviews/{id} [Admin] : Xóa đánh giá
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
@@ -253,9 +187,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Đã xóa đánh giá" });
         }
 
-        // ──────────────────────────────────────────
-        // GET /api/reviews/admin/all     [Admin]
-        // ──────────────────────────────────────────
+        // GET - /api/reviews/admin/all [Admin] : Lấy tất cả đánh giá, có filter theo rating và bookId
         [HttpGet("admin/all")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminGetAll(
@@ -299,7 +231,7 @@ namespace BookStoreAPI.Controllers
             });
         }
 
-        // ── Cập nhật điểm trung bình trên bảng Books ──
+        // Cập nhật điểm trung bình trên bảng Books
         private async Task UpdateBookRating(int bookId)
         {
             var book = await _db.Books.FindAsync(bookId);

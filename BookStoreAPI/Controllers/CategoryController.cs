@@ -1,4 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*
+ * GET - /api/categories : Lấy tất cả thể loại
+ * GET - /api/categories/{id} : Lấy chi tiết 1 thể loại
+ * GET - /api/categories/{id}/books : Lấy tất cả sách thuộc thể loại
+ * POST - /api/categories [Admin] : Tạo thể loại mới
+ * PUT /api/categories/{id} [Admin] : Cập nhật tên thể loại
+ * DELETE - /api/categories/{id} [Admin] : Xóa thể loại (kiểm tra còn sách không)
+ * GET /api/categories/search?q=... : Tìm kiếm thể loại theo tên
+ */
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BookStoreAPI.Data;
@@ -15,10 +25,7 @@ namespace BookStoreAPI.Controllers
 
         public CategoryController(AppDbContext db) => _db = db;
 
-        // ──────────────────────────────────────────
-        // GET /api/categories
-        // Lấy tất cả thể loại (có thể kèm số lượng sách)
-        // ──────────────────────────────────────────
+        // GET - /api/categories : Lấy tất cả thể loại
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] bool includeBookCount = false)
         {
@@ -45,10 +52,7 @@ namespace BookStoreAPI.Controllers
             return Ok(cats);
         }
 
-        // ──────────────────────────────────────────
-        // GET /api/categories/{id}
-        // Lấy chi tiết 1 thể loại
-        // ──────────────────────────────────────────
+        // GET - /api/categories/{id} : Lấy chi tiết 1 thể loại
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -58,10 +62,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new CategoryDto(cat.categoryID, cat.categoryName));
         }
 
-        // ──────────────────────────────────────────
-        // GET /api/categories/{id}/books
-        // Lấy tất cả sách thuộc thể loại
-        // ──────────────────────────────────────────
+        // GET - /api/categories/{id}/books : Lấy tất cả sách thuộc thể loại
         [HttpGet("{id:int}/books")]
         public async Task<IActionResult> GetBooks(int id,
             [FromQuery] int page = 1, [FromQuery] int pageSize = 12)
@@ -100,10 +101,7 @@ namespace BookStoreAPI.Controllers
             });
         }
 
-        // ──────────────────────────────────────────
-        // POST /api/categories          [Admin]
-        // Tạo thể loại mới
-        // ──────────────────────────────────────────
+        // POST - /api/categories [Admin] : Tạo thể loại mới
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
@@ -126,10 +124,7 @@ namespace BookStoreAPI.Controllers
                 new CategoryDto(cat.categoryID, cat.categoryName));
         }
 
-        // ──────────────────────────────────────────
-        // PUT /api/categories/{id}      [Admin]
-        // Cập nhật tên thể loại
-        // ──────────────────────────────────────────
+        // PUT /api/categories/{id} [Admin] : Cập nhật tên thể loại
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] CreateCategoryDto dto)
@@ -153,10 +148,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new CategoryDto(cat.categoryID, cat.categoryName));
         }
 
-        // ──────────────────────────────────────────
-        // DELETE /api/categories/{id}   [Admin]
-        // Xóa thể loại (kiểm tra còn sách không)
-        // ──────────────────────────────────────────
+        // DELETE - /api/categories/{id} [Admin] : Xóa thể loại (kiểm tra còn sách không)
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id, [FromQuery] bool force = false)
@@ -182,10 +174,7 @@ namespace BookStoreAPI.Controllers
             return Ok(new { message = "Đã xóa thể loại thành công" });
         }
 
-        // ──────────────────────────────────────────
-        // GET /api/categories/search?q=...
-        // Tìm kiếm thể loại theo tên
-        // ──────────────────────────────────────────
+        // GET /api/categories/search?q=... : Tìm kiếm thể loại theo tên
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string q = "")
         {

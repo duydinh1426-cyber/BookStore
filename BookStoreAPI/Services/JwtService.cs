@@ -11,16 +11,15 @@ namespace BookStoreAPI.Services
 
         public JwtService(IConfiguration cfg) => _cfg = cfg;
 
-        // Thêm userId (Customers.userID) vào tham số
         public string GenerateToken(int accountId, int userId, string username, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_cfg["Jwt:SecretKey"]!); // ✅ đọc từ config
+            var key = Encoding.UTF8.GetBytes(_cfg["Jwt:SecretKey"]!);
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, accountId.ToString()), // accountId
-                new Claim("userId", userId.ToString()),                      // Customers.userID
+                new Claim(ClaimTypes.NameIdentifier, accountId.ToString()),
+                new Claim("userId", userId.ToString()),                    
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, role)
             };

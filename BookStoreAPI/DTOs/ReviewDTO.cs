@@ -2,7 +2,7 @@
 {
     public record CreateReviewDto(
         int BookId,
-        int Rating,     // 1-5
+        int Rating,    
         string? Comment
     );
 
@@ -12,10 +12,5 @@
         int Rating,
         string? Comment,
         DateTime CreatedAt
-    );
-
-    public record UpdateReviewDto(
-        int Rating,
-        string? Comment
     );
 }

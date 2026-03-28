@@ -1,15 +1,11 @@
 ﻿namespace BookStoreAPI.DTOs
 {
-    // ── INPUT ─────────────────────────────────────────────────
-
     public record AddCartDto(
         int BookId,
         int Quantity
     );
 
     public record UpdateCartDto(int Quantity);
-
-    // ── OUTPUT ────────────────────────────────────────────────
 
     public record CartItemResponseDto(
         int CartItemId,
@@ -19,12 +15,12 @@
         string? Image,
         decimal Price,
         int Quantity,
-        decimal SubTotal    // Price × Quantity
+        decimal SubTotal   
     );
 
     public record CartResponseDto(
         IEnumerable<CartItemResponseDto> Items,
-        decimal TotalPrice,  // tổng toàn bộ giỏ
-        int TotalItems   // tổng số lượng sách
+        decimal TotalPrice, 
+        int TotalItems   
     );
 }

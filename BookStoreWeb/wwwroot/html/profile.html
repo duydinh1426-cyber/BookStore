@@ -25,7 +25,11 @@
         }
 
         .pf-title {
+<<<<<<< Updated upstream
             font-family: 'Playfair Display',serif;
+=======
+            font-family: 'DM Sans',sans-serif;
+>>>>>>> Stashed changes
             font-size: 1.75rem;
             font-weight: 700;
             color: #1a1a1a;
@@ -36,7 +40,7 @@
                 color: #6ab04c
             }
 
-        /* ── Avatar card ── */
+        /* Avatar card */
         .pf-avatar-card {
             background: #fff;
             border-radius: 16px;
@@ -91,7 +95,7 @@
             margin-top: 3px
         }
 
-        /* ── Card chung ── */
+        /* Card */
         .pf-card {
             background: #fff;
             border-radius: 16px;
@@ -115,7 +119,7 @@
                 font-size: 1.05rem
             }
 
-        /* ── Form ── */
+        /* Form */
         .pf-label {
             font-size: .83rem;
             font-weight: 600;
@@ -163,7 +167,7 @@
                 display: block
             }
 
-        /* ── Password toggle ── */
+        /* Password toggle */
         .pf-pw-wrap {
             position: relative
         }
@@ -191,7 +195,7 @@
                 color: #6ab04c
             }
 
-        /* ── Buttons ── */
+        /* Buttons */
         .pf-btn {
             border-radius: 10px;
             padding: .62rem 1.4rem;
@@ -231,7 +235,7 @@
                 color: #6ab04c
             }
 
-        /* ── Alert inline ── */
+        /* Alert inline */
         .pf-alert {
             border-radius: 10px;
             padding: .65rem .9rem;
@@ -258,7 +262,7 @@
                 color: #c0392b
             }
 
-        /* ── Username readonly chip ── */
+        /* Username chip */
         .pf-readonly-chip {
             display: inline-flex;
             align-items: center;
@@ -276,14 +280,75 @@
                 color: #8a9bb0
             }
 
-        /* ── Divider ── */
+        /* Divider */
         .pf-divider {
             border: none;
             border-top: 1.5px solid #f0f0f0;
             margin: 1.1rem 0;
         }
 
-        /* ── Skeleton ── */
+        /* OTP step inside password card */
+        #pwStep2 {
+            display: none
+        }
+
+        .pf-otp-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #f0fff4;
+            border: 1.5px solid #b7e4c7;
+            border-radius: 10px;
+            padding: .75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: .84rem;
+            color: #1e7e34;
+        }
+
+            .pf-otp-info i {
+                margin-top: 1px;
+                flex-shrink: 0
+            }
+
+        .pf-otp-resend {
+            font-size: .82rem;
+            text-align: center;
+            margin-top: .75rem;
+            color: #8a9bb0
+        }
+
+            .pf-otp-resend a {
+                color: #6ab04c;
+                font-weight: 700;
+                text-decoration: none;
+                cursor: pointer
+            }
+
+                .pf-otp-resend a:hover {
+                    color: #4e8a35;
+                    text-decoration: underline
+                }
+
+        .pf-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #6ab04c;
+            font-weight: 600;
+            font-size: .84rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: .9rem;
+            transition: color .15s;
+        }
+
+            .pf-back-btn:hover {
+                color: #4e8a35
+            }
+
+        /* Skeleton */
         .pf-skeleton {
             background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
             background-size: 200% 100%;
@@ -323,63 +388,45 @@
             </div>
         </div>
 
-        <!-- Content (hidden until loaded) -->
+        <!-- Content -->
         <div id="pfContent" style="display:none">
 
-            <!-- Avatar + tên -->
+            <!-- Avatar -->
             <div class="pf-avatar-card">
                 <div class="pf-avatar" id="pfAvatarCircle">?</div>
                 <div>
                     <div class="pf-avatar-name" id="pfAvatarName">—</div>
-                    <div class="pf-avatar-role">
-                        <i class="bi bi-person-check-fill"></i>
-                        Khách hàng
-                    </div>
+                    <div class="pf-avatar-role"><i class="bi bi-person-check-fill"></i> Khách hàng</div>
                     <div class="pf-avatar-since" id="pfSince"></div>
                 </div>
             </div>
 
-            <!-- Form chỉnh sửa thông tin -->
+            <!-- Thông tin cá nhân -->
             <div class="pf-card">
-                <div class="pf-card-title">
-                    <i class="bi bi-pencil-square"></i> Thông tin cá nhân
-                </div>
+                <div class="pf-card-title"><i class="bi bi-pencil-square"></i> Thông tin cá nhân</div>
 
-                <!-- Username (readonly) -->
                 <div class="mb-3">
                     <label class="pf-label">Tên đăng nhập</label>
-                    <div class="pf-readonly-chip">
-                        <i class="bi bi-shield-lock"></i>
-                        <span id="pfUsername">—</span>
-                    </div>
-                    <div style="font-size:.75rem;color:#8a9bb0;margin-top:4px">
-                        Tên đăng nhập không thể thay đổi
-                    </div>
+                    <div class="pf-readonly-chip"><i class="bi bi-shield-lock"></i><span id="pfUsername">—</span></div>
+                    <div style="font-size:.75rem;color:#8a9bb0;margin-top:4px">Tên đăng nhập không thể thay đổi</div>
                 </div>
 
                 <hr class="pf-divider">
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <label class="pf-label" for="pfName">
-                            Họ và tên <span style="color:#e74c3c">*</span>
-                        </label>
+                        <label class="pf-label" for="pfName">Họ và tên <span style="color:#e74c3c">*</span></label>
                         <input class="pf-input" id="pfName" type="text" placeholder="Nguyễn Văn A">
                         <div class="pf-err" id="pfNameErr">Vui lòng nhập họ tên (ít nhất 2 ký tự)</div>
                     </div>
-
                     <div class="col-12 col-sm-6">
-                        <label class="pf-label" for="pfEmail">
-                            Email <span style="color:#e74c3c">*</span>
-                        </label>
+                        <label class="pf-label" for="pfEmail">Email <span style="color:#e74c3c">*</span></label>
                         <input class="pf-input" id="pfEmail" type="email" placeholder="email@example.com">
                         <div class="pf-err" id="pfEmailErr">Email không hợp lệ</div>
                     </div>
-
                     <div class="col-12 col-sm-6">
                         <label class="pf-label" for="pfAddress">Địa chỉ</label>
-                        <input class="pf-input" id="pfAddress" type="text"
-                               placeholder="Số nhà, đường, phường, quận...">
+                        <input class="pf-input" id="pfAddress" type="text" placeholder="Số nhà, đường, phường, quận...">
                     </div>
                 </div>
 
@@ -400,73 +447,99 @@
 
             <!-- Đổi mật khẩu -->
             <div class="pf-card">
-                <div class="pf-card-title">
-                    <i class="bi bi-lock-fill"></i> Đổi mật khẩu
-                </div>
+                <div class="pf-card-title"><i class="bi bi-lock-fill"></i> Đổi mật khẩu</div>
 
-                <div class="row g-3">
-                    <div class="col-12">
-                        <label class="pf-label" for="pfCurPw">
-                            Mật khẩu hiện tại <span style="color:#e74c3c">*</span>
-                        </label>
-                        <div class="pf-pw-wrap">
-                            <input class="pf-input" id="pfCurPw" type="password"
-                                   placeholder="Nhập mật khẩu hiện tại">
-                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfCurPw',this)">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                <!-- ── Bước 1: Xác nhận mật khẩu cũ ── -->
+                <div id="pwStep1">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="pf-label" for="pfCurPw">Mật khẩu hiện tại <span style="color:#e74c3c">*</span></label>
+                            <div class="pf-pw-wrap">
+                                <input class="pf-input" id="pfCurPw" type="password" placeholder="Nhập mật khẩu hiện tại">
+                                <button class="pf-pw-eye" type="button" onclick="togglePw('pfCurPw',this)"><i class="bi bi-eye"></i></button>
+                            </div>
+                            <div class="pf-err" id="pfCurPwErr">Vui lòng nhập mật khẩu hiện tại</div>
                         </div>
-                        <div class="pf-err" id="pfCurPwErr">Vui lòng nhập mật khẩu hiện tại</div>
                     </div>
 
-                    <div class="col-12 col-sm-6">
-                        <label class="pf-label" for="pfNewPw">
-                            Mật khẩu mới <span style="color:#e74c3c">*</span>
-                        </label>
-                        <div class="pf-pw-wrap">
-                            <input class="pf-input" id="pfNewPw" type="password"
-                                   placeholder="Ít nhất 6 ký tự">
-                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfNewPw',this)">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        <div class="pf-err" id="pfNewPwErr">Mật khẩu mới phải có ít nhất 6 ký tự</div>
+                    <div class="pf-alert" id="pfPwStep1Alert">
+                        <i class="bi bi-exclamation-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
+                        <span id="pfPwStep1AlertMsg"></span>
                     </div>
 
-                    <div class="col-12 col-sm-6">
-                        <label class="pf-label" for="pfConfirmPw">
-                            Xác nhận mật khẩu <span style="color:#e74c3c">*</span>
-                        </label>
-                        <div class="pf-pw-wrap">
-                            <input class="pf-input" id="pfConfirmPw" type="password"
-                                   placeholder="Nhập lại mật khẩu mới">
-                            <button class="pf-pw-eye" type="button" onclick="togglePw('pfConfirmPw',this)">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        <div class="pf-err" id="pfConfirmPwErr">Mật khẩu xác nhận không khớp</div>
+                    <div style="margin-top:1rem">
+                        <button class="pf-btn pf-btn-primary" id="pfSendPwOtpBtn" onclick="sendPasswordOtp()">
+                            <i class="bi bi-send"></i> Xác nhận & Gửi mã OTP
+                        </button>
                     </div>
                 </div>
 
-                <!-- Độ mạnh mật khẩu -->
-                <div style="margin-top:.75rem" id="pfStrengthWrap" style="display:none">
-                    <div style="font-size:.76rem;color:#8a9bb0;margin-bottom:4px">Độ mạnh:</div>
-                    <div style="height:5px;border-radius:3px;background:#e8edf2;overflow:hidden">
-                        <div id="pfStrengthBar"
-                             style="height:100%;border-radius:3px;transition:width .3s,background .3s;width:0"></div>
-                    </div>
-                    <div id="pfStrengthLabel" style="font-size:.74rem;margin-top:3px;color:#8a9bb0"></div>
-                </div>
-
-                <div class="pf-alert" id="pfPwAlert">
-                    <i class="bi bi-check-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
-                    <span id="pfPwAlertMsg"></span>
-                </div>
-
-                <div style="margin-top:1rem">
-                    <button class="pf-btn pf-btn-primary" id="pfPwBtn" onclick="changePassword()">
-                        <i class="bi bi-lock"></i> Đổi mật khẩu
+                <!-- ── Bước 2: Nhập OTP + Mật khẩu mới ── -->
+                <div id="pwStep2">
+                    <button class="pf-back-btn" onclick="goBackToPwStep1()">
+                        <i class="bi bi-arrow-left"></i> Quay lại
                     </button>
+
+                    <div class="pf-otp-info">
+                        <i class="bi bi-envelope-check-fill"></i>
+                        <span>Mã OTP đã gửi về email của bạn. Nhập mã và đặt mật khẩu mới.</span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="pf-label" for="pfOtp">Mã OTP <span style="color:#e74c3c">*</span></label>
+                            <div class="pf-pw-wrap" style="position:relative">
+                                <input class="pf-input" id="pfOtp" type="text" placeholder="Nhập 6 chữ số"
+                                       maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                                       style="padding-left:.9rem"
+                                       oninput="this.value=this.value.replace(/\D/g,'')">
+                            </div>
+                            <div class="pf-err" id="pfOtpErr">Vui lòng nhập mã OTP 6 chữ số</div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <label class="pf-label" for="pfNewPw">Mật khẩu mới <span style="color:#e74c3c">*</span></label>
+                            <div class="pf-pw-wrap">
+                                <input class="pf-input" id="pfNewPw" type="password" placeholder="Ít nhất 6 ký tự">
+                                <button class="pf-pw-eye" type="button" onclick="togglePw('pfNewPw',this)"><i class="bi bi-eye"></i></button>
+                            </div>
+                            <div class="pf-err" id="pfNewPwErr">Mật khẩu mới phải có ít nhất 6 ký tự</div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <label class="pf-label" for="pfConfirmPw">Xác nhận mật khẩu <span style="color:#e74c3c">*</span></label>
+                            <div class="pf-pw-wrap">
+                                <input class="pf-input" id="pfConfirmPw" type="password" placeholder="Nhập lại mật khẩu mới">
+                                <button class="pf-pw-eye" type="button" onclick="togglePw('pfConfirmPw',this)"><i class="bi bi-eye"></i></button>
+                            </div>
+                            <div class="pf-err" id="pfConfirmPwErr">Mật khẩu xác nhận không khớp</div>
+                        </div>
+                    </div>
+
+                    <!-- Độ mạnh mật khẩu -->
+                    <div style="margin-top:.75rem">
+                        <div style="height:5px;border-radius:3px;background:#e8edf2;overflow:hidden">
+                            <div id="pfStrengthBar" style="height:100%;border-radius:3px;transition:width .3s,background .3s;width:0"></div>
+                        </div>
+                        <div id="pfStrengthLabel" style="font-size:.74rem;margin-top:3px;color:#8a9bb0"></div>
+                    </div>
+
+                    <div class="pf-alert" id="pfPwAlert">
+                        <i class="bi bi-check-circle-fill" style="flex-shrink:0;margin-top:1px"></i>
+                        <span id="pfPwAlertMsg"></span>
+                    </div>
+
+                    <div style="margin-top:1rem">
+                        <button class="pf-btn pf-btn-primary" id="pfPwBtn" onclick="changePassword()">
+                            <i class="bi bi-lock"></i> Đổi mật khẩu
+                        </button>
+                    </div>
+
+                    <div class="pf-otp-resend">
+                        Không nhận được mã?
+                        <span id="pfCountdown">Gửi lại sau <strong id="pfTimer">60</strong>s</span>
+                        <a id="pfResendBtn" style="display:none" onclick="resendPasswordOtp()">Gửi lại OTP</a>
+                    </div>
                 </div>
             </div>
 
@@ -476,244 +549,263 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
     <script>
-(function(){
-    const API = "https://localhost:7108/api";
+        (function () {
+            const API = "https://localhost:7108/api";
+            let _original = {};
+            let _pwCountdown;
 
-    const getToken = () => sessionStorage.getItem("token");
-    const isLoggedIn  = () => !!getToken();
-    const authHeaders = () => ({
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${getToken()}`
-    });
+            const getToken = () => sessionStorage.getItem("token");
+            const authHeaders = () => ({ "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` });
 
-    if(!isLoggedIn()){
-        window.location.href = "../html/login.html";
-        return;
-    }
+            if (!getToken()) { window.location.href = "../html/login.html"; return; }
 
-    // Lưu dữ liệu gốc để reset
-    let _original = {};
-
-    /* ══ Load thông tin ══ */
-    async function loadProfile(){
-        try{
-            const res  = await fetch(`${API}/auth/me`, {headers: authHeaders()});
-            if(!res.ok) throw new Error();
-            const d    = await res.json();
-
-            _original = { name: d.name||"", email: d.email||"", address: d.address||"" };
-
-            // Avatar: lấy 1-2 chữ cái đầu
-            const initials = (d.name||"?").split(" ").filter(Boolean)
-                .slice(0,2).map(w=>w[0].toUpperCase()).join("");
-            document.getElementById("pfAvatarCircle").textContent = initials;
-            document.getElementById("pfAvatarName").textContent   = d.name||"—";
-            document.getElementById("pfUsername").textContent      = d.username||"—";
-            if(d.createdAt){
-                document.getElementById("pfSince").textContent =
-                    "Thành viên từ " + new Date(d.createdAt).toLocaleDateString("vi-VN");
+            /* ── Alert helper ── */
+            function showAlert(alertId, msgId, msg, type) {
+                const el = document.getElementById(alertId), txt = document.getElementById(msgId);
+                txt.textContent = msg;
+                el.className = `pf-alert ${type} show`;
+                el.querySelector("i").className = type === "success" ? "bi bi-check-circle-fill" : "bi bi-exclamation-circle-fill";
+                if (type === "success") setTimeout(() => el.classList.remove("show"), 4000);
             }
 
-            // Điền form
-            document.getElementById("pfName").value    = d.name    || "";
-            document.getElementById("pfEmail").value   = d.email   || "";
-            document.getElementById("pfAddress").value = d.address || "";
+            /* ── Validate helper ── */
+            function chk(id, errId, cond) {
+                const el = document.getElementById(id), er = document.getElementById(errId);
+                const ok = cond(el.value.trim());
+                el.classList.toggle("error", !ok); er.classList.toggle("show", !ok);
+                return ok;
+            }
 
-            // Hiện nội dung
-            document.getElementById("pfLoading").style.display  = "none";
-            document.getElementById("pfContent").style.display  = "block";
+            /* ── Toggle password ── */
+            window.togglePw = function (inputId, btn) {
+                const inp = document.getElementById(inputId), ico = btn.querySelector("i");
+                inp.type = inp.type === "password" ? "text" : "password";
+                ico.className = inp.type === "password" ? "bi bi-eye" : "bi bi-eye-slash";
+            };
 
-        }catch{
-            document.getElementById("pfLoading").innerHTML = `
-            <div class="pf-card" style="text-align:center;padding:2.5rem;color:#8a9bb0">
-                <i class="bi bi-wifi-off" style="font-size:2.5rem;display:block;margin-bottom:.75rem"></i>
-                Không tải được thông tin. Vui lòng thử lại.
-            </div>`;
-        }
-    }
+            /* ── Countdown ── */
+            function startCountdown() {
+                clearInterval(_pwCountdown);
+                let s = 60;
+                document.getElementById("pfTimer").textContent = s;
+                document.getElementById("pfCountdown").style.display = "inline";
+                document.getElementById("pfResendBtn").style.display = "none";
+                _pwCountdown = setInterval(() => {
+                    s--;
+                    document.getElementById("pfTimer").textContent = s;
+                    if (s <= 0) {
+                        clearInterval(_pwCountdown);
+                        document.getElementById("pfCountdown").style.display = "none";
+                        document.getElementById("pfResendBtn").style.display = "inline";
+                    }
+                }, 1000);
+            }
 
-    /* ══ Alert helper ══ */
-    function showAlert(alertId, msgId, msg, type){
-        const el  = document.getElementById(alertId);
-        const txt = document.getElementById(msgId);
-        txt.textContent = msg;
-        el.className    = `pf-alert ${type} show`;
-        el.querySelector("i").className =
-            type === "success"
-                ? "bi bi-check-circle-fill"
-                : "bi bi-exclamation-circle-fill";
-        // Auto-hide success sau 4s
-        if(type === "success") setTimeout(()=>el.classList.remove("show"), 4000);
-    }
+            /* ── Load profile ── */
+            async function loadProfile() {
+                try {
+                    const res = await fetch(`${API}/auth/me`, { headers: authHeaders() });
+                    if (!res.ok) throw new Error();
+                    const d = await res.json();
+                    _original = { name: d.name || "", email: d.email || "", address: d.address || "" };
 
-    /* ══ Validate helper ══ */
-    function chk(id, errId, cond){
-        const el = document.getElementById(id);
-        const er = document.getElementById(errId);
-        const ok = cond(el.value.trim());
-        el.classList.toggle("error", !ok);
-        er.classList.toggle("show",  !ok);
-        return ok;
-    }
+                    const initials = (d.name || "?").split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+                    document.getElementById("pfAvatarCircle").textContent = initials;
+                    document.getElementById("pfAvatarName").textContent = d.name || "—";
+                    document.getElementById("pfUsername").textContent = d.username || "—";
+                    if (d.createdAt) document.getElementById("pfSince").textContent = "Thành viên từ " + new Date(d.createdAt).toLocaleDateString("vi-VN");
 
-    /* ══ Reset form về giá trị gốc ══ */
-    window.resetProfile = function(){
-        document.getElementById("pfName").value    = _original.name;
-        document.getElementById("pfEmail").value   = _original.email;
-        document.getElementById("pfAddress").value = _original.address;
-        ["pfName","pfEmail","pfAddress"].forEach(id=>{
-            document.getElementById(id).classList.remove("error");
-        });
-        ["pfNameErr","pfEmailErr"].forEach(id=>{
-            document.getElementById(id).classList.remove("show");
-        });
-        document.getElementById("pfInfoAlert").classList.remove("show");
-    };
+                    document.getElementById("pfName").value = d.name || "";
+                    document.getElementById("pfEmail").value = d.email || "";
+                    document.getElementById("pfAddress").value = d.address || "";
 
-    /* ══ Lưu thông tin ══ */
-    window.saveProfile = async function(){
-        const okName  = chk("pfName",  "pfNameErr",  v => v.length >= 2);
-        const okEmail = chk("pfEmail", "pfEmailErr",
-            v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-        if(!okName || !okEmail) return;
+                    document.getElementById("pfLoading").style.display = "none";
+                    document.getElementById("pfContent").style.display = "block";
+                } catch {
+                    document.getElementById("pfLoading").innerHTML = `
+                <div class="pf-card" style="text-align:center;padding:2.5rem;color:#8a9bb0">
+                    <i class="bi bi-wifi-off" style="font-size:2.5rem;display:block;margin-bottom:.75rem"></i>
+                    Không tải được thông tin. Vui lòng thử lại.
+                </div>`;
+                }
+            }
 
-        const btn = document.getElementById("pfSaveBtn");
-        btn.disabled  = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
+            /* ── Reset profile form ── */
+            window.resetProfile = function () {
+                document.getElementById("pfName").value = _original.name;
+                document.getElementById("pfEmail").value = _original.email;
+                document.getElementById("pfAddress").value = _original.address;
+                ["pfName", "pfEmail", "pfAddress"].forEach(id => document.getElementById(id).classList.remove("error"));
+                ["pfNameErr", "pfEmailErr"].forEach(id => document.getElementById(id).classList.remove("show"));
+                document.getElementById("pfInfoAlert").classList.remove("show");
+            };
 
-        const payload = {
-            name:    document.getElementById("pfName").value.trim(),
-            email:   document.getElementById("pfEmail").value.trim(),
-            address: document.getElementById("pfAddress").value.trim(),
-        };
+            /* ── Save profile ── */
+            window.saveProfile = async function () {
+                const okName = chk("pfName", "pfNameErr", v => v.length >= 2);
+                const okEmail = chk("pfEmail", "pfEmailErr", v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+                if (!okName || !okEmail) return;
 
-        try{
-            const res  = await fetch(`${API}/auth/me`, {
-                method:"PUT", headers:authHeaders(), body:JSON.stringify(payload)
+                const btn = document.getElementById("pfSaveBtn");
+                btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang lưu...';
+
+                const payload = {
+                    name: document.getElementById("pfName").value.trim(),
+                    email: document.getElementById("pfEmail").value.trim(),
+                    address: document.getElementById("pfAddress").value.trim(),
+                };
+
+                try {
+                    const res = await fetch(`${API}/auth/me`, { method: "PUT", headers: authHeaders(), body: JSON.stringify(payload) });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        showAlert("pfInfoAlert", "pfInfoAlertMsg", data.message || "Cập nhật thất bại.", "error");
+                    } else {
+                        if (data.token) sessionStorage.setItem("token", data.token);
+                        const newName = data.name || payload.name;
+                        const initials = newName.split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+                        document.getElementById("pfAvatarCircle").textContent = initials;
+                        document.getElementById("pfAvatarName").textContent = newName;
+                        _original = { name: newName, email: data.email || payload.email, address: data.address || payload.address };
+                        showAlert("pfInfoAlert", "pfInfoAlertMsg", "Cập nhật thông tin thành công!", "success");
+                    }
+                } catch {
+                    showAlert("pfInfoAlert", "pfInfoAlertMsg", "Không kết nối được máy chủ.", "error");
+                } finally {
+                    btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu thay đổi';
+                }
+            };
+
+            /* ══════════════════════════════════════════════
+               ĐỔI MẬT KHẨU — Bước 1: Gửi OTP
+            ══════════════════════════════════════════════ */
+            window.sendPasswordOtp = async function () {
+                document.getElementById("pfPwStep1Alert").classList.remove("show");
+                const okCur = chk("pfCurPw", "pfCurPwErr", v => v.length > 0);
+                if (!okCur) return;
+
+                const btn = document.getElementById("pfSendPwOtpBtn");
+                btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang gửi OTP...';
+
+                try {
+                    const res = await fetch(`${API}/auth/me/change-password/send-otp`, {
+                        method: "POST", headers: authHeaders(),
+                        body: JSON.stringify({ currentPassword: document.getElementById("pfCurPw").value })
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (res.ok) {
+                        // Chuyển sang bước 2
+                        document.getElementById("pwStep1").style.display = "none";
+                        document.getElementById("pwStep2").style.display = "block";
+                        document.getElementById("pfOtp").value = "";
+                        document.getElementById("pfNewPw").value = "";
+                        document.getElementById("pfConfirmPw").value = "";
+                        document.getElementById("pfStrengthBar").style.width = "0";
+                        document.getElementById("pfStrengthLabel").textContent = "";
+                        document.getElementById("pfPwAlert").classList.remove("show");
+                        startCountdown();
+                    } else {
+                        showAlert("pfPwStep1Alert", "pfPwStep1AlertMsg", data.message || "Xác nhận thất bại.", "error");
+                    }
+                } catch {
+                    showAlert("pfPwStep1Alert", "pfPwStep1AlertMsg", "Không kết nối được máy chủ.", "error");
+                } finally {
+                    btn.disabled = false; btn.innerHTML = '<i class="bi bi-send"></i> Xác nhận & Gửi mã OTP';
+                }
+            };
+
+            /* ── Gửi lại OTP đổi mật khẩu ── */
+            window.resendPasswordOtp = async function () {
+                try {
+                    const res = await fetch(`${API}/auth/me/change-password/send-otp`, {
+                        method: "POST", headers: authHeaders(),
+                        body: JSON.stringify({ currentPassword: document.getElementById("pfCurPw").value })
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (res.ok) {
+                        showAlert("pfPwAlert", "pfPwAlertMsg", "Đã gửi lại OTP về email.", "success");
+                        startCountdown();
+                    } else {
+                        showAlert("pfPwAlert", "pfPwAlertMsg", data.message || "Không thể gửi lại OTP.", "error");
+                    }
+                } catch {
+                    showAlert("pfPwAlert", "pfPwAlertMsg", "Không kết nối được máy chủ.", "error");
+                }
+            };
+
+            /* ══════════════════════════════════════════════
+               ĐỔI MẬT KHẨU — Bước 2: Verify OTP
+            ══════════════════════════════════════════════ */
+            window.changePassword = async function () {
+                const okOtp = chk("pfOtp", "pfOtpErr", v => v.length === 6);
+                const okNew = chk("pfNewPw", "pfNewPwErr", v => v.length >= 6);
+                const okConf = chk("pfConfirmPw", "pfConfirmPwErr", () => document.getElementById("pfConfirmPw").value === document.getElementById("pfNewPw").value);
+                if (!okOtp || !okNew || !okConf) return;
+
+                const btn = document.getElementById("pfPwBtn");
+                btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang xử lý...';
+
+                const payload = {
+                    otp: document.getElementById("pfOtp").value.trim(),
+                    newPassword: document.getElementById("pfNewPw").value,
+                    confirmPassword: document.getElementById("pfConfirmPw").value,
+                };
+
+                try {
+                    const res = await fetch(`${API}/auth/me/change-password/verify-otp`, {
+                        method: "PUT", headers: authHeaders(), body: JSON.stringify(payload)
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) {
+                        showAlert("pfPwAlert", "pfPwAlertMsg", data.message || "Đổi mật khẩu thất bại.", "error");
+                    } else {
+                        clearInterval(_pwCountdown);
+                        showAlert("pfPwAlert", "pfPwAlertMsg", "Đổi mật khẩu thành công!", "success");
+                        // Reset về bước 1 sau 2s
+                        setTimeout(() => {
+                            document.getElementById("pwStep2").style.display = "none";
+                            document.getElementById("pwStep1").style.display = "block";
+                            document.getElementById("pfCurPw").value = "";
+                            document.getElementById("pfCurPw").classList.remove("error");
+                            document.getElementById("pfPwStep1Alert").classList.remove("show");
+                        }, 2000);
+                    }
+                } catch {
+                    showAlert("pfPwAlert", "pfPwAlertMsg", "Không kết nối được máy chủ.", "error");
+                } finally {
+                    btn.disabled = false; btn.innerHTML = '<i class="bi bi-lock"></i> Đổi mật khẩu';
+                }
+            };
+
+            /* ── Quay lại bước 1 đổi mật khẩu ── */
+            window.goBackToPwStep1 = function () {
+                clearInterval(_pwCountdown);
+                document.getElementById("pwStep2").style.display = "none";
+                document.getElementById("pwStep1").style.display = "block";
+                document.getElementById("pfPwAlert").classList.remove("show");
+            };
+
+            /* ── Password strength ── */
+            document.getElementById("pfNewPw").addEventListener("input", function () {
+                const v = this.value;
+                const bar = document.getElementById("pfStrengthBar"), lbl = document.getElementById("pfStrengthLabel");
+                if (!v) { bar.style.width = "0"; lbl.textContent = ""; return; }
+                let score = 0;
+                if (v.length >= 6) score++; if (v.length >= 10) score++;
+                if (/[A-Z]/.test(v)) score++; if (/[0-9]/.test(v)) score++; if (/[^A-Za-z0-9]/.test(v)) score++;
+                const lv = [{ w: "20%", bg: "#e74c3c", t: "Rất yếu" }, { w: "40%", bg: "#e67e22", t: "Yếu" }, { w: "60%", bg: "#f39c12", t: "Trung bình" }, { w: "80%", bg: "#2ecc71", t: "Mạnh" }, { w: "100%", bg: "#27ae60", t: "Rất mạnh" }][Math.min(score, 4)];
+                bar.style.width = lv.w; bar.style.background = lv.bg; lbl.textContent = lv.t; lbl.style.color = lv.bg;
             });
-            const data = await res.json();
 
-            if(!res.ok){
-                showAlert("pfInfoAlert","pfInfoAlertMsg", data.message||"Cập nhật thất bại.", "error");
-            } else {
-                // Cập nhật token mới nếu API trả về (name/email thay đổi)
-                if (data.token) sessionStorage.setItem("token", data.token);
-
-                // Cập nhật avatar và tên trên trang
-                const newName = data.name || payload.name;
-                const initials = newName.split(" ").filter(Boolean)
-                    .slice(0,2).map(w=>w[0].toUpperCase()).join("");
-                document.getElementById("pfAvatarCircle").textContent = initials;
-                document.getElementById("pfAvatarName").textContent   = newName;
-
-                _original = { name: newName, email: data.email||payload.email, address: data.address||payload.address };
-
-                showAlert("pfInfoAlert","pfInfoAlertMsg","Cập nhật thông tin thành công!", "success");
-            }
-        }catch{
-            showAlert("pfInfoAlert","pfInfoAlertMsg","Không kết nối được máy chủ.","error");
-        } finally {
-            btn.disabled  = false;
-            btn.innerHTML = '<i class="bi bi-check-lg"></i> Lưu thay đổi';
-        }
-    };
-
-    /* ══ Đổi mật khẩu ══ */
-    window.changePassword = async function(){
-        const okCur  = chk("pfCurPw",    "pfCurPwErr",    v => v.length > 0);
-        const okNew  = chk("pfNewPw",    "pfNewPwErr",    v => v.length >= 6);
-        const okConf = chk("pfConfirmPw","pfConfirmPwErr",
-            () => document.getElementById("pfConfirmPw").value ===
-                  document.getElementById("pfNewPw").value);
-        if(!okCur || !okNew || !okConf) return;
-
-        const btn = document.getElementById("pfPwBtn");
-        btn.disabled  = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Đang xử lý...';
-
-        const payload = {
-            currentPassword: document.getElementById("pfCurPw").value,
-            newPassword:     document.getElementById("pfNewPw").value,
-            confirmPassword: document.getElementById("pfConfirmPw").value,
-        };
-
-        try{
-            const res  = await fetch(`${API}/auth/me/change-password`, {
-                method:"PUT", headers:authHeaders(), body:JSON.stringify(payload)
+            /* ── Live confirm ── */
+            document.getElementById("pfConfirmPw").addEventListener("input", function () {
+                const match = this.value === document.getElementById("pfNewPw").value;
+                this.classList.toggle("error", !match && this.value.length > 0);
+                document.getElementById("pfConfirmPwErr").classList.toggle("show", !match && this.value.length > 0);
             });
-            const data = await res.json();
 
-            if(!res.ok){
-                showAlert("pfPwAlert","pfPwAlertMsg", data.message||"Đổi mật khẩu thất bại.","error");
-            } else {
-                showAlert("pfPwAlert","pfPwAlertMsg","Đổi mật khẩu thành công!","success");
-                // Xóa các ô mật khẩu
-                ["pfCurPw","pfNewPw","pfConfirmPw"].forEach(id=>{
-                    document.getElementById(id).value = "";
-                    document.getElementById(id).classList.remove("error");
-                });
-                document.getElementById("pfStrengthBar").style.width  = "0";
-                document.getElementById("pfStrengthLabel").textContent = "";
-            }
-        }catch{
-            showAlert("pfPwAlert","pfPwAlertMsg","Không kết nối được máy chủ.","error");
-        } finally {
-            btn.disabled  = false;
-            btn.innerHTML = '<i class="bi bi-lock"></i> Đổi mật khẩu';
-        }
-    };
-
-    /* ══ Toggle hiển thị mật khẩu ══ */
-    window.togglePw = function(inputId, btn){
-        const inp = document.getElementById(inputId);
-        const ico = btn.querySelector("i");
-        if(inp.type === "password"){
-            inp.type       = "text";
-            ico.className  = "bi bi-eye-slash";
-        } else {
-            inp.type       = "password";
-            ico.className  = "bi bi-eye";
-        }
-    };
-
-    /* ══ Độ mạnh mật khẩu ══ */
-    document.getElementById("pfNewPw").addEventListener("input", function(){
-        const v   = this.value;
-        const bar = document.getElementById("pfStrengthBar");
-        const lbl = document.getElementById("pfStrengthLabel");
-        if(!v){ bar.style.width="0"; lbl.textContent=""; return; }
-
-        let score = 0;
-        if(v.length >= 6)  score++;
-        if(v.length >= 10) score++;
-        if(/[A-Z]/.test(v)) score++;
-        if(/[0-9]/.test(v)) score++;
-        if(/[^A-Za-z0-9]/.test(v)) score++;
-
-        const levels = [
-            {w:"20%",  bg:"#e74c3c", t:"Rất yếu"},
-            {w:"40%",  bg:"#e67e22", t:"Yếu"},
-            {w:"60%",  bg:"#f39c12", t:"Trung bình"},
-            {w:"80%",  bg:"#2ecc71", t:"Mạnh"},
-            {w:"100%", bg:"#27ae60", t:"Rất mạnh"},
-        ];
-        const lv = levels[Math.min(score, 4)];
-        bar.style.width      = lv.w;
-        bar.style.background = lv.bg;
-        lbl.textContent      = lv.t;
-        lbl.style.color      = lv.bg;
-    });
-
-    /* ══ Live validate confirm password ══ */
-    document.getElementById("pfConfirmPw").addEventListener("input", function(){
-        const match = this.value === document.getElementById("pfNewPw").value;
-        this.classList.toggle("error", !match && this.value.length > 0);
-        document.getElementById("pfConfirmPwErr")
-            .classList.toggle("show", !match && this.value.length > 0);
-    });
-
-    loadProfile();
-})();
+            loadProfile();
+        })();
     </script>
 </body>
 </html>

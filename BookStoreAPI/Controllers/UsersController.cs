@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*
+ * GET - /api/users/admin/all
+ * GET - /api/users/admin/{id}
+ * POST - /api/users/admin/{id}/reset-password
+ */
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BookStoreAPI.Data;
@@ -17,7 +23,7 @@ namespace BookStoreAPI.Controllers
             _db = db;
         }
 
-        // ── GET /api/users/admin/all ───────────────────────────
+        // GET - /api/users/admin/all
         [HttpGet("admin/all")]
         public async Task<IActionResult> GetAllUsers(
             [FromQuery] string? keyword,
@@ -69,7 +75,7 @@ namespace BookStoreAPI.Controllers
             });
         }
 
-        // ── GET /api/users/admin/{id} ──────────────────────────
+        // GET - /api/users/admin/{id}
         [HttpGet("admin/{id:int}")]
         public async Task<IActionResult> GetUserDetail(int id)
         {
@@ -100,7 +106,7 @@ namespace BookStoreAPI.Controllers
             });
         }
 
-        // ── POST /api/users/admin/{id}/reset-password ──────────
+        // POST - /api/users/admin/{id}/reset-password
         [HttpPost("admin/{id:int}/reset-password")]
         public async Task<IActionResult> ResetPassword(int id)
         {
