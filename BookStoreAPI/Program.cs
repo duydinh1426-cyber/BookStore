@@ -67,7 +67,6 @@ namespace BookStoreAPI
             app.UseAuthorization();
             app.MapControllers();
 
-            // Thêm tạm vào Program.cs trước app.Run()
             var endpoints = app.Services.GetRequiredService<IEnumerable<EndpointDataSource>>();
             foreach (var ep in endpoints.SelectMany(e => e.Endpoints))
                 Console.WriteLine(ep.DisplayName);
