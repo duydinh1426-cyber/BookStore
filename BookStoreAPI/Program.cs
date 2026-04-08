@@ -43,6 +43,9 @@ namespace BookStoreAPI
 
             builder.Services.AddScoped<JwtService>();
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<VNPayService>();
+
             builder.Services.AddOpenApi();
 
             builder.Services.AddCors(options =>

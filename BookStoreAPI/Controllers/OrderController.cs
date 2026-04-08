@@ -259,7 +259,7 @@ namespace BookStoreAPI.Controllers
             if (order is null) return NotFound(new { message = "Không tìm thấy đơn hàng" });
             if (order.userID != userId) return Forbid();
 
-            // Dùng state machine — customer chỉ được hủy từ pending
+            // Kiem tra state machine
             if (!_allowedTransitions.TryGetValue(order.status, out var allowed)
                 || !allowed.Contains("cancelled"))
             {
@@ -267,6 +267,17 @@ namespace BookStoreAPI.Controllers
                 return BadRequest(new { message = $"Không thể hủy đơn ở trạng thái '{label}'" });
             }
 
+            // Xu ly hoan tien VNPay
+            bool needRefund = false;
+            if (order.paymentMethod == "vnpay" && order.paymentStatus == "paid")
+            {
+                // da thanh toan -> can hoan tien 
+                // admin xu ly hoan tien thuc te
+                order.paymentStatus = "refunded";
+                needRefund = true;
+            }
+
+            // hoan kho
             if (order.OrderItems != null)
                 foreach (var item in order.OrderItems)
                 {
@@ -278,7 +289,15 @@ namespace BookStoreAPI.Controllers
             order.updatedAt = DateTime.UtcNow;
 
             await _db.SaveChangesAsync();
-            return Ok(new { message = "Đã hủy đơn hàng thành công" });
+
+            return Ok(new
+            {
+                message = "Đã hủy đơn hàng thành công",
+                needRefund,                               // true -> frontend hien thi thong bao hoan tien
+                refundNote = needRefund
+                    ? "Yêu cầu hoàn tiền đã được ghi nhận. Vui lòng chờ 3-5 ngày làm việc."
+                    : null
+            });
         }
 
         // ──────────────────────────────────────────
@@ -290,6 +309,7 @@ namespace BookStoreAPI.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 20,
             [FromQuery] string? status = null,
+            [FromQuery] string? paymentStatus = null,
             [FromQuery] string? keyword = null,
             [FromQuery] DateTime? from = null,
             [FromQuery] DateTime? to = null)
@@ -300,6 +320,9 @@ namespace BookStoreAPI.Controllers
 
             if (!string.IsNullOrWhiteSpace(status))
                 query = query.Where(o => o.status == status);
+
+            if (!string.IsNullOrWhiteSpace(paymentStatus))
+                query = query.Where(o => o.paymentStatus == paymentStatus);
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 query = query.Where(o =>
@@ -444,12 +467,32 @@ namespace BookStoreAPI.Controllers
                 .Where(o => o.status == "completed")
                 .SumAsync(o => (decimal?)o.totalCost) ?? 0;
 
+            var byPayment = await query
+                .GroupBy(o => o.paymentStatus)
+                .Select(g => new { paymentStatus = g.Key, count = g.Count() })
+                .ToListAsync();
+
             return Ok(new
             {
                 totalOrders = await query.CountAsync(),
                 totalRevenue,
-                byStatus
+                byStatus,
+                byPayment
             });
         }
+
+        // ════════════════════════════════════════════════════════════════════
+        //  PATCH cho OrderController.cs — thay thế endpoint Cancel hiện tại
+        //
+        //  Logic mới:
+        //  • Đơn COD: huỷ bình thường, hoàn kho
+        //  • Đơn VNPay chưa thanh toán (unpaid/failed): huỷ + hoàn kho
+        //  • Đơn VNPay đã thanh toán (paid):
+        //      → Chỉ cho phép huỷ khi còn "pending" hoặc "confirmed"
+        //      → Đánh dấu paymentStatus = "refunded" (hoàn tiền thủ công)
+        //      → Hoàn kho
+        // ════════════════════════════════════════════════════════════════════
+
+        
     }
 }
